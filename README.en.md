@@ -44,7 +44,7 @@ META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh
 Install everything into a target project:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/scripts/install.sh | bash -s -- . all
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh | bash -s -- . all
 ```
 
 This installs `skills/meta-scaffold/SKILL.md` and `skills/meta-scaffold/agents/openai.yaml`, then appends or creates the requested project-level agent files.
@@ -52,14 +52,14 @@ This installs `skills/meta-scaffold/SKILL.md` and `skills/meta-scaffold/agents/o
 Install only the skill:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/scripts/install.sh | bash -s -- . skill
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh | bash -s -- . skill
 ```
 
 Manual install:
 
 ```bash
 mkdir -p skills/meta-scaffold
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/skills/meta-scaffold/SKILL.md \
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md \
   -o skills/meta-scaffold/SKILL.md
 ```
 
@@ -73,14 +73,14 @@ Before inspecting, restructuring, documenting, or modifying this project, read a
 
 ```bash
 # Per-project AGENTS.md
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/templates/AGENTS.meta-scaffold.md -o AGENTS.md
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/templates/AGENTS.meta-scaffold.md -o AGENTS.md
 
 # Per-project CLAUDE.md
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/templates/CLAUDE.meta-scaffold.md -o CLAUDE.md
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/templates/CLAUDE.meta-scaffold.md -o CLAUDE.md
 
 # Cursor project rule
 mkdir -p .cursor/rules
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/.cursor/rules/meta-scaffold.mdc -o .cursor/rules/meta-scaffold.mdc
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/.cursor/rules/meta-scaffold.mdc -o .cursor/rules/meta-scaffold.mdc
 ```
 
 ## Versioned import

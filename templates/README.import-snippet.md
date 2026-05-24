@@ -6,7 +6,7 @@ Install the skill:
 
 ```bash
 mkdir -p skills/meta-scaffold
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/skills/meta-scaffold/SKILL.md -o skills/meta-scaffold/SKILL.md
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md -o skills/meta-scaffold/SKILL.md
 ```
 
 Agent instruction:

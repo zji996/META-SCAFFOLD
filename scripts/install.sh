@@ -3,7 +3,7 @@ set -euo pipefail
 
 TARGET_DIR="${1:-.}"
 MODE="${2:-all}"
-RAW_BASE="${META_SCAFFOLD_RAW_BASE:-https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main}"
+RAW_BASE="${META_SCAFFOLD_RAW_BASE:-https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main}"
 SCRIPT_SOURCE="${BASH_SOURCE[0]:-}"
 SCRIPT_DIR=""
 LOCAL_ROOT=""

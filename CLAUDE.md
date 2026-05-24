@@ -12,7 +12,7 @@ When copied into another project, this file can stand alone. Prefer also install
 
 ```bash
 mkdir -p skills/meta-scaffold
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/skills/meta-scaffold/SKILL.md -o skills/meta-scaffold/SKILL.md
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md -o skills/meta-scaffold/SKILL.md
 ```
 
 ## Core protocol
@@ -61,4 +61,4 @@ Remaining risks: ...
 Next step: ...
 ```
 
-Full contract: `https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/prompts/META-SCAFFOLD-v5.md`.
+Full contract: `https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/prompts/META-SCAFFOLD-v5.md`.

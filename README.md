@@ -56,7 +56,7 @@ META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh
 在目标项目根目录运行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/scripts/install.sh | bash -s -- . all
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh | bash -s -- . all
 ```
 
 它会安装或追加：
@@ -76,20 +76,20 @@ scaffold.plan.yaml             # 文件不存在时才创建
 只安装 skill：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/scripts/install.sh | bash -s -- . skill
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh | bash -s -- . skill
 ```
 
 只安装文档模板：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/scripts/install.sh | bash -s -- . templates
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh | bash -s -- . templates
 ```
 
 ### 方式 C：只复制 Skill 文件，轻量
 
 ```bash
 mkdir -p skills/meta-scaffold
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/skills/meta-scaffold/SKILL.md \
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md \
   -o skills/meta-scaffold/SKILL.md
 ```
 
@@ -110,27 +110,27 @@ Before inspecting, restructuring, documenting, or modifying this project, read a
 适合还没有 AI 协作入口的新项目：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/templates/AGENTS.meta-scaffold.md -o AGENTS.md
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/templates/AGENTS.meta-scaffold.md -o AGENTS.md
 ```
 
 Claude Code 风格项目：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/templates/CLAUDE.meta-scaffold.md -o CLAUDE.md
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/templates/CLAUDE.meta-scaffold.md -o CLAUDE.md
 ```
 
 如果项目已有 `AGENTS.md`，建议追加而不是覆盖：
 
 ```bash
 printf '\n\n---\n\n' >> AGENTS.md
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/templates/AGENTS.meta-scaffold.md >> AGENTS.md
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/templates/AGENTS.meta-scaffold.md >> AGENTS.md
 ```
 
 ### 方式 E：Cursor 项目规则
 
 ```bash
 mkdir -p .cursor/rules
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/.cursor/rules/meta-scaffold.mdc \
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/.cursor/rules/meta-scaffold.mdc \
   -o .cursor/rules/meta-scaffold.mdc
 ```
 

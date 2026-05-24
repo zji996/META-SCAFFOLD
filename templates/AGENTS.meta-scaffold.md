@@ -72,5 +72,5 @@ If a change affects future work, update `docs/current.md` with only judgment-rel
 Full upstream skill:
 
 ```text
-https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/skills/meta-scaffold/SKILL.md
+https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md
 ```
