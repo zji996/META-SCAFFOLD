@@ -63,6 +63,7 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/scripts/i
 
 ```text
 skills/meta-scaffold/SKILL.md
+skills/meta-scaffold/agents/openai.yaml
 AGENTS.md                      # 追加 META-SCAFFOLD 引用段，不覆盖已有内容
 CLAUDE.md                      # 追加 META-SCAFFOLD 引用段，不覆盖已有内容
 .cursor/rules/meta-scaffold.mdc

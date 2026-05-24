@@ -57,6 +57,7 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 ./scripts/install.sh "$tmp" all >/dev/null
 [[ -f "$tmp/skills/meta-scaffold/SKILL.md" ]] || { echo "installer failed skill" >&2; exit 1; }
+[[ -f "$tmp/skills/meta-scaffold/agents/openai.yaml" ]] || { echo "installer failed skill metadata" >&2; exit 1; }
 [[ -f "$tmp/.cursor/rules/meta-scaffold.mdc" ]] || { echo "installer failed cursor rule" >&2; exit 1; }
 [[ -f "$tmp/docs/current.md" ]] || { echo "installer failed docs/current.md" >&2; exit 1; }
 grep -q 'META-SCAFFOLD' "$tmp/AGENTS.md" || { echo "installer failed AGENTS append" >&2; exit 1; }

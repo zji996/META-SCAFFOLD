@@ -4,11 +4,15 @@ set -euo pipefail
 TARGET_DIR="${1:-.}"
 MODE="${2:-all}"
 RAW_BASE="${META_SCAFFOLD_RAW_BASE:-https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main}"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || true)"
+SCRIPT_SOURCE="${BASH_SOURCE[0]:-}"
+SCRIPT_DIR=""
 LOCAL_ROOT=""
 
-if [[ -n "$SCRIPT_DIR" && -f "$SCRIPT_DIR/../skills/meta-scaffold/SKILL.md" ]]; then
-  LOCAL_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+if [[ -n "$SCRIPT_SOURCE" ]]; then
+  SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")" 2>/dev/null && pwd || true)"
+  if [[ -n "$SCRIPT_DIR" && -f "$SCRIPT_DIR/../skills/meta-scaffold/SKILL.md" ]]; then
+    LOCAL_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+  fi
 fi
 
 mkdir -p "$TARGET_DIR"
@@ -40,7 +44,9 @@ append_block_once() {
 
 install_skill() {
   fetch_file "skills/meta-scaffold/SKILL.md" "$TARGET_DIR/skills/meta-scaffold/SKILL.md"
+  fetch_file "skills/meta-scaffold/agents/openai.yaml" "$TARGET_DIR/skills/meta-scaffold/agents/openai.yaml"
   echo "installed: skills/meta-scaffold/SKILL.md"
+  echo "installed: skills/meta-scaffold/agents/openai.yaml"
 }
 
 install_agents() {

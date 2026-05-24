@@ -47,6 +47,8 @@ Install everything into a target project:
 curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/main/scripts/install.sh | bash -s -- . all
 ```
 
+This installs `skills/meta-scaffold/SKILL.md` and `skills/meta-scaffold/agents/openai.yaml`, then appends or creates the requested project-level agent files.
+
 Install only the skill:
 
 ```bash
