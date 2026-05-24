@@ -1,0 +1,4 @@
+interface:
+  display_name: "Meta Scaffold"
+  short_description: "Govern repo structure, docs, verification, and handoff"
+  default_prompt: "Use $meta-scaffold to inspect this repository, make the smallest safe change, verify it, and leave concise handoff context."

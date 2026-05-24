@@ -1,0 +1,13 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+dist.tmp/
+.tmp/
+coverage/
+.cache/
+.pytest_cache/
+__pycache__/
+*.pyc
+META-SCAFFOLD.zip

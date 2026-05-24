@@ -1,0 +1,22 @@
+{
+  "name": "meta-scaffold",
+  "description": "META-SCAFFOLD v5 as a reusable AI project collaboration skill: inspect reality first, change minimally, verify, hand off, and compact durable context.",
+  "version": "5.0.0",
+  "author": {
+    "name": "zji996"
+  },
+  "license": "MIT",
+  "keywords": [
+    "meta-prompt",
+    "ai",
+    "agent",
+    "skill",
+    "scaffold",
+    "project-governance",
+    "monorepo",
+    "handoff"
+  ],
+  "skills": [
+    "./skills/meta-scaffold"
+  ]
+}

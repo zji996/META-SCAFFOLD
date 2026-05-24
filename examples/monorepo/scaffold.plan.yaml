@@ -1,0 +1,21 @@
+scaffold:
+  contract_version: 5
+  mode: existing
+  execution_mode: preview_then_apply
+
+repo:
+  shape: monorepo
+  app_dir: apps
+  shared_dir: packages
+  docs_entry: docs/current.md
+  command_entry: pnpm
+
+ai_collaboration:
+  language: zh-first
+  skill_entry: skills/meta-scaffold/SKILL.md
+  default_context:
+    - AGENTS.md
+    - docs/current.md
+    - docs/reference/architecture.md
+  preview_before_apply: true
+  verify_after_apply: true
