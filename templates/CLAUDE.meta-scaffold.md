@@ -2,24 +2,24 @@
 
 ## META-SCAFFOLD
 
-For repository structure, project governance, AI handoff, documentation layout, monorepo boundaries, context compression, or verification workflow tasks, read and follow:
+当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，先读取并遵守：
 
 ```text
 skills/meta-scaffold/SKILL.md
 ```
 
-Default protocol:
+默认协议：
 
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
 
-Default context order:
+默认上下文顺序：
 
 1. `CLAUDE.md` / `AGENTS.md`
 2. `docs/current.md`
 3. `docs/reference/architecture.md`
-4. files explicitly mentioned by the task
-5. roadmap, operations, decisions only when needed
+4. 任务明确提到的文件
+5. roadmap、operations、decisions 只在需要时读取
 
-After edits, run existing verification commands when possible. If verification cannot run, explain why and provide exact commands.
+修改后尽量运行已有验证命令。如果无法验证，说明原因并给出准确命令。

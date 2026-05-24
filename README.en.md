@@ -27,7 +27,7 @@ Codex installs it to:
 ${CODEX_HOME:-~/.codex}/skills/meta-scaffold
 ```
 
-Restart Codex after installation. Before the GitHub repo is published, install from a local clone instead:
+Restart Codex after installation. While maintaining this repository, refresh the local Codex install from the current clone:
 
 ```bash
 ./scripts/install-codex-skill.sh
@@ -112,14 +112,12 @@ git subtree add --prefix=vendor/META-SCAFFOLD https://github.com/zji996/META-SCA
 | `scripts/install-codex-skill.sh` | Local clone installer for Codex global skills. |
 | `scripts/check.sh` | Repository integrity check. |
 
-## Publish
+## Maintenance
 
 ```bash
-cd META-SCAFFOLD
-git init -b main
-git add .
-git commit -m "Initial Meta Scaffold v5 skill"
-gh repo create zji996/META-SCAFFOLD --public --source=. --remote=origin --push
+./scripts/check.sh
+./scripts/smoke-remote.sh
+META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh
 ```
 
 ## License

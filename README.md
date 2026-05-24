@@ -39,7 +39,7 @@ Codex 会安装到：
 ${CODEX_HOME:-~/.codex}/skills/meta-scaffold
 ```
 
-安装后重启 Codex，新的 skill 才会被加载。发布远端之前，也可以从本地 clone 安装：
+安装后重启 Codex，新的 skill 才会被加载。维护本仓库时，也可以从本地 clone 刷新当前 Codex 安装：
 
 ```bash
 ./scripts/install-codex-skill.sh
@@ -171,7 +171,7 @@ Read `vendor/META-SCAFFOLD/skills/meta-scaffold/SKILL.md` before structural, doc
 ## 一句话提示词
 
 ```text
-Use Meta Scaffold v5: Inspect real repo state first; Frame goal and success criteria; Decide risk; Preview changes; Apply only minimal necessary edits; Verify with commands or explicit acceptance criteria; Handoff results; Compact durable context into docs/current.md when needed.
+先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接结果，并在需要时 Compact 到 docs/current.md。
 ```
 
 ---
@@ -214,33 +214,24 @@ META-SCAFFOLD 不是固定目录模板，也不是项目生成器。它规定的
 
 ---
 
-## 发布这个仓库到 GitHub
+## 维护这个仓库
 
-仓库建议发布为 public，方便其他项目通过 raw URL、submodule 或 subtree 导入。
+仓库已经按 public 仓库分发，其他项目可以通过 Codex skill installer、raw URL、submodule 或 subtree 导入。维护时建议：
 
-使用 GitHub CLI 时：
-
-```bash
-cd META-SCAFFOLD
-git init -b main
-git add .
-git commit -m "Initial Meta Scaffold v5 skill"
-gh repo create zji996/META-SCAFFOLD --public \
-  --description "Meta Scaffold v5 as a reusable AI project collaboration skill" \
-  --source=. \
-  --remote=origin \
-  --push
-```
-
-如果已经在 GitHub 网页创建 public 空仓库：
+- 修改 skill、分发文件、安装脚本或文档后运行本地检查。
+- 需要验证远端 raw URL 和 Codex GitHub 安装链路时运行远端 smoke test。
+- 修改完成后提交并推送到 `main`。
 
 ```bash
-git remote add origin git@github.com:zji996/META-SCAFFOLD.git
-git branch -M main
-git push -u origin main
+./scripts/check.sh
+./scripts/smoke-remote.sh
 ```
 
-发布后，上面的 raw URL 就能被其他项目直接引用。
+如果要从当前 clone 更新本机 Codex 安装：
+
+```bash
+META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh
+```
 
 ---
 
@@ -251,6 +242,12 @@ bash scripts/check.sh
 ```
 
 验证内容包括：必需文件存在、Skill frontmatter 存在、README 引用路径存在、plugin JSON 可解析、安装脚本可在临时目录安装成功。
+
+远端 smoke test：
+
+```bash
+./scripts/smoke-remote.sh
+```
 
 ## 版本
 

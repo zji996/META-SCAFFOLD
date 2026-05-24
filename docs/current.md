@@ -2,7 +2,7 @@
 
 ## Current goal
 
-Publish META-SCAFFOLD v5 as a reusable public skill repository that Codex can install first as a global skill, with per-project imports as secondary options.
+Maintain META-SCAFFOLD v5 as a reusable public skill repository that Codex can install first as a global skill, with per-project imports as secondary options.
 
 ## Confirmed direction
 
@@ -10,11 +10,13 @@ Publish META-SCAFFOLD v5 as a reusable public skill repository that Codex can in
 - Main reusable entry: `skills/meta-scaffold/SKILL.md`.
 - Codex/OpenAI UI metadata entry: `skills/meta-scaffold/agents/openai.yaml`.
 - Full contract source: `prompts/META-SCAFFOLD-v5.md`.
+- Skill body and primary AI-facing distributions are Chinese-first.
 - Root README must explain convenient import methods.
 - Public GitHub target assumed by install commands: `zji996/META-SCAFFOLD`.
 - Preferred Codex install command uses the preinstalled skill installer:
   `python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py --repo zji996/META-SCAFFOLD --path skills/meta-scaffold`.
-- Local pre-publish Codex install entry: `./scripts/install-codex-skill.sh`.
+- Local Codex install refresh entry: `./scripts/install-codex-skill.sh`.
+- Remote smoke entry for raw URL and Codex GitHub install: `./scripts/smoke-remote.sh`.
 
 ## Boundaries
 
@@ -29,7 +31,13 @@ Publish META-SCAFFOLD v5 as a reusable public skill repository that Codex can in
 ./scripts/check.sh
 ```
 
+Optional remote smoke:
+
+```bash
+./scripts/smoke-remote.sh
+```
+
 ## Next starting point
 
-- Push the generated repository to GitHub as public.
-- After publishing, run the Codex GitHub skill installer and README curl commands from a temporary target to verify imports.
+- For distribution changes, run `./scripts/check.sh`, then `./scripts/smoke-remote.sh` after pushing.
+- Refresh the local Codex install with `META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh`.

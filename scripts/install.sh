@@ -58,7 +58,7 @@ install_agents() {
 
 当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，先读取并遵守 `skills/meta-scaffold/SKILL.md`。
 
-Default protocol:
+默认协议：
 
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
@@ -76,9 +76,9 @@ install_claude() {
 <!-- META-SCAFFOLD:START -->
 ## META-SCAFFOLD
 
-For repository structure, project governance, AI handoff, documentation layout, monorepo boundaries, context compression, or verification workflow tasks, read and follow `skills/meta-scaffold/SKILL.md` first.
+当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，先读取并遵守 `skills/meta-scaffold/SKILL.md`。
 
-Default protocol:
+默认协议：
 
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact

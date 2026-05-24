@@ -1,27 +1,27 @@
-# Architecture Reference
+# 架构参考
 
-> Reference docs describe current reality only. Mark unimplemented items as `Status: Not Implemented` or move them to roadmap/current.
+> Reference 文档只描述当前现实。未实现内容标记为 `Status: Not Implemented`，或移到 roadmap/current。
 
-## Repository shape
-
-- TBD
-
-## Applications / runtime units
+## 仓库形态
 
 - TBD
 
-## Shared packages / libraries
+## 应用 / 运行单元
 
 - TBD
 
-## Data flow
+## 共享包 / 库
 
 - TBD
 
-## Configuration and environment
+## 数据流
 
 - TBD
 
-## Verification commands
+## 配置和环境
+
+- TBD
+
+## 验证命令
 
 - TBD

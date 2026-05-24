@@ -2,54 +2,54 @@
 
 ## META-SCAFFOLD
 
-Use this section as a project governance contract for AI coding agents.
+把本节作为 AI coding agent 的项目治理契约。
 
-Default language: Chinese for collaboration and project handoff docs unless the user asks otherwise or the repository already uses another language.
+默认中文协作和编写项目交接文档，除非用户另有要求，或仓库已经明确使用其他语言。
 
-Core protocol:
+核心协议：
 
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
 
-When the task touches repository structure, project governance, AI handoff, documentation layout, monorepo boundaries, context compression, or verification workflows:
+当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程：
 
-1. Inspect the real repository before changing files.
-2. State goal, assumptions, success criteria, and non-goals for non-trivial work.
-3. Ask only for high-impact ambiguity; use safe defaults for low-risk ambiguity.
-4. Preview substantial changes before applying.
-5. Change only files required by the task.
-6. Verify using existing commands, or explain why verification cannot run.
-7. Handoff with changed files, verification result, risks, and next starting point.
-8. Keep `docs/current.md` compact; record only information that still affects future work.
+1. 修改文件前先检查真实仓库。
+2. 非简单任务先说明目标、假设、成功标准和非目标。
+3. 只对高影响歧义提问；低风险歧义使用安全默认值继续。
+4. 重大改动前先 Preview。
+5. 只修改任务所需文件。
+6. 使用已有命令验证，或说明为什么无法验证。
+7. 交接时说明变更文件、验证结果、风险和下一轮起点。
+8. 保持 `docs/current.md` 简洁，只记录仍会影响未来工作的内容。
 
-Repository shape rules:
+仓库结构规则：
 
-- Think in monorepo boundaries, but create only directories that are needed now.
-- `apps/` contains independently runnable/buildable/deployable units.
-- `packages/` or `libs/` contains shared code.
-- Default dependency direction: `apps/* -> packages/*` allowed; `packages/* -> apps/*` forbidden; `apps/A -> apps/B` forbidden by default.
-- Cross-app collaboration should use HTTP, RPC, queues, events, schemas, protobuf, or contracts packages, not direct imports.
+- 可以按 monorepo 边界思考，但只创建当前需要的目录。
+- `apps/` 放可独立运行、构建或部署的单元。
+- `packages/` 或 `libs/` 放共享代码。
+- 默认依赖方向：允许 `apps/* -> packages/*`；禁止 `packages/* -> apps/*`；默认禁止 `apps/A -> apps/B`。
+- 跨 app 协作应使用 HTTP、RPC、queue、event、schema、protobuf 或 contracts package，而不是直接 import。
 
-Documentation rules:
+文档规则：
 
-- Minimum useful docs: `docs/current.md`, `docs/roadmap.md`, `docs/reference/architecture.md`.
-- `docs/current.md` is current collaboration context, not chat history.
-- `docs/reference/` writes current facts only.
-- Future plans go to roadmap/current and must not be written as implemented facts.
+- 最小有用文档：`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`。
+- `docs/current.md` 是当前协作上下文，不是聊天记录。
+- `docs/reference/` 只写当前事实。
+- 未来计划写入 roadmap/current，不得写成已实现事实。
 
-Verification rules:
+验证规则：
 
-- Prefer existing commands such as `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `make check`, `just check`, `task check`, or `./manage.sh check all`.
-- README, AGENTS, CI, and AI handoff should point to the same command set.
-- Do not hide failures behind silent fallbacks.
+- 优先使用已有命令，例如 `pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build`、`make check`、`just check`、`task check` 或 `./manage.sh check all`。
+- README、AGENTS、CI 和 AI 交接应指向同一组命令。
+- 不要用 silent fallback 掩盖失败。
 
-Avoid:
+避免：
 
-- empty directories created only to look complete;
-- over-splitting docs;
-- turning one request into many micro-tasks;
-- drive-by refactors or formatting sweeps;
-- moving, deleting, or overwriting unknown files without approval;
-- putting shared libraries inside `apps/`;
-- making shared packages depend on apps.
+- 为了显得完整而创建空目录；
+- 过度拆分文档；
+- 把一个请求拆成许多微任务；
+- 顺手重构或格式化无关文件；
+- 未批准就移动、删除或覆盖未知文件；
+- 把共享库放进 `apps/`；
+- 让共享包依赖 apps。

@@ -1,15 +1,15 @@
 # Roadmap
 
-> Roadmap records future direction. Do not write future plans as current facts.
+> Roadmap 记录未来方向。不要把未来计划写成当前事实。
 
-## Near term
-
-- TBD
-
-## Later
+## 近期
 
 - TBD
 
-## Non-goals
+## 后续
+
+- TBD
+
+## 非目标
 
 - TBD

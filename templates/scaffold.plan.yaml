@@ -21,6 +21,6 @@ ai_collaboration:
   verify_after_apply: true
 
 notes:
-  - This file is optional.
-  - It records AI-relevant structure decisions only.
-  - It does not replace real project configuration.
+  - 本文件是可选的。
+  - 它只记录 AI 需要知道的结构决策。
+  - 它不替代真实项目配置。

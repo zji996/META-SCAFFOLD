@@ -1,72 +1,72 @@
 ---
 name: meta-scaffold
-description: Project structure and AI-collaboration governance skill. Use when creating, reorganizing, maintaining, or handing off software repositories; deciding monorepo/app/package boundaries; writing AGENTS/CLAUDE/Cursor rules; maintaining docs/current.md; defining verification commands; or compressing context for future AI work.
+description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md；定义验证命令；压缩未来 AI 工作上下文。
 license: MIT
 version: 5.0.0
 ---
 
 # META-SCAFFOLD
 
-META-SCAFFOLD is a repository-governance skill for AI coding agents. It is not a directory template. It tells the agent how to inspect reality, make minimal structural decisions, modify safely, verify work, and leave compact handoff context.
+META-SCAFFOLD 是给 AI coding agent 使用的仓库治理 skill。它不是目录模板，也不是框架模板；它规定 agent 如何先理解真实仓库，再做最小必要结构判断、安全修改、验证和交接。
 
-Default to Chinese for user communication and collaborative project docs unless the user asks otherwise or the repository already uses another language.
+默认中文沟通和编写协作文档，除非用户另有要求，或当前仓库已经明确使用其他语言。
 
-## Core stance
+## 核心立场
 
-The agent's job is to reduce long-term project confusion, not to make the repository look “professional”. Always prefer:
+agent 的职责是减少项目长期混乱，而不是让仓库看起来“专业”。始终优先：
 
-1. **Reality before structure** — inspect the current repository before proposing architecture or folders.
-2. **User-confirmed direction before fresh opinions** — do not reopen decisions every round.
-3. **Context cost before document volume** — make the next human or AI need fewer files, not more files.
-4. **Runnable state before elegant plans** — every meaningful change needs a verification command or acceptance check.
-5. **Current facts before future wishes** — never write planned work as if it already exists.
-6. **Natural shape before forced templates** — respect existing conventions such as `src/`, `services/`, `libs/`, or `packages/`.
-7. **Minimum necessary change** — no drive-by refactors, formatting sweeps, dependency churn, or speculative abstractions.
+1. **现实先于结构**：先检查当前仓库，再提出架构或目录建议。
+2. **确认方向先于新观点**：不要每轮重新推翻用户已经确认的决定。
+3. **上下文成本先于文档数量**：让下一个人或 AI 少读文件、少误解。
+4. **可运行状态先于优雅计划**：有意义的改动要能验证，或给出明确验收标准。
+5. **当前事实先于未来愿望**：不要把计划写成已经存在的事实。
+6. **自然形态先于强制模板**：尊重已有 `src/`、`services/`、`libs/`、`packages/` 等约定。
+7. **最小必要改动**：不做顺手重构、格式化扫荡、依赖漂移或投机抽象。
 
-Success test:
+成功测试：
 
-> Can the next AI pick up faster, misunderstand less, modify more safely, and verify more easily?
+> 下一个 AI 是否能更快接手、更少误解、更安全修改、更容易验证？
 
-## When to activate
+## 何时启用
 
-Use this skill when the task touches any of these areas:
+当任务涉及以下内容时使用本 skill：
 
-- Starting a new software repository.
-- Reorganizing an existing repository.
-- Deciding whether a project should be monorepo-shaped.
-- Distinguishing `apps/`, `packages/`, `libs/`, `services/`, `infra/`, `scripts/`, and `docs/`.
-- Creating or updating `AGENTS.md`, `CLAUDE.md`, Cursor rules, or other AI collaboration instructions.
-- Creating or maintaining `docs/current.md`, architecture docs, roadmap docs, runbooks, or decisions.
-- Defining stable command entry points such as `pnpm`, `make`, `just`, `task`, or `manage.sh`.
-- Performing handoff after a multi-step coding or documentation task.
+- 初始化新软件仓库。
+- 重组既有仓库。
+- 判断项目是否应该采用 monorepo 形态。
+- 区分 `apps/`、`packages/`、`libs/`、`services/`、`infra/`、`scripts/`、`docs/`。
+- 创建或更新 `AGENTS.md`、`CLAUDE.md`、Cursor rules 或其他 AI 协作说明。
+- 创建或维护 `docs/current.md`、架构文档、roadmap、runbook 或 decisions。
+- 定义稳定命令入口，例如 `pnpm`、`make`、`just`、`task`、`manage.sh`。
+- 多步骤任务结束后的交接。
 
-For trivial edits, compress the protocol, but keep the safety constraints.
+简单任务可以压缩流程，但不能跳过安全约束。
 
-## Operating protocol
+## 操作协议
 
-Default flow:
+默认流程：
 
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
 
-### 1. Inspect: read before changing
+### 1. Inspect：先读再改
 
-Before editing, identify the real state of:
+编辑前识别真实状态：
 
-- repository entry points: README, AGENTS, CLAUDE, workspace config, Makefile, justfile, taskfile, manage script;
-- app/process entry points: `apps`, `src`, `services`, `cmd`, `routes`, `pages`, `workers`, `cli`;
-- shared modules: `packages`, `libs`, `shared`, `core`, `contracts`, `ui`, `config`;
-- documentation: `docs/current.md`, architecture, roadmap, operations, decisions;
-- verification commands: lint, typecheck, test, build, check, dev;
-- infrastructure: Docker, CI, deployment, migrations, environment examples;
-- files explicitly mentioned by the user.
+- 仓库入口：README、AGENTS、CLAUDE、workspace 配置、Makefile、justfile、taskfile、manage 脚本。
+- 应用/进程入口：`apps`、`src`、`services`、`cmd`、`routes`、`pages`、`workers`、`cli`。
+- 共享模块：`packages`、`libs`、`shared`、`core`、`contracts`、`ui`、`config`。
+- 文档：`docs/current.md`、architecture、roadmap、operations、decisions。
+- 验证命令：lint、typecheck、test、build、check、dev。
+- 基础设施：Docker、CI、部署、migration、环境示例。
+- 用户明确提到的文件。
 
-Do not modify files during inspection.
+Inspect 阶段不要修改文件。
 
-### 2. Frame: restate goal and success criteria
+### 2. Frame：复述目标和成功标准
 
-For non-trivial work, briefly state:
+非简单任务先简短说明：
 
 ```text
 Goal: ...
@@ -76,21 +76,21 @@ Success criteria: ...
 Will not do: ...
 ```
 
-Ask only for high-impact ambiguity. For low-risk ambiguity, choose a safe default and continue.
+只询问高影响歧义。低风险歧义使用安全默认值继续。
 
-### 3. Decide: separate risk levels
+### 3. Decide：区分风险
 
-| Risk level | Default handling | Examples |
+| 风险级别 | 默认处理 | 示例 |
 | --- | --- | --- |
-| Low, reversible | choose safe default and continue | wording, local naming, small script fix |
-| Medium, multi-file | preview before applying | new docs layout, command entry, shared package split |
-| High, irreversible or conflicting | ask first | deletion, large migration, destructive DB changes, public API break, auth/permission change |
+| 低风险、可逆 | 使用安全默认值继续 | 文案、小命名、本地脚本修正 |
+| 中风险、多文件 | Preview 后再 Apply | 新文档布局、命令入口、共享包拆分 |
+| 高风险、不可逆或冲突 | 先问用户 | 删除文件、大迁移、破坏性数据库变更、公开 API break、认证/权限变化 |
 
-Do not ask questions merely to look careful. Do not pretend certainty when the change is risky.
+不要为了显得谨慎而提问。风险高时也不要假装确定。
 
-### 4. Preview: describe the intended diff
+### 4. Preview：说明计划 diff
 
-Before substantial changes, say:
+重大改动前说明：
 
 ```text
 Will change: ...
@@ -101,25 +101,25 @@ Verification: ...
 Risk/rollback: ...
 ```
 
-If the user explicitly authorized direct edits, this can be one concise sentence.
+如果用户已明确授权直接编辑，可以压缩成一句话。
 
-### 5. Apply: change the minimum necessary files
+### 5. Apply：只改必要文件
 
-Default constraints:
+默认约束：
 
-- Do not delete unknown files.
-- Do not overwrite user content.
-- Do not move directories at scale without approval.
-- Do not rewrite existing implementation when a small patch solves the task.
-- Do not add dependencies unless necessary and explained.
-- Do not format the whole repository unless the project command requires it.
-- Match existing style rather than imposing the examples from this skill.
+- 不删除未知文件。
+- 不覆盖用户内容。
+- 未获批准不做大规模移动目录。
+- 小补丁能解决时，不重写已有实现。
+- 不新增依赖，除非必要且解释原因。
+- 不格式化整个仓库，除非项目命令要求。
+- 匹配仓库现有风格，而不是强行套用本 skill 示例。
 
-Every changed line should be traceable to the user request or to a verification failure.
+每个 changed line 都应能追溯到用户请求或验证失败。
 
-### 6. Verify: prove or explain
+### 6. Verify：证明或说明
 
-Prefer existing commands. Common order:
+优先使用已有命令。常见顺序：
 
 ```bash
 pnpm lint
@@ -128,7 +128,7 @@ pnpm test
 pnpm build
 ```
 
-or project-specific equivalents:
+或项目已有入口：
 
 ```bash
 make check
@@ -137,31 +137,31 @@ task check
 ./manage.sh check all
 ```
 
-If verification cannot be run, explain exactly why and give the command the user should run. Do not hide failures behind silent fallbacks.
+如果无法验证，准确说明原因，并给出用户可运行的命令。不要用 silent fallback 掩盖失败。
 
-### 7. Handoff: leave a compact status
+### 7. Handoff：紧凑交接
 
-At the end, report:
+结束时报告：
 
-- what changed;
-- what was verified;
-- what failed or was not run;
-- remaining risks;
-- where the next round should start.
+- 改了什么；
+- 验证了什么；
+- 什么失败或未运行；
+- 剩余风险；
+- 下一轮从哪里开始。
 
-### 8. Compact: update context, not history
+### 8. Compact：更新上下文，不复制历史
 
-For long-running projects, update `docs/current.md` only with information that still affects future work. Do not paste chat history. Do not duplicate README, architecture, or roadmap content.
+长线项目只把仍会影响未来工作的判断写入 `docs/current.md`。不要粘贴聊天记录。不要重复 README、architecture 或 roadmap 内容。
 
-## Repository shape guidance
+## 仓库形态指导
 
-Think in monorepo boundaries when useful, but do not force monorepo structure. A monorepo is useful when there are multiple independently runnable apps or processes, shared contracts/config/UI/core logic, or a need for unified validation and AI collaboration rules.
+可以按 monorepo 边界思考，但不要强行做成 monorepo。只有当项目存在多个独立运行单元、共享 contracts/config/UI/core，或需要统一验证与 AI 协作规则时，monorepo 才有明显收益。
 
-Safe default:
+安全默认值：
 
-> Think in monorepo boundaries, but create only directories that are actually needed now.
+> 按 monorepo 边界思考，但只创建当前真正需要的目录。
 
-Reference shape:
+参考形态：
 
 ```text
 <repo>/
@@ -186,13 +186,13 @@ Reference shape:
   docs/
 ```
 
-Respect existing project conventions when they are already coherent.
+如果项目已有一致约定，优先尊重现状。
 
 ### `apps/`
 
-`apps/` contains runnable units, not all code. A directory belongs in `apps/` when it can independently start, build, deploy, or represent a clear user/service/process entry point.
+`apps/` 放运行单元，不是放所有代码。一个目录属于 `apps/`，通常意味着它能独立启动、构建、部署，或代表清晰的用户/服务/进程入口。
 
-Good candidates:
+常见候选：
 
 ```text
 apps/admin-web
@@ -204,13 +204,13 @@ apps/mobile
 apps/cli
 ```
 
-`api` and `worker` can live under `apps/` when they are independent runtime planes.
+当 `api` 和 `worker` 是独立运行平面时，可以放在 `apps/`。
 
-### `packages/` or `libs/`
+### `packages/` 或 `libs/`
 
-Shared reusable code belongs in `packages/` or `libs/`, not inside `apps/`.
+共享可复用代码放在 `packages/` 或 `libs/`，不要放在 `apps/` 内。
 
-Typical shared areas:
+典型共享区域：
 
 ```text
 packages/ui
@@ -219,21 +219,21 @@ packages/config
 packages/core
 ```
 
-Default dependency direction:
+默认依赖方向：
 
 ```text
-apps/*      -> packages/*  allowed
-packages/*  -> apps/*      forbidden
-apps/A      -> apps/B      forbidden by default
+apps/*      -> packages/*  允许
+packages/*  -> apps/*      禁止
+apps/A      -> apps/B      默认禁止
 ```
 
-Cross-app collaboration should happen through HTTP, RPC, queues, events, OpenAPI, JSON Schema, protobuf, or a contracts package, not direct imports between apps.
+跨 app 协作应通过 HTTP、RPC、queue、event、OpenAPI、JSON Schema、protobuf 或 contracts package，而不是 app 之间直接 import。
 
-## Documentation model
+## 文档模型
 
-Docs are not a second system. They exist so the next person or AI can continue accurately.
+文档不是第二套系统。文档的价值是让下一个人或 AI 能准确继续。
 
-Minimum useful docs:
+最小有用文档：
 
 ```text
 docs/
@@ -244,14 +244,14 @@ docs/
     architecture.md
 ```
 
-Only add more when the project needs them:
+只有项目真的需要时才增加：
 
 ```text
 docs/reference/operations.md
 docs/reference/decisions.md
 ```
 
-Later, split into directories only when content becomes large:
+内容变大后再拆目录：
 
 ```text
 docs/runbooks/
@@ -260,62 +260,62 @@ docs/decisions/
 
 ### `docs/current.md`
 
-This is the first project-context file an AI should read after root agent instructions. It should answer:
+这是 AI 在根部协作说明之后优先读取的项目上下文文件。它回答：
 
-- current goal;
-- background and user intent;
-- confirmed direction;
-- boundaries not to change;
-- current status;
-- completion criteria;
-- verification commands;
-- where to continue next.
+- 当前目标；
+- 背景和用户意图；
+- 已确认方向；
+- 不要改动的边界；
+- 当前状态；
+- 完成标准；
+- 验证命令；
+- 下一步从哪里继续。
 
-It is not a full task tracker and not a transcript.
+它不是完整任务追踪器，也不是聊天记录。
 
 ### `docs/reference/`
 
-Write only current reality: architecture, module responsibilities, data flow, config, APIs, protocols, local run flow, deployment reality. Unimplemented content must be marked `Status: Not Implemented` or moved to roadmap/current.
+只写当前事实：架构、模块职责、数据流、配置、API、协议、本地运行流程、部署现实。未实现内容必须标记 `Status: Not Implemented`，或移到 roadmap/current。
 
 ### `docs/roadmap.md`
 
-Write future direction, phase goals, non-goals, and long-term boundaries. Do not write roadmap items as current facts.
+写未来方向、阶段目标、非目标和长期边界。不要把 roadmap 条目写成当前事实。
 
-### Operations and decisions
+### Operations 和 decisions
 
-If a process repeats, document it as operations/runbook. If a decision is likely to be overturned by future AI, document it as a decision.
+重复流程写成 operations/runbook。容易被未来 AI 推翻的决策写成 decision。
 
-## Context loading order
+## 上下文读取顺序
 
-Do not read the whole repository every round. Default order:
+不要每轮读全仓库。默认顺序：
 
 ```text
-1. AGENTS.md or equivalent agent instructions
+1. AGENTS.md 或等价 agent instructions
 2. docs/current.md
 3. docs/reference/architecture.md
-4. files explicitly mentioned by the task
-5. roadmap, operations, decisions only when needed
+4. 用户明确提到的文件
+5. roadmap、operations、decisions 只在需要时读取
 ```
 
-If context is insufficient, name the gap and choose a safe default unless the next change is high risk.
+如果上下文不足，说明缺口；除非下一步是高风险改动，否则使用安全默认值继续。
 
-## Command entry and validation
+## 命令入口和验证
 
-A project needs one stable command entry, but the tool name does not matter.
+项目需要一个稳定命令入口，但工具名不重要。
 
-Priority:
+优先级：
 
-1. Keep existing stable commands such as `pnpm`, `make`, `just`, `task`, `cargo`, `go test`.
-2. If there is no unified entry, add a thin `manage.sh`.
-3. Keep `manage.sh` as routing only; do not hide complex business logic inside it.
+1. 保留已有稳定命令，例如 `pnpm`、`make`、`just`、`task`、`cargo`、`go test`。
+2. 如果没有统一入口，添加薄封装 `manage.sh`。
+3. `manage.sh` 只做路由，不要把复杂业务逻辑藏进去。
 
-README, AGENTS, CI, and AI handoff should point to the same commands.
+README、AGENTS、CI 和 AI 交接应指向同一组命令。
 
-## Optional decision snapshot
+## 可选决策快照
 
-Use `scaffold.plan.yaml` only when structural decisions become complex. It records AI-relevant decisions; it does not replace real project config.
+只有结构决策变复杂时才使用 `scaffold.plan.yaml`。它记录 AI 需要知道的判断，不替代真实项目配置。
 
-Example:
+示例：
 
 ```yaml
 scaffold:
@@ -340,21 +340,21 @@ ai_collaboration:
   verify_after_apply: true
 ```
 
-## Anti-patterns
+## 反模式
 
-Avoid:
+避免：
 
-- creating empty directories to look complete;
-- splitting docs so much that nobody knows what to read;
-- turning one request into dozens of micro-tasks;
-- writing future plans into reference docs;
-- re-litigating confirmed project structure every round;
-- giving each app a different command convention;
-- putting shared libraries in `apps/`;
-- making `packages/` depend on `apps/`;
-- moving, deleting, or overwriting existing files without approval;
-- using silent fallbacks to hide critical-path errors.
+- 为了显得完整而创建空目录；
+- 把文档拆得过细，导致没人知道读哪里；
+- 把一个请求拆成几十个微任务；
+- 把未来计划写进 reference docs；
+- 每轮重新争论已确认的项目结构；
+- 每个 app 使用不同命令约定；
+- 把共享库放进 `apps/`；
+- 让 `packages/` 依赖 `apps/`；
+- 未批准就移动、删除或覆盖已有文件；
+- 用 silent fallback 掩盖关键路径错误。
 
-## Output style
+## 输出风格
 
-Be explicit enough to make the next action safe. For complex work, show a short plan before editing and a compact handoff after. For simple work, keep the response short but still name verification status.
+足够明确，让下一步安全。复杂工作在编辑前给短计划，结束后给紧凑交接。简单工作保持简短，但仍说明验证状态。

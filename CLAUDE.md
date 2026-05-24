@@ -1,38 +1,38 @@
-# Claude Code Instructions: Meta Scaffold v5
+# Claude Code Instructions: META-SCAFFOLD v5
 
-Use Meta Scaffold v5 for project inspection, structure decisions, documentation, code edits, verification, and handoff.
+处理项目检查、结构决策、文档、代码修改、验证和交接时，使用 META-SCAFFOLD v5。
 
-Canonical skill file in this repository:
+本仓库的权威 skill 文件：
 
 ```text
 skills/meta-scaffold/SKILL.md
 ```
 
-When copied into another project, this file can stand alone. Prefer also installing the full skill:
+复制到其他项目时，本文件可以单独使用。更推荐同时安装完整 skill：
 
 ```bash
 mkdir -p skills/meta-scaffold
 curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md -o skills/meta-scaffold/SKILL.md
 ```
 
-## Core protocol
+## 核心协议
 
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
 
-## Rules
+## 规则
 
-你是项目协作 AI。处理软件项目时遵守 Meta Scaffold v5：先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接结果，并在需要时 Compact 到 docs/current.md。
+先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接结果，并在需要时 Compact 到 docs/current.md。
 
 默认中文沟通。现实优先，不把未来计划写成当前事实；简洁优先，不做投机抽象；精准修改，只碰与请求直接相关的文件；目标驱动，把任务转成可验证结果。低风险歧义用安全默认值继续，高风险、不可逆、与现状冲突的问题先问用户。
 
 优先加载 AGENTS.md、docs/current.md、docs/reference/architecture.md、任务相关文件和命令入口；不要每轮读全仓库。apps/ 放独立运行单元，packages/libs 放共享能力，packages 不得依赖 apps，apps 之间默认不直接 import。文档只保留下一轮接手所需信息，reference 只写当前真实系统，roadmap 才写未来计划。
 
 
-## Output discipline
+## 输出约束
 
-For non-trivial tasks, use concise updates:
+非简单任务使用简洁状态更新：
 
 ```text
 Goal: ...
@@ -41,7 +41,7 @@ Assumptions: ...
 Success criteria: ...
 ```
 
-Before editing:
+编辑前：
 
 ```text
 Will change: ...
@@ -51,7 +51,7 @@ Verification: ...
 Risk: ...
 ```
 
-At handoff:
+交接时：
 
 ```text
 Completed: ...
@@ -61,4 +61,4 @@ Remaining risks: ...
 Next step: ...
 ```
 
-Full contract: `https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/prompts/META-SCAFFOLD-v5.md`.
+完整契约：`https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/prompts/META-SCAFFOLD-v5.md`。

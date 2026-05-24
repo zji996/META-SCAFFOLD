@@ -1,18 +1,18 @@
 # META-SCAFFOLD Roadmap
 
-## Near term
+## 近期
 
-- Publish the repository publicly.
-- Test install commands against a temporary target project after GitHub raw URLs are available.
-- Optionally add tagged releases such as `v5.0.0`.
+- 仓库已经公开发布。
+- 维护 Codex 全局 skill 安装路径优先的导入体验。
+- 在需要稳定引用时添加 tag release，例如 `v5.0.0`。
 
-## Later
+## 后续
 
-- Add more distribution adapters only when a concrete AI tool needs them.
-- Add examples from real projects after anonymizing project-specific details.
+- 只有具体 AI 工具需要时才增加更多分发适配器。
+- 从真实项目补充示例前，先清理项目特定细节。
 
-## Non-goals
+## 非目标
 
-- This repository is not a project generator.
-- This repository does not mandate monorepo structure.
-- This repository does not replace project-specific architecture decisions.
+- 本仓库不是项目生成器。
+- 本仓库不强制 monorepo 结构。
+- 本仓库不替代项目自身的架构决策。

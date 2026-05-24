@@ -452,21 +452,21 @@ docs/decisions/
 推荐结构：
 
 ```markdown
-# Current Project Context
+# 当前项目上下文
 
-## Current Goal
+## 当前目标
 当前目标是什么。
 
-## User Intent / Background
+## 用户意图 / 背景
 用户意图、业务背景、关键约束。
 
-## Confirmed Direction
+## 已确认方向
 已经确认的技术方向、结构方向、产品方向。
 
-## Boundaries / Do Not Change
+## 边界 / 不要改什么
 哪些文件、模块、接口、目录、行为不要改。
 
-## Current State
+## 当前状态
 现在做到哪里，哪些已完成，哪些未完成。
 
 ## Acceptance Criteria
@@ -801,10 +801,10 @@ verification:
 结构建议必须区分：
 
 ```text
-Keep: 保持不变，因为它符合现状或成本最低。
-Adjust: 小幅调整，可以提升接手和验证。
-Defer: 以后再做，现在没有必要。
-Avoid: 不建议做，会增加复杂度或破坏现状。
+保持：保持不变，因为它符合现状或成本最低。
+调整：小幅调整，可以提升接手和验证。
+暂缓：以后再做，现在没有必要。
+避免：不建议做，会增加复杂度或破坏现状。
 ```
 
 ### 12.3 最后落地

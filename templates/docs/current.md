@@ -1,45 +1,45 @@
-# Current Project Context
+# 当前项目上下文
 
-> This file is compact handoff context for humans and AI agents. Keep only information that still affects future work.
+> 本文件是给人类和 AI agent 的紧凑交接上下文。只保留仍会影响后续工作的内容。
 
-## Current goal
-
-- TBD
-
-## Background and user intent
+## 当前目标
 
 - TBD
 
-## Confirmed direction
+## 背景和用户意图
 
 - TBD
 
-## Boundaries / do not change
+## 已确认方向
 
 - TBD
 
-## Current state
+## 边界 / 不要改什么
 
 - TBD
 
-## Completion criteria
+## 当前状态
 
 - TBD
 
-## Verification commands
+## 完成标准
+
+- TBD
+
+## 验证命令
 
 ```bash
-# Fill with this project's real commands, for example:
+# 填写本项目的真实命令，例如：
 pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
 ```
 
-## Next starting point
+## 下一步起点
 
 - TBD
 
-## Notes to compact or remove later
+## 后续可压缩或删除的备注
 
 - TBD

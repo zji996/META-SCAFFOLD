@@ -1,14 +1,14 @@
 # meta-scaffold skill
 
-Main entry:
+主入口：
 
 ```text
 skills/meta-scaffold/SKILL.md
 ```
 
-Use this skill when an AI agent needs to reason about repository shape, project governance, AI handoff, documentation layout, monorepo boundaries, context compression, or verification workflows.
+当 AI agent 需要处理仓库形态、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，使用本 skill。
 
-Quick import into another project:
+快速导入到其他项目：
 
 ```bash
 mkdir -p skills/meta-scaffold
@@ -16,9 +16,9 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
   -o skills/meta-scaffold/SKILL.md
 ```
 
-Then reference it from `AGENTS.md` or `CLAUDE.md`.
+然后在 `AGENTS.md` 或 `CLAUDE.md` 中引用它。
 
-Install into Codex global skills:
+安装到 Codex 全局 skills：
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
@@ -26,4 +26,4 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --path skills/meta-scaffold
 ```
 
-Restart Codex after installation.
+安装后重启 Codex。

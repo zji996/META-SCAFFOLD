@@ -32,6 +32,7 @@ required=(
   "templates/docs/roadmap.md"
   "templates/docs/reference/architecture.md"
   "scripts/install-codex-skill.sh"
+  "scripts/smoke-remote.sh"
   "scripts/install.sh"
   "scripts/check.sh"
   ".claude-plugin/plugin.json"
@@ -65,5 +66,13 @@ grep -q 'META-SCAFFOLD' "$tmp/AGENTS.md" || { echo "installer failed AGENTS appe
 codex_home="$tmp/codex-home"
 CODEX_HOME="$codex_home" ./scripts/install-codex-skill.sh >/dev/null
 [[ -f "$codex_home/skills/meta-scaffold/SKILL.md" ]] || { echo "codex skill installer failed" >&2; exit 1; }
+
+bad_dest="$tmp/not-meta-scaffold"
+mkdir -p "$bad_dest/skills/meta-scaffold"
+printf '%s\n' 'not a skill' > "$bad_dest/skills/meta-scaffold/SKILL.md"
+if CODEX_HOME="$bad_dest" META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh >/dev/null 2>&1; then
+  echo "codex skill installer replaced non-meta-scaffold path" >&2
+  exit 1
+fi
 
 echo "META-SCAFFOLD repo check passed."

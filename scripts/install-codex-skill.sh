@@ -12,10 +12,19 @@ if [[ ! -f "$ROOT/skills/meta-scaffold/SKILL.md" ]]; then
   exit 1
 fi
 
+is_meta_scaffold_dest() {
+  [[ -f "$DEST/SKILL.md" ]] && grep -q '^name: meta-scaffold$' "$DEST/SKILL.md"
+}
+
 mkdir -p "$DEST_ROOT"
 
 if [[ -e "$DEST" ]]; then
   if [[ "$FORCE" == "1" ]]; then
+    if ! is_meta_scaffold_dest; then
+      echo "refuse to replace non-meta-scaffold path: $DEST" >&2
+      echo "Remove it manually if this path is intentionally reusable." >&2
+      exit 1
+    fi
     rm -rf "$DEST"
   else
     echo "skip: $DEST already exists" >&2

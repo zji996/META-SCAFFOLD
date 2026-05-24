@@ -29,6 +29,10 @@ This repository packages the META-SCAFFOLD v5 meta prompt as reusable artifacts 
 
 `scripts/install.sh` can run from a local clone or through a raw GitHub URL. It installs selected artifacts into a target project and avoids overwriting existing docs/templates.
 
+`scripts/install-codex-skill.sh` installs the local clone into `${CODEX_HOME:-~/.codex}/skills/meta-scaffold`. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
+
+`scripts/smoke-remote.sh` verifies the public raw installer and the Codex GitHub skill installer from temporary directories.
+
 ## Verification
 
-`./scripts/check.sh` validates required files, skill metadata, plugin JSON, README import path, and local installer behavior.
+`./scripts/check.sh` validates required files, skill metadata, plugin JSON, README import path, local installer behavior, and Codex local installer safety.
