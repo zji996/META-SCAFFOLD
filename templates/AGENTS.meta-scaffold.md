@@ -69,6 +69,26 @@ pnpm build
 - 验证命令；
 - 下一步。
 
+## 长目标进度
+
+如果项目使用 `docs/plan.md` 或其他 active goal 文件推进多轮任务，在文件顶部维护可恢复执行账本：
+
+```markdown
+## Goal Execution Ledger
+
+Last updated: YYYY-MM-DD
+Current focus: <one sentence>
+Next unchecked item: <copy the exact checklist item or write "none">
+Blockers: <none, or concrete blocker>
+
+### Active Checklist
+
+- [ ] Small, verifiable task
+- [x] Completed task with date or short evidence when useful
+```
+
+继续 goal 时先读 ledger，从第一个未勾选项继续；交接前更新 checkbox、`Next unchecked item` 和 blocker。稳定事实和已确认决策仍写入 `docs/current.md`、roadmap 或 reference，不要只留在 ignored plan 文件里。
+
 上游完整 skill：
 
 ```text

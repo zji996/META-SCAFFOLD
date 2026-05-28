@@ -63,6 +63,8 @@ install_agents() {
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
+
+继续 long-running goal 时，如果有 `docs/plan.md` 或 active goal 文件，先读顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
 <!-- META-SCAFFOLD:END -->
 EOF
 )
@@ -83,6 +85,8 @@ install_claude() {
 ```text
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
+
+继续 long-running goal 时，如果有 `docs/plan.md` 或 active goal 文件，先读顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
 <!-- META-SCAFFOLD:END -->
 EOF
 )

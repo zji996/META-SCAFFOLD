@@ -8,3 +8,4 @@
 - Prefer Chinese for the short embedded prompt and local Claude instructions.
 - Prefer Chinese for the main Codex skill body and AI-facing distributions.
 - Add remote smoke verification and safer Codex local skill replacement.
+- Add active goal ledger guidance for `docs/plan.md` style long-running plans.

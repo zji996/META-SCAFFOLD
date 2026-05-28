@@ -486,7 +486,35 @@ docs/decisions/
 - 与 README、architecture、roadmap 保持一致。
 - 不写“也许以后会做”的愿望，除非放到明确的 Next Step 或 roadmap。
 
-### 6.3 `docs/reference/architecture.md`
+### 6.3 `docs/plan.md` 或 Active Goal Ledger
+
+长目标、多轮 goal 推进、快速变化周计划可以使用独立 plan 文件；它可以被 git 忽略。这个文件的职责是保存可恢复进度，不是保存稳定事实。
+
+推荐把执行账本放在文件顶部：
+
+```markdown
+## Goal Execution Ledger
+
+Last updated: YYYY-MM-DD
+Current focus: <one sentence>
+Next unchecked item: <copy the exact checklist item or write "none">
+Blockers: <none, or concrete blocker>
+
+### Active Checklist
+
+- [ ] Small, verifiable task
+- [x] Completed task with date or short evidence when useful
+```
+
+规则：
+
+- 用户要求继续 goal、推进 plan、或从计划接着做时，先读顶部 ledger，从第一个未勾选项继续，除非用户明确指定别的项。
+- checklist item 要足够小，通常一轮 agent 工作能完成或验证一个。
+- 每轮结束、上下文压缩、切换目标或遇到 blocker 前，更新 checkbox、`Next unchecked item` 和 blocker。
+- 稳定事实、接受的决策和运行状态写入 `docs/current.md`、`docs/roadmap.md` 或 `docs/reference/*`；不要只留在可能被忽略的 plan 文件里。
+- 不要在 plan 文件写 secrets、token、`.env` 内容或 runtime 数据。
+
+### 6.4 `docs/reference/architecture.md`
 
 只写当前真实系统。
 
@@ -509,7 +537,7 @@ Status: Not Implemented
 
 或者放到 `docs/roadmap.md` / `docs/current.md` 的未来部分。
 
-### 6.4 `docs/roadmap.md`
+### 6.5 `docs/roadmap.md`
 
 roadmap 写未来方向，不写当前事实。
 
@@ -522,7 +550,7 @@ roadmap 写未来方向，不写当前事实。
 - 长期边界。
 - 暂不做的事项。
 
-### 6.5 operations 与 decisions
+### 6.6 operations 与 decisions
 
 如果某个流程会被重复执行，就记录为 operations / runbook，例如：
 
@@ -564,8 +592,9 @@ AI 不应该每轮读全仓库。
 4. docs/reference/architecture.md
 5. 当前任务显式提到的文件
 6. package/workspace/命令入口文件
-7. 必要时再读 roadmap、operations、decisions
-8. 必要时再搜索相关实现
+7. 用户要求继续 goal、推进 plan 或明确提到时，再读 docs/plan.md / active goal ledger
+8. 必要时再读 roadmap、operations、decisions
+9. 必要时再搜索相关实现
 ```
 
 ### 7.2 上下文预算分级
@@ -933,7 +962,9 @@ AI 必须主动避免：
 
 默认中文沟通。现实优先，不把未来计划写成当前事实；简洁优先，不做投机抽象；精准修改，只碰与请求直接相关的文件；目标驱动，把任务转成可验证结果。低风险歧义用安全默认值继续，高风险、不可逆、与现状冲突的问题先问用户。
 
-优先加载 AGENTS.md、docs/current.md、docs/reference/architecture.md、任务相关文件和命令入口；不要每轮读全仓库。apps/ 放独立运行单元，packages/libs 放共享能力，packages 不得依赖 apps，apps 之间默认不直接 import。文档只保留下一轮接手所需信息，reference 只写当前真实系统，roadmap 才写未来计划。
+优先加载 AGENTS.md、docs/current.md、docs/reference/architecture.md、任务相关文件和命令入口；不要每轮读全仓库。用户要求继续 goal 或推进 plan 时，读取 docs/plan.md 顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、Next unchecked item 和 blocker。
+
+apps/ 放独立运行单元，packages/libs 放共享能力，packages 不得依赖 apps，apps 之间默认不直接 import。文档只保留下一轮接手所需信息，reference 只写当前真实系统，roadmap 才写未来计划；docs/plan.md 只保存快速变化的 active checklist，不保存稳定事实或 secrets。
 ```
 
 ---

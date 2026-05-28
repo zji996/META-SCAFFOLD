@@ -11,6 +11,10 @@ Maintain META-SCAFFOLD v5 as a reusable public skill repository that Codex can i
 - Codex/OpenAI UI metadata entry: `skills/meta-scaffold/agents/openai.yaml`.
 - Full contract source: `prompts/META-SCAFFOLD-v5.md`.
 - Skill body and primary AI-facing distributions are Chinese-first.
+- Long-running goals should use a top-of-file `Goal Execution Ledger` in
+  `docs/plan.md` or another active goal file: Markdown checkboxes, `Next
+  unchecked item`, and blockers. Stable facts still belong in `docs/current.md`,
+  roadmap, or reference docs.
 - Root README must explain convenient import methods.
 - Public GitHub target assumed by install commands: `zji996/META-SCAFFOLD`.
 - Preferred Codex install command uses the preinstalled skill installer:

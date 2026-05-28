@@ -22,6 +22,7 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 6. 使用已有命令验证，或说明为什么无法验证。
 7. 交接时说明变更文件、验证结果、风险和下一轮起点。
 8. 保持 `docs/current.md` 简洁，只记录仍会影响未来工作的内容。
+9. 继续 long-running goal 时，如果有 `docs/plan.md` 或 active goal 文件，先读顶部执行账本，从第一个未勾选项接着做，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
 
 仓库结构规则：
 
@@ -35,6 +36,7 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 
 - 最小有用文档：`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`。
 - `docs/current.md` 是当前协作上下文，不是聊天记录。
+- `docs/plan.md` 可作为快速变化的 active goal ledger；用 Markdown checkbox 保存可恢复进度，不保存稳定事实或 secrets。
 - `docs/reference/` 只写当前事实。
 - 未来计划写入 roadmap/current，不得写成已实现事实。
 

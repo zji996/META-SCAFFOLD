@@ -153,6 +153,8 @@ task check
 
 长线项目只把仍会影响未来工作的判断写入 `docs/current.md`。不要粘贴聊天记录。不要重复 README、architecture 或 roadmap 内容。
 
+如果项目使用 active plan 或 long-running goal 文件，例如 `docs/plan.md`，交接前也要更新顶部执行账本：勾选已完成项，更新 `Next unchecked item` 和 blocker。不要把临时执行流水写进 `docs/current.md`。
+
 ## 仓库形态指导
 
 可以按 monorepo 边界思考，但不要强行做成 monorepo。只有当项目存在多个独立运行单元、共享 contracts/config/UI/core，或需要统一验证与 AI 协作规则时，monorepo 才有明显收益。
@@ -273,6 +275,34 @@ docs/decisions/
 
 它不是完整任务追踪器，也不是聊天记录。
 
+### `docs/plan.md` 或 Active Goal Ledger
+
+长目标、多轮 goal 推进、快速变化周计划可以使用独立 plan 文件；它可以被 git 忽略。这个文件的职责是保存可恢复进度，不是保存稳定事实。
+
+推荐把执行账本放在文件顶部：
+
+```markdown
+## Goal Execution Ledger
+
+Last updated: YYYY-MM-DD
+Current focus: <one sentence>
+Next unchecked item: <copy the exact checklist item or write "none">
+Blockers: <none, or concrete blocker>
+
+### Active Checklist
+
+- [ ] Small, verifiable task
+- [x] Completed task with date or short evidence when useful
+```
+
+规则：
+
+- 用户要求继续 goal、推进 plan、或从计划接着做时，先读顶部 ledger，从第一个未勾选项继续，除非用户明确指定别的项。
+- checklist item 要足够小，通常一轮 agent 工作能完成或验证一个。
+- 每轮结束、上下文压缩、切换目标或遇到 blocker 前，更新 checkbox、`Next unchecked item` 和 blocker。
+- 稳定事实、接受的决策和运行状态写入 `docs/current.md`、`docs/roadmap.md` 或 `docs/reference/*`；不要只留在可能被忽略的 plan 文件里。
+- 不要在 plan 文件写 secrets、token、`.env` 内容或 runtime 数据。
+
 ### `docs/reference/`
 
 只写当前事实：架构、模块职责、数据流、配置、API、协议、本地运行流程、部署现实。未实现内容必须标记 `Status: Not Implemented`，或移到 roadmap/current。
@@ -294,7 +324,8 @@ docs/decisions/
 2. docs/current.md
 3. docs/reference/architecture.md
 4. 用户明确提到的文件
-5. roadmap、operations、decisions 只在需要时读取
+5. `docs/plan.md` 只在用户要求继续 goal、推进 plan 或该文件被明确提到时读取
+6. roadmap、operations、decisions 只在需要时读取
 ```
 
 如果上下文不足，说明缺口；除非下一步是高风险改动，否则使用安全默认值继续。
