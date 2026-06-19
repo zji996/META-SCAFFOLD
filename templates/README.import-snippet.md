@@ -1,6 +1,6 @@
 ## AI collaboration
 
-This project follows Meta Scaffold v5.
+This project follows Meta Scaffold v6.
 
 Install the skill:
 

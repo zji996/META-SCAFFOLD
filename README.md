@@ -3,7 +3,9 @@
 > 一个可复用的 AI 项目协作元提示词 / Skill。  
 > 目标：让 coding agent 先理解真实仓库，再做最小必要改动，并用验证和交接闭环结束任务。
 
-META-SCAFFOLD v5 不是目录模板，也不是某个框架模板。它是一份**元提示词 / 协作契约**，适合发布成 public 仓库，然后被其他项目通过 raw URL、Git submodule、Git subtree、`skills/` 目录、`AGENTS.md`、`CLAUDE.md` 或 Cursor rules 引用。
+META-SCAFFOLD v6 不是目录模板，也不是某个框架模板。它是一份**元提示词 / 协作契约**，适合发布成 public 仓库，然后被其他项目通过 raw URL、Git submodule、Git subtree、`skills/` 目录、`AGENTS.md`、`CLAUDE.md` 或 Cursor rules 引用。
+
+v6 的核心：工具使用纪律、条件化子 Agent 编排、Spec/Plan 驱动开发、权限硬门禁，以及把完整契约压缩到约 410 行（合并重复、删除模型已知常识）。`prompts/META-SCAFFOLD-v6.md` 是唯一事实源。
 
 核心协议：
 
@@ -182,8 +184,8 @@ Read `vendor/META-SCAFFOLD/skills/meta-scaffold/SKILL.md` before structural, doc
 | --- | --- |
 | [`skills/meta-scaffold/SKILL.md`](./skills/meta-scaffold/SKILL.md) | 推荐入口。给支持 skills 的 agent 使用。 |
 | [`skills/meta-scaffold/agents/openai.yaml`](./skills/meta-scaffold/agents/openai.yaml) | Codex/OpenAI skill UI 元数据。 |
-| [`prompts/META-SCAFFOLD-v5.md`](./prompts/META-SCAFFOLD-v5.md) | 完整 v5 契约。适合人工审阅或复制进团队规范。 |
-| [`prompts/META-SCAFFOLD-v5.short.md`](./prompts/META-SCAFFOLD-v5.short.md) | 最短可嵌入版。适合放到系统提示词或 AGENTS 顶部。 |
+| [`prompts/META-SCAFFOLD-v6.md`](./prompts/META-SCAFFOLD-v6.md) | 完整 v6 契约（唯一事实源）。适合人工审阅或复制进团队规范。 |
+| [`prompts/META-SCAFFOLD-v6.short.md`](./prompts/META-SCAFFOLD-v6.short.md) | 最短可嵌入版。适合放到系统提示词或 AGENTS 顶部。 |
 | [`dist/AGENTS.md`](./dist/AGENTS.md) | 单文件 AGENTS 分发版本。 |
 | [`dist/CLAUDE.md`](./dist/CLAUDE.md) | 单文件 CLAUDE 分发版本。 |
 | [`dist/CURSOR.mdc`](./dist/CURSOR.mdc) | 单文件 Cursor rule 分发版本。 |
@@ -251,7 +253,7 @@ bash scripts/check.sh
 
 ## 版本
 
-当前版本：`v5.0.0` / `Stable Draft`
+当前版本：`v6.0.0` / `Stable Draft`
 
 ## License
 

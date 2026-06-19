@@ -1,13 +1,11 @@
 ---
-description: META-SCAFFOLD 项目治理规则。用于仓库结构、文档、monorepo 边界、AI 交接上下文、验证命令、AGENTS/CLAUDE/Cursor 规则或项目脚手架决策。
+description: META-SCAFFOLD v6 项目治理规则。用于仓库结构、文档、monorepo 边界、AI 交接上下文、验证命令、工具使用纪律、子 agent 编排、AGENTS/CLAUDE/Cursor 规则或项目脚手架决策。
 alwaysApply: true
 ---
 
-# META-SCAFFOLD
+# META-SCAFFOLD v6
 
-把本规则作为 AI coding agent 的项目治理契约。
-
-默认中文协作和编写项目交接文档，除非用户另有要求，或仓库已经明确使用其他语言。
+把本规则作为 AI coding agent 的项目治理契约。默认中文协作和编写项目交接文档，除非用户另有要求或仓库已明确使用其他语言。
 
 核心协议：
 
@@ -15,7 +13,7 @@ alwaysApply: true
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
 
-当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程：
+执行协议：
 
 1. 修改文件前先检查真实仓库。
 2. 非简单任务先说明目标、假设、成功标准和非目标。
@@ -25,7 +23,21 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 6. 使用已有命令验证，或说明为什么无法验证。
 7. 交接时说明变更文件、验证结果、风险和下一轮起点。
 8. 保持 `docs/current.md` 简洁，只记录仍会影响未来工作的内容。
-9. 继续 long-running goal 时，如果有 `docs/plan.md` 或 active goal 文件，先读顶部执行账本，从第一个未勾选项接着做，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
+9. 继续 long-running goal 时，先读 `docs/plan.md` 顶部执行账本，从第一个未勾选项接着做，交接前更新 checkbox、`Next unchecked item` 和 blocker。
+
+工具使用纪律：
+
+- 多个相互独立的读取/搜索一次性并行发起，不串行浪费。
+- 编辑前先读文件；对未读文件不做大范围 `replaceAll`。
+- 用专用工具而非 shell 做文件操作（Read 而非 `cat`，Edit 而非 `sed`）。
+- 开发服务器、watcher、长进程用进程管理工具，不用 `&`/`nohup`。
+- 危险或不可逆命令默认不执行，除非用户明确授权。
+
+子 Agent 编排（条件化，不强求）：
+
+- 仅当任务可拆成独立、无顺序依赖、无共享写、自包含且够重的子任务时，才并行分发。
+- 有顺序依赖、写同一文件、线性小任务时不分发。
+- 模型/平台不擅长并行则回退串行；不把"用 subagent"写成硬性要求。
 
 仓库结构规则：
 
@@ -40,13 +52,21 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 - 最小有用文档：`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`。
 - `docs/current.md` 是当前协作上下文，不是聊天记录。
 - `docs/plan.md` 可作为快速变化的 active goal ledger；用 Markdown checkbox 保存可恢复进度，不保存稳定事实或 secrets。
-- `docs/reference/` 只写当前事实。
+- `docs/reference/` 只写当前事实，未实现内容标 `Status: Not Implemented`。
 - 未来计划写入 roadmap/current，不得写成已实现事实。
 
-验证规则：
+验证规则（硬门禁）：
 
 - 优先使用已有命令，例如 `pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build`、`make check`、`just check`、`task check` 或 `./manage.sh check all`。
 - README、AGENTS、CI 和 AI 交接应指向同一组命令。
-- 不要用 silent fallback 掩盖失败。
+- 命令不存在不假装运行过；验证失败不静默换命令；不用 silent fallback 掩盖关键路径错误；失败如实报告。
 
-避免为了显得完整而创建空目录、过度拆分文档、把未来计划写成当前事实、顺手重构、删除未知文件、把共享代码放进 `apps/`，以及让 packages 反向依赖 apps。
+硬门禁（不做，除非用户明确授权）：
+
+- 未批准移动、删除或覆盖已有文件。
+- 顺手重构或格式化无关文件；未说明原因新增依赖；为不可能场景堆防御代码。
+- 删除预先存在的 dead code（可指出不擅自清理）。
+- 改变公开 API、DB schema、认证权限、部署流程。
+- 把 secret、token、真实密钥写进文档或示例。
+- 为了显得完整创建空目录；把共享库放进 `apps/`；让共享包依赖 apps。
+- 把 AI 推测写成项目事实；用 silent fallback 掩盖失败。

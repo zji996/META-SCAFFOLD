@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.0.0
+
+- Add disciplined tool-use rules: parallel independent reads/searches, read-before-edit, dedicated tools over shell, process-managed long-running tasks.
+- Add conditional sub-agent orchestration (parallel dispatch only when tasks are independent, no-shared-write, self-contained, and heavy enough); never mandatory, fall back to serial when the model/platform is not suited.
+- Add spec/plan-driven development: turn tasks into verifiable states; minimal spec before non-trivial work.
+- Add explicit permission and hard-gate layer (read-only / reversible edit / irreversible-destructive) consolidating the previously scattered "avoid" lists.
+- Strengthen verification into a hard gate: never fake a run, never silently swap commands, never silent-fallback over critical-path failures.
+- Add optional Kilo platform adaptation appendix (agent_manager / task / background_process / suggest / question).
+- High-signal rewrite: merge duplicated sections (stance / behavior / safety / anti-patterns / self-check into one), remove model-known common sense. Full contract 983 -> ~410 lines.
+- Establish `prompts/META-SCAFFOLD-v6.md` as the single source of truth; remove v5 prompt files (no backward compatibility — downstream imports must migrate to v6).
+
 ## 5.0.0
 
 - Package META-SCAFFOLD v5 as a reusable skill.

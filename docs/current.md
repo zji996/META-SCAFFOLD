@@ -2,15 +2,18 @@
 
 ## Current goal
 
-Maintain META-SCAFFOLD v5 as a reusable public skill repository that Codex can install first as a global skill, with per-project imports as secondary options.
+Maintain META-SCAFFOLD v6 as a reusable public skill repository. v6 adds disciplined tool use, conditional sub-agent orchestration, spec/plan-driven development, and explicit permission hard-gates, while compressing the full contract from 983 to ~410 lines by removing duplicates and model-known common sense.
 
 ## Confirmed direction
 
 - Repository name: `META-SCAFFOLD`.
 - Main reusable entry: `skills/meta-scaffold/SKILL.md`.
 - Codex/OpenAI UI metadata entry: `skills/meta-scaffold/agents/openai.yaml`.
-- Full contract source: `prompts/META-SCAFFOLD-v5.md`.
+- Single source of truth (full contract): `prompts/META-SCAFFOLD-v6.md`.
+- Shortest embeddable version: `prompts/META-SCAFFOLD-v6.short.md`.
+- No v5 backward compatibility: v5 prompt files were removed; downstream imports must migrate to v6.
 - Skill body and primary AI-facing distributions are Chinese-first.
+- All distributions (SKILL / AGENTS / CLAUDE / CURSOR / templates / plugin / cursor rule) derive from the v6 contract; do not maintain long-form copies separately.
 - Long-running goals should use a top-of-file `Goal Execution Ledger` in
   `docs/plan.md` or another active goal file: Markdown checkboxes, `Next
   unchecked item`, and blockers. Stable facts still belong in `docs/current.md`,
@@ -28,6 +31,7 @@ Maintain META-SCAFFOLD v5 as a reusable public skill repository that Codex can i
 - Do not add package managers or build tools unless needed.
 - Do not make templates look like mandatory architecture.
 - Keep installation safe: append or create, avoid overwriting existing project files.
+- Sub-agent orchestration is conditional, never mandatory; never write "must use subagent".
 
 ## Verification
 

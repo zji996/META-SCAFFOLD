@@ -3,7 +3,9 @@
 > A reusable AI project-collaboration meta-prompt / skill.  
 > Goal: make coding agents inspect the real repository first, apply the smallest necessary change, verify outcomes, and hand off cleanly.
 
-META-SCAFFOLD v5 is not a directory template or framework template. It is a reusable project-governance skill that can be installed through raw URLs, Git submodule, Git subtree, `skills/`, `AGENTS.md`, `CLAUDE.md`, or Cursor rules.
+META-SCAFFOLD v6 is not a directory template or framework template. It is a reusable project-governance skill that can be installed through raw URLs, Git submodule, Git subtree, `skills/`, `AGENTS.md`, `CLAUDE.md`, or Cursor rules.
+
+The core of v6: disciplined tool use, conditional sub-agent orchestration, spec/plan-driven development, permission hard-gates, and a full contract compressed to ~410 lines by removing duplicates and model-known common sense. `prompts/META-SCAFFOLD-v6.md` is the single source of truth.
 
 Core protocol:
 
@@ -103,8 +105,8 @@ git subtree add --prefix=vendor/META-SCAFFOLD https://github.com/zji996/META-SCA
 | --- | --- |
 | `skills/meta-scaffold/SKILL.md` | Main reusable skill. |
 | `skills/meta-scaffold/agents/openai.yaml` | Codex/OpenAI skill UI metadata. |
-| `prompts/META-SCAFFOLD-v5.md` | Full v5 contract. |
-| `prompts/META-SCAFFOLD-v5.short.md` | Short embeddable prompt. |
+| `prompts/META-SCAFFOLD-v6.md` | Full v6 contract (single source of truth). |
+| `prompts/META-SCAFFOLD-v6.short.md` | Short embeddable prompt. |
 | `dist/AGENTS.md` | Single-file AGENTS distribution. |
 | `dist/CLAUDE.md` | Single-file CLAUDE distribution. |
 | `dist/CURSOR.mdc` | Single-file Cursor rule distribution. |

@@ -1,5 +1,5 @@
 scaffold:
-  contract_version: 5
+  contract_version: 6
   mode: existing
   execution_mode: preview_then_apply
 

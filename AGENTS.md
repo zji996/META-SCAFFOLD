@@ -14,7 +14,8 @@
 ## 维护规则
 
 - 保持 `skills/meta-scaffold/SKILL.md` 作为主要可复用 skill。
-- 保持 `prompts/META-SCAFFOLD-v5.md` 作为完整契约源。
+- 保持 `prompts/META-SCAFFOLD-v6.md` 作为唯一完整契约源（single source of truth）。
+- 所有分发件（SKILL / dist / templates / plugin / cursor rule）从 v6 契约派生，不各自长篇维护。
 - 保持 `dist/AGENTS.md`、`dist/CLAUDE.md`、`.cursor/rules/meta-scaffold.mdc` 和 `dist/CURSOR.mdc` 与 skill 对齐。
 - 除非必要，不要添加重型构建工具。
 - 不要覆盖 examples/templates，除非保留向后兼容的导入路径。

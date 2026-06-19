@@ -2,13 +2,14 @@
 
 ## Purpose
 
-This repository packages the META-SCAFFOLD v5 meta prompt as reusable artifacts for AI coding agents.
+This repository packages the META-SCAFFOLD v6 meta prompt as reusable artifacts for AI coding agents.
 
 ## Source of truth
 
 - `skills/meta-scaffold/SKILL.md`: primary reusable skill.
 - `skills/meta-scaffold/agents/openai.yaml`: Codex/OpenAI skill UI metadata.
-- `prompts/META-SCAFFOLD-v5.md`: full v5 contract.
+- `prompts/META-SCAFFOLD-v6.md`: full v6 contract (single source of truth).
+- `prompts/META-SCAFFOLD-v6.short.md`: shortest embeddable version.
 
 ## Distribution files
 
