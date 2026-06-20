@@ -215,9 +215,9 @@ docs/
 
 AI 在根部协作说明后优先读的上下文文件，回答：当前目标、用户意图/背景、已确认方向、不要改的边界、当前状态、完成标准、验证命令、下一步。不是任务追踪器，不是聊天记录。
 
-### 6.3 `docs/plan.md`（Active Goal Ledger，可选，可 gitignore）
+### 6.3 Active Goal Ledger（`.local/plan/plan.md`，可选）
 
-长目标、多轮 goal、快速变化周计划用独立 plan 文件，职责是保存**可恢复进度**，不是稳定事实。顶部放执行账本：
+长目标、多轮 goal、快速变化周计划用独立 plan 文件，职责是保存**可恢复进度**，不是稳定事实。默认路径 `.local/plan/plan.md`（与运行时产物同归 `.local/`，整体 gitignore，见 6.5）；也可用 `docs/plan.md` 单独 ignore。顶部放执行账本：
 
 ```markdown
 ## Goal Execution Ledger
@@ -239,6 +239,10 @@ Blockers: <none，或具体阻塞>
 
 重复流程（部署/回滚/发布/排障/迁移/事故）记为 runbook；易被后续 AI 推翻的选择（为何 monorepo、为何 `api` 放 `apps/`、为何暂不用某框架）记为 decision。小项目先用单文件，内容多再拆目录。
 
+### 6.5 `.local/` 仓库本地产物区（可选，推荐）
+
+运行时产物（多服务后台进程 pid/日志、构建二进制、缓存）与本地活跃文档（如 6.3 的 plan ledger）统一收进 `.local/`，整体一行 `.gitignore`，而非逐文件加忽略、或散落 `/tmp`（易被系统清理、跨机器路径不一致）。`docs/` 只放稳定可入库文档，本地临时产物有统一去处。按用途分子目录（如 `.local/dev/` 运行时、`.local/plan/` 活跃计划）。
+
 ---
 
 ## 7. 上下文加载策略
@@ -252,7 +256,7 @@ Blockers: <none，或具体阻塞>
 4. docs/reference/architecture.md
 5. 任务显式提到的文件
 6. 命令入口/配置
-7. 用户要求继续 goal/推进 plan 或明确提到时，才读 docs/plan.md
+7. 用户要求继续 goal/推进 plan 或明确提到时，才读 `.local/plan/plan.md`
 8. 必要时再读 roadmap/operations/decisions 或搜索实现
 ```
 
@@ -272,6 +276,8 @@ Blockers: <none，或具体阻塞>
 ## 8. 命令入口与验证
 
 项目需稳定命令入口，但名字不重要。优先级：沿用已有入口（`pnpm`/`make`/`just`/`task`/`cargo`/`go test`/`pytest`）→ 没有则补薄 `manage.sh`/`justfile` → `manage.sh` 只路由不藏业务逻辑。README、AGENTS、CI、AI 交接指向同一套命令。
+
+**多服务本地编排**：后端微服务/多语言栈需本地并起时，避免裸 `go run <svc> &` / `nohup`（留孤儿进程、pid 不可控）。在 `manage.sh` 封装 `<group> up|down|logs` 子命令：`up` = 并行 build 二进制 + 后台起（pidfile 落 `.local/`，自动注入各服务 env 端口）；`down` = 按 pidfile 干净停；`logs` = tail 不停服务。`up/down` 符合操作动词直觉；改代码后 `down && up` 重编重启，或 `up --no-build` 复用二进制秒起。
 
 ### Fallback 硬门禁
 
@@ -298,7 +304,7 @@ Blockers: <none，或具体阻塞>
 验证：用什么命令证明完成。
 ```
 
-spec 可以就是 `docs/plan.md` 的一个 goal 条目 + checklist，不必独立重型文件。目标是让"完成"可判定，而不是制造文档。
+spec 可以就是 active plan ledger（见 6.3）的一个 goal 条目 + checklist，不必独立重型文件。目标是让"完成"可判定，而不是制造文档。
 
 ### 9.2 任务拆分
 

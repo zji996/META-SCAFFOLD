@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.2.0
+
+- Add `.local/` repo-local artifacts zone recommendation: runtime artifacts (multi-service background pids/logs, build binaries, cache) and local working docs (e.g. active goal ledger) are unified under `.local/`, ignored wholesale via one line, instead of per-file ignoring or scattering to `/tmp`. `docs/` holds only stable committable docs; local transient artifacts get a single home. Subdirectories by purpose (`.local/dev/`, `.local/plan/`).
+- Move the default active goal ledger path from `docs/plan.md` to `.local/plan/plan.md` (with `docs/plan.md` still allowed as a fallback); update prompts (single source), SKILL, dist (AGENTS/CLAUDE/CURSOR), templates, and cursor rule to stay consistent.
+- Add ADR (`docs/decision/`) to the doc-system guidance: record direction-level decisions that later AI might overturn as numbered records; new decisions supersede old ones rather than editing old files; `docs/current.md` points to active decisions.
+- Add multi-service local orchestration guidance to the command-entry section: avoid bare `go run <svc> &` / `nohup`; encapsulate `<group> up|down|logs` subcommands in `manage.sh` (build binaries + pidfile under `.local/` + background spawn); `up/down` matches operational verb intuition.
+- Bump plugin.json version (was stale at 6.0.0) and README version line to 6.2.0.
+
 ## 6.1.0
 
 - Add Goal pre-authorization: irreversible operations within a confirmed plan's goal tasks (schema/migration, auth, contract changes) are pre-authorized on plan approval, executed directly without per-step confirmation; still ask when beyond task scope, conflicting with decision records, or irreversible (force push, deleting production data).

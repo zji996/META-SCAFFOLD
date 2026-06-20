@@ -20,7 +20,7 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 4. `docs/reference/architecture.md`。
 5. 任务明确提到的文件。
 6. package、workspace、命令入口文件。
-7. 用户要求继续 goal、推进 plan 或明确提到时，才读 `docs/plan.md`。
+7. 用户要求继续 goal、推进 plan 或明确提到时，才读 `.local/plan/plan.md`（或项目约定的 active goal 文件）。
 8. roadmap、operations、decisions 或更广泛搜索，只在需要时读取。
 
 ## 工具使用纪律
@@ -74,7 +74,7 @@ pnpm build
 
 ## 长目标进度
 
-如果项目使用 `docs/plan.md` 或其他 active goal 文件推进多轮任务，在文件顶部维护可恢复执行账本：
+如果项目使用 `.local/plan/plan.md`（推荐，与本地产物同归 `.local/`，整体 gitignore）或 `docs/plan.md` 等 active goal 文件推进多轮任务，在文件顶部维护可恢复执行账本：
 
 ```markdown
 ## Goal Execution Ledger

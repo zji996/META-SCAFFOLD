@@ -1,8 +1,8 @@
 ---
 name: meta-scaffold
-description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md 与 docs/plan.md 的 Goal Execution Ledger；定义验证命令；规范工具使用与子 agent 编排；压缩未来 AI 工作上下文。
+description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md、docs/decision（ADR）与 .local/plan 的 Goal Execution Ledger；定义验证命令；规范工具使用与子 agent 编排；压缩未来 AI 工作上下文。
 license: MIT
-version: 6.1.0
+version: 6.2.0
 ---
 
 # META-SCAFFOLD
@@ -70,17 +70,21 @@ apps/A      -> apps/B      默认禁止
 最小结构：`README.md`、`AGENTS.md`、`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`。复杂后再加 operations/decisions，再复杂才拆目录。不为完整创建空目录。
 
 - **`docs/current.md`**：AI 在根部说明后优先读的上下文压缩（当前目标、背景、已确认方向、边界、状态、验收、验证命令、下一步）。不是聊天记录。
-- **`docs/plan.md`**（可选，可 gitignore）：长目标/多轮 goal 的 active ledger，保存可恢复进度。顶部放 Goal Execution Ledger（Last updated / Current focus / Next unchecked item / Blockers / Active Checklist）。用户要求继续 goal 时从第一个未勾选项接着做，交接前更新 checkbox。把会触发硬门禁的不可逆操作（建表/迁移、认证、契约）作为 task 写进 goal，配合「Goal 预授权」避免重复阻塞。
+- **`docs/decision/`**（ADR，可选）：易被后续 AI 推翻的方向性决策（为何 monorepo、为何货运化、定价/抽成策略）记为编号决策记录；决策一旦确认即作为开发依据，新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。
+- **`.local/plan/plan.md`**（可选，活跃 goal ledger）：长目标/多轮 goal 的可恢复进度。顶部放 Goal Execution Ledger（Last updated / Current focus / Next unchecked item / Blockers / Active Checklist）。用户要求继续 goal 时从第一个未勾选项接着做，交接前更新 checkbox。把会触发硬门禁的不可逆操作（建表/迁移、认证、契约）作为 task 写进 goal，配合「Goal 预授权」避免重复阻塞。
+- **`.local/` 仓库本地产物区（推荐）**：运行时产物（多服务后台进程 pid/日志/构建二进制/缓存）+ 活跃 plan 统一收进 `.local/`，整体 `.gitignore`，一处忽略而非逐文件加。比把活跃 plan 放 `docs/plan.md` 单独 ignore 更一致——`docs/` 只放稳定可入库文档，本地临时产物有统一去处；比散落 `/tmp` 更可靠（不被系统清理、跨机器路径一致）。子目录按用途分：`.local/dev/`（运行时）、`.local/plan/`（活跃计划）。
 - **`docs/reference/`**：只写当前真实系统，未实现内容标 `Status: Not Implemented`。
 - **`docs/roadmap.md`**：未来方向、阶段目标、非目标。
 
 ## 上下文加载
 
-默认顺序：用户请求 → AGENTS/CLAUDE → docs/current.md → architecture → 任务文件 → 命令入口 →（要求继续 goal 时）plan.md → 必要时 roadmap/operations/decisions/搜索。预算分级 T0（问答）→ T1（小改）→ T2（多文件/结构）→ T3（重构/迁移）。文档与代码冲突时以可运行代码为准。
+默认顺序：用户请求 → AGENTS/CLAUDE → docs/current.md → architecture → 任务文件 → 命令入口 →（要求继续 goal 时）.local/plan/plan.md → 必要时 roadmap/operations/decisions/搜索。预算分级 T0（问答）→ T1（小改）→ T2（多文件/结构）→ T3（重构/迁移）。文档与代码冲突时以可运行代码为准。
 
 ## 命令入口与验证
 
 沿用已有入口（`pnpm`/`make`/`just`/`task`/`cargo`/`go test`/`pytest`）；没有则补薄 `manage.sh`/`justfile`。README、AGENTS、CI、AI 交接指向同一套命令。
+
+**多服务本地编排**：后端多服务（微服务/多语言栈）需本地并起时，避免裸 `go run <svc> &` / `nohup`（留孤儿进程、pid 不可控）。在 `manage.sh` 封装 `<group> up|down|logs` 子命令：`up` = 并行 build 二进制 + 后台起（写 pidfile 到 `.local/`，自动注入各服务 env 端口）；`down` = 按 pidfile 干净停；`logs` = tail 不停服务。`up/down` 符合操作动词直觉；pidfile 落 `.local/`（见文档系统）。改代码后 `down && up` 重编重启，或 `up --no-build` 秒起复用二进制。
 
 **Fallback 硬门禁**：能运行就运行，不能就说明原因；命令不存在不假装运行过；失败不静默换命令；不用 silent fallback 掩盖关键路径错误；失败如实报告跑了什么、失败在哪、是否本轮引起、已修什么、剩余风险。
 
