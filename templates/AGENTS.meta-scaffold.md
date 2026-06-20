@@ -92,6 +92,8 @@ Blockers: <none, or concrete blocker>
 
 继续 goal 时先读 ledger，从第一个未勾选项继续；交接前更新 checkbox、`Next unchecked item` 和 blocker。稳定事实和已确认决策仍写入 `docs/current.md`、roadmap 或 reference，不要只留在 ignored plan 文件里。
 
+Goal 预授权：把会触发硬门禁的不可逆操作（建表/迁移、认证、契约改动）作为 task 显式写进 goal。用户确认 plan 即对该 goal task 范围预授权，推进时直接执行 + 勾选 ledger，不再逐个问——只有超出 task 范围、与决策记录冲突或不可回滚操作（force push、删生产数据）才停下问。goal 内的 schema/设计 proposal 是设计产物，与决策一致即自动放行执行，不二次确认。
+
 上游完整 skill：
 
 ```text

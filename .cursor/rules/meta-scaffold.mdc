@@ -63,6 +63,7 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 
 硬门禁（不做，除非用户明确授权）：
 
+- 已批准 plan 的 goal task 范围内操作（建表/migration、认证、契约）视为预授权，推进时直接执行不逐个问；超出范围、与决策冲突或不可回滚操作（force push、删生产数据）仍需先问。
 - 未批准移动、删除或覆盖已有文件。
 - 顺手重构或格式化无关文件；未说明原因新增依赖；为不可能场景堆防御代码。
 - 删除预先存在的 dead code（可指出不擅自清理）。

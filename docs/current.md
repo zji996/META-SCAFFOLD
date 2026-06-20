@@ -2,7 +2,7 @@
 
 ## Current goal
 
-Maintain META-SCAFFOLD v6 as a reusable public skill repository. v6 adds disciplined tool use, conditional sub-agent orchestration, spec/plan-driven development, and explicit permission hard-gates, while compressing the full contract from 983 to ~410 lines by removing duplicates and model-known common sense.
+Maintain META-SCAFFOLD v6 as a reusable public skill repository. v6 adds disciplined tool use, conditional sub-agent orchestration, spec/plan-driven development, and explicit permission hard-gates, while compressing the full contract from 983 to ~410 lines by removing duplicates and model-known common sense. v6.1 adds Goal pre-authorization so confirmed plans no longer re-block on every irreversible goal task.
 
 ## Confirmed direction
 

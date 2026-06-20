@@ -33,3 +33,5 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 修改后尽量运行已有验证命令。如果无法验证，说明原因并给出准确命令。验证是硬门禁：失败不静默换命令，不假装运行过。
 
 如果项目使用 `docs/plan.md` 或其他 active goal 文件推进多轮任务，文件顶部应有 `Goal Execution Ledger` 和 Markdown checkbox。继续 goal 时从第一个未勾选项接着做，交接前更新 checkbox、`Next unchecked item` 和 blocker；稳定事实仍写入 `docs/current.md`、roadmap 或 reference。
+
+Goal 预授权：把会触发硬门禁的不可逆操作（建表/迁移、认证、契约改动）作为 task 写进 goal。用户确认 plan 即对该 goal task 范围预授权，推进时直接执行不逐个问；只有超出 task 范围、与决策冲突或不可回滚操作（force push、删生产数据）才停下问。goal 内的 schema/设计 proposal 与决策一致即自动放行执行，不二次确认。
