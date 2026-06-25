@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.3.0
+
+- Reclassify `git commit` from "irreversible operation" to "reversible edit": code changes + commit are the agent's job, run verification gate then commit, don't ask per-step — commit is a checkpoint for review, not a final decision; `git revert`/`git reset` is the safety net. This removes the friction where the agent stops to ask "commit?" after every round (user says yes ~90% of the time) without gaining safety, since commit is fully reversible.
+- Add "directional docs write-in" gate: writing ADR / decision records / roadmap direction changes requires user confirmation before commit, because wrong directions mislead future AI and humans (impact larger than a code change). `docs/current.md` objective status updates are exempt (factual record, not direction).
+- Update prompts (single source v6.md §2.3/§10/§13), short prompt, SKILL, dist (AGENTS/CLAUDE/CURSOR), templates (AGENTS/CLAUDE), plugin.json, README version line to stay consistent.
+
 ## 6.2.0
 
 - Add `.local/` repo-local artifacts zone recommendation: runtime artifacts (multi-service background pids/logs, build binaries, cache) and local working docs (e.g. active goal ledger) are unified under `.local/`, ignored wholesale via one line, instead of per-file ignoring or scattering to `/tmp`. `docs/` holds only stable committable docs; local transient artifacts get a single home. Subdirectories by purpose (`.local/dev/`, `.local/plan/`).

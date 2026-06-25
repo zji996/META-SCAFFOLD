@@ -63,6 +63,8 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 
 硬门禁（不做，除非用户明确授权）：
 
+- 代码 commit 是可逆操作（git 兜底），跑完验证门禁即提交，不逐个问——commit 是 checkpoint 便于 review，不是定案。`docs/current.md` 客观状态更新同理。
+- 方向性 docs 写入（新建 ADR、改写决策记录、roadmap 方向变更）需用户确认后再提交。
 - 已批准 plan 的 goal task 范围内操作（建表/migration、认证、契约）视为预授权，推进时直接执行不逐个问；超出范围、与决策冲突或不可回滚操作（force push、删生产数据）仍需先问。
 - 未批准移动、删除或覆盖已有文件。
 - 顺手重构或格式化无关文件；未说明原因新增依赖；为不可能场景堆防御代码。

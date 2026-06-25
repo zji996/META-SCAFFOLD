@@ -56,11 +56,11 @@ Inspect → Frame → Decide → Preview → Apply → Verify → Handoff → Co
 
 | 风险 | 处理 | 例子 |
 | --- | --- | --- |
-| 低、可逆 | 安全默认值继续 | 文案、命名、小脚本 |
+| 低、可逆 | 安全默认值继续 | 文案、命名、小脚本、代码改动 + commit |
 | 中、多文件 | Preview 后 Apply | 新文档布局、命令入口、拆包 |
-| 高、不可逆或冲突 | **先问用户** | 删文件、大迁移、DB 破坏性变更、公开 API break、认证权限 |
+| 高、不可逆或方向性 | **先问用户** | 删文件、大迁移、DB 破坏性变更、公开 API break、认证权限、方向性 docs 写入 |
 
-不为显得谨慎而问；高风险也不假装确定。
+代码改动与 commit 属于可逆操作（git 兜底），跑完验证门禁即提交，不逐个问。docs 方向性写入（ADR、决策记录、roadmap 方向变更）影响后续 AI 与人，需用户确认；`docs/current.md` 的客观状态更新不在此列。不为显得谨慎而问；高风险也不假装确定。
 
 ### 2.4 Preview：说明计划 diff
 
@@ -329,8 +329,10 @@ spec 可以就是 active plan ledger（见 6.3）的一个 goal 条目 + checkli
 | 级别 | 允许 | 何时问用户 |
 | --- | --- | --- |
 | 只读 | Inspect、搜索、读文件 | 无需 |
-| 可逆编辑 | 文档措辞、新文件、局部代码修正 | 中风险先 Preview |
-| 不可逆/破坏性 | 删除、覆盖、大迁移、目录搬家、DB schema、公开 API、认证权限、部署流程、force push | **必须先问，默认拒绝** |
+| 可逆编辑 | 代码改动 + commit、文档措辞、新文件、局部代码修正、`docs/current.md` 状态更新 | 中风险先 Preview；跑完验证即提交，不逐个问 |
+| 不可逆/破坏性/方向性 | 删除、覆盖、大迁移、目录搬家、DB schema、公开 API、认证权限、部署流程、force push、方向性 docs 写入（ADR/决策记录/roadmap 方向变更） | **必须先问，默认拒绝** |
+
+代码 commit 是 checkpoint 不是定案，`git revert`/`git reset` 可回退，本质与「改一行代码」同级别可逆。让 agent 直接 commit 反而便于 review（`git log`/`git diff HEAD~n` 比散乱未提交 diff 清晰）。方向性 docs（ADR、决策、roadmap 方向）写入会误导后续 AI 与人，影响面大于代码，需人审核。
 
 ### 10.2 硬门禁（一律不做，除非用户明确授权）
 
@@ -339,6 +341,7 @@ spec 可以就是 active plan ledger（见 6.3）的一个 goal 条目 + checkli
 - 顺手重构或格式化无关文件；改动无关注释、格式或旧逻辑。
 - 未说明原因新增依赖；为不可能场景堆防御性代码。
 - 改变公开 API、DB schema、认证权限、部署流程。
+- 方向性 docs 写入（新建 ADR、改写决策记录、roadmap 方向变更）未经用户确认；`docs/current.md` 客观状态更新除外。
 - 把 secret、token、真实密钥写进文档或示例。
 - 把 AI 推测写成项目事实；把未来计划写成已实现。
 - 用 silent fallback 掩盖关键路径错误（见第 8 章）。

@@ -2,7 +2,7 @@
 name: meta-scaffold
 description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md、docs/decision（ADR）与 .local/plan 的 Goal Execution Ledger；定义验证命令；规范工具使用与子 agent 编排；压缩未来 AI 工作上下文。
 license: MIT
-version: 6.2.0
+version: 6.3.0
 ---
 
 # META-SCAFFOLD
@@ -96,6 +96,8 @@ apps/A      -> apps/B      默认禁止
 
 ## 权限与硬门禁
 
+- **代码 commit 是可逆操作**（git 兜底），跑完验证门禁即提交，不逐个问——commit 是 checkpoint 便于 review，不是定案。`docs/current.md` 客观状态更新同理。
+- **方向性 docs 写入**（新建 ADR、改写决策记录、roadmap 方向变更）影响后续 AI 与人，需用户确认后再提交。
 - **不可逆/破坏性操作**（删除、覆盖、大迁移、目录搬家、DB schema、公开 API、认证权限、部署流程、force push）必须先问用户，默认拒绝。
 - **例外：已批准 plan 的预授权范围**。当操作属于用户已确认 plan 的 goal 明确列出的 task 目标产物、且与 plan 决策记录一致，即视为已获预授权，直接执行（并记入进度日志），不逐个问确认——否则同一硬门禁会在每个 goal 上重复阻塞。覆盖该 goal task 范围的建表/migration、认证代码、契约修改。仍必须先问：超出当前 goal task 范围、与决策记录冲突、删除/覆盖已存在文件、不可回滚操作（force push、删生产数据）。
 - **proposal 机制不阻塞**：goal 内产出 schema/设计 proposal 是设计产物；写定后若与 plan 决策一致即自动放行执行，无需二次人工确认；只有 proposal 引入了 plan 未涵盖且影响后续的决策才需要问。推进 agent 自行核对「goal task 范围 + plan 决策记录」，不要把已确认 goal 的固有操作误判为 blocked。
