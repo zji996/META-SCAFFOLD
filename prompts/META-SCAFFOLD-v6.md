@@ -188,12 +188,15 @@ docs/
 | --- | --- | --- |
 | `current.md` | 当前焦点、短期下一步、阻塞、关键架构事实、验证命令 | 已完成 goal 细节（归 roadmap）、修复历史（归 git log）、未来想象 |
 | `reference/*` | 当前真实系统：架构、模块、数据流、API、部署 | 未实现计划（除非标 `Status: Not Implemented`） |
-| `roadmap.md` | 已完成阶段（一行指针）、未来方向、阶段目标、非目标 | 当前系统事实、修复历史 |
+| `roadmap.md` | 已完成阶段（一行指针，细节归 architecture/git log）、未来方向、阶段目标、非目标 | 当前系统事实、修复历史、已完成 goal 全文 |
+| `decision/INDEX.md` | 一行列所有 ADR + 状态（active/superseded/deprecated） | ADR 正文 |
 | `decision/*` | 方向性决策的 why：为何 monorepo、为何选某框架、为何暂不做某事 | 实现细节、当前状态、重复流程 |
 
 ### 6.2 `docs/current.md`（短期焦点）
 
 AI 在根部协作说明后优先读的上下文文件，**只回答「现在到哪了、下一步做什么、关键边界与命令」**。已完成 goal 不在此留存细节——压缩成一行指针指向 roadmap 或状态表。修复历史归 `git log`。目标是让下一轮 AI 用最少 token 接上当前工作，而不是读一遍项目编年史。
+
+「短期下一步」最多 5 项——超过说明该拆 goal 或写 `.local/plan/plan.md`，避免短期焦点膨胀回长期计划。
 
 ### 6.3 `docs/decision/`（ADR，核心设计记忆）
 
@@ -201,7 +204,9 @@ AI 在根部协作说明后优先读的上下文文件，**只回答「现在到
 
 价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。
 
-### 6.3 Active Goal Ledger（`.local/plan/plan.md`，可选）
+`docs/decision/INDEX.md` 一行列所有 ADR + 状态（active/superseded by 00NN/deprecated），agent 一眼扫完所有方向决策，不用逐个读正文。ADR 多了再加索引文件。
+
+### 6.4 Active Goal Ledger（`.local/plan/plan.md`，可选）
 
 长目标、多轮 goal、快速变化周计划用独立 plan 文件，职责是保存**可恢复进度**，不是稳定事实。默认路径 `.local/plan/plan.md`（与运行时产物同归 `.local/`，整体 gitignore，见 6.5）；也可用 `docs/plan.md` 单独 ignore。顶部放执行账本：
 
@@ -221,9 +226,29 @@ Blockers: <none，或具体阻塞>
 
 规则：用户要求继续 goal/推进 plan 时，先读顶部 ledger，从第一个未勾选项继续；checklist 项要小到一轮可验证；每轮结束/压缩/换目标/遇 blocker 前更新 checkbox、`Next unchecked item`、blocker；稳定事实写入 current/roadmap/reference，不要只留在可能被忽略的 plan 里；不在 plan 写 secrets；把会触发硬门禁的不可逆操作（建表/迁移、认证、契约）作为 task 写进 goal，配合「Goal 预授权」（见 9.4）避免重复阻塞。
 
-### 6.4 `.local/` 仓库本地产物区（可选，推荐）
+### 6.5 `.local/` 仓库本地产物区（可选，推荐）
 
-运行时产物（多服务后台进程 pid/日志、构建二进制、缓存）与本地活跃文档（如 6.3 的 plan ledger）统一收进 `.local/`，整体一行 `.gitignore`，而非逐文件加忽略、或散落 `/tmp`（易被系统清理、跨机器路径不一致）。`docs/` 只放稳定可入库文档，本地临时产物有统一去处。按用途分子目录（如 `.local/dev/` 运行时、`.local/plan/` 活跃计划）。
+运行时产物（多服务后台进程 pid/日志、构建二进制、缓存）与本地活跃文档（如 6.4 的 plan ledger）统一收进 `.local/`，整体一行 `.gitignore`，而非逐文件加忽略、或散落 `/tmp`（易被系统清理、跨机器路径不一致）。`docs/` 只放稳定可入库文档，本地临时产物有统一去处。参考子目录：
+
+```text
+.local/
+  dev/
+    pids/      # 后台服务 pidfile（<svc>.pid），manage.sh <grp> up 产物
+    logs/      # 后台服务日志（<svc>.log），tail 用，down/up 轮转
+    bin/       # 本地构建二进制
+  plan/
+    plan.md          # 活跃 goal ledger（见 6.4）
+    README.md        # .local 用法说明（可选）
+    <task>-handoff.md  # 非常短期的任务交接/委派草稿
+  backlog/
+    <agent-slug>.md  # sub-agent task backlog（见 6.6）
+```
+
+### 6.6 Sub-agent task backlog（异步委派，避免同步阻塞）
+
+主 agent 不应承担不稳定 sub-agent（如 codex、特定模型实例）的健康管理与同步探测——耦合会阻塞主流程。改用异步 backlog：主 agent 把委派意图写成 `.local/backlog/<agent-slug>.md`（如 `codex.md`），列出要委派的任务与上下文指针；主 agent 不探测、不等待、不降级自干，继续自己的工作。当那个 sub-agent 被独立调用时，它读自己 backlog 拉走任务，完成后回写结果指针。任务在 backlog 等着，不阻塞主 agent。
+
+要点：不写 `state.json` 之类的健康追踪（容量不可预测、探活能过但重任务即拒的误判会拖累主 agent）；任务描述自包含（sub-agent 被调起时能独立执行）；主 agent 写完 backlog 即转向其他工作，sub-agent 可用时异步消化。
 
 ---
 
@@ -239,7 +264,8 @@ Blockers: <none，或具体阻塞>
 5. 任务显式提到的文件
 6. 命令入口/配置
 7. 用户要求继续 goal/推进 plan 或明确提到时，才读 `.local/plan/plan.md`
-8. 必要时再读 roadmap/operations/decisions 或搜索实现
+8. 被作为 sub-agent 调起时，先读自己 `.local/backlog/<my-slug>.md`
+9. 必要时再读 roadmap/operations/decisions/INDEX 或搜索实现
 ```
 
 上下文预算分级：
@@ -394,7 +420,7 @@ proposal 机制不阻塞：goal 内产出 schema/设计 proposal 是设计产物
 ```text
 先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接，并按需 Compact 到 docs/current.md。T0/T1 小改只需 Inspect→Apply→Verify→Handoff。
 
-默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步，已完成 goal 归 roadmap，方向决策归 decision/ADR。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
+默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步（最多 5 项），已完成 goal 归 roadmap，方向决策归 decision/ADR（含 INDEX 一行索引）。`.local/` 收运行时产物 + 活跃 plan + sub-agent backlog（不稳定的 sub-agent 用异步 backlog 委派，主 agent 不探测不等待）。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
 ```
 
 ---

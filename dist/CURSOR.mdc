@@ -43,10 +43,13 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 
 文档规则：
 
-- 最小有用文档：`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`、`docs/decision/`（ADR）。
-- `docs/current.md` 只记当前焦点 + 短期下一步 + 阻塞 + 关键架构事实 + 验证命令。已完成 goal 不在此留存细节（归 roadmap 一行指针），修复历史归 `git log`。目的是让下一轮 AI 用最少 token 接上当前工作。
-- `docs/decision/`（ADR）是核心设计记忆：用户方向性想法常细碎跨会话，ADR 是沉淀点。每个「为什么这么做」记一条编号记录（`00NN-slug.md`），新决策覆盖旧决策不改旧文件。agent 读 ADR 即知「这条路已想过，不要重新提议」。
+- 最小有用文档：`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`、`docs/decision/`（ADR）+ `docs/decision/INDEX.md`（一行索引）。
+- `docs/current.md` 只记当前焦点 + 短期下一步（最多 5 项）+ 阻塞 + 关键架构事实 + 验证命令。已完成 goal 不在此留存细节（归 roadmap 一行指针），修复历史归 `git log`。目的是让下一轮 AI 用最少 token 接上当前工作。
+- `docs/decision/`（ADR）是核心设计记忆：用户方向性想法常细碎跨会话，ADR 是沉淀点。每个「为什么这么做」记一条编号记录（`00NN-slug.md`），新决策覆盖旧决策不改旧文件。`INDEX.md` 一行列所有 ADR + 状态。agent 读 ADR 即知「这条路已想过，不要重新提议」。
+- `docs/roadmap.md` 已完成阶段只留一行指针（细节归 architecture/git log），其余是未来方向、阶段目标、非目标。
 - `docs/plan.md` 或 `.local/plan/plan.md` 可作为快速变化的 active goal ledger；用 Markdown checkbox 保存可恢复进度，不保存稳定事实或 secrets。优先 `.local/plan/`（与本地产物同归 `.local/`，整体 gitignore）。
+- `.local/` 收运行时产物（pid/logs/bin）+ 活跃 plan + sub-agent backlog，整体 gitignore。子目录：`dev/`、`plan/`、`backlog/`。
+- `.local/backlog/<agent-slug>.md` 异步委派不稳定 sub-agent：主 agent 写委派意图后继续自己工作，不探测不等待；sub-agent 被调起时读自己 backlog 拉任务。不写 `state.json` 健康追踪。
 - `docs/reference/` 只写当前事实，未实现内容标 `Status: Not Implemented`。
 - 未来计划写入 roadmap，不得写成已实现事实。
 

@@ -70,15 +70,16 @@ apps/A      -> apps/B      默认禁止
 
 - **`docs/current.md`（短期焦点）**：AI 在根部说明后优先读的上下文压缩。**只记当前焦点、短期下一步、阻塞、关键架构事实、验证命令**。已完成 goal 不在此留存细节——压缩成一行指针指向 roadmap 或状态表。修复历史归 `git log`。目标是让下一轮 AI 用最少 token 接上当前工作。
 - **`docs/decision/`（ADR，核心设计记忆）**：用户的方向性想法常是细碎、跨会话的；ADR 是这些想法的沉淀点。每个「为什么这么做」记一条编号记录（`00NN-short-slug.md`），新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。
-- **`docs/roadmap.md`**：已完成阶段（一行指针）、未来方向、阶段目标、非目标。
+- **`docs/roadmap.md`**：已完成阶段（一行指针，细节归 architecture/git log）、未来方向、阶段目标、非目标。
+- **`docs/decision/INDEX.md`**：一行列所有 ADR + 状态（active/superseded by 00NN/deprecated），agent 一眼扫完方向决策，ADR 多了再加。
 - **`.local/plan/plan.md`**（可选，活跃 goal ledger）：长目标/多轮 goal 的可恢复进度。顶部放 Goal Execution Ledger（Last updated / Current focus / Next unchecked item / Blockers / Active Checklist）。用户要求继续 goal 时从第一个未勾选项接着做，交接前更新 checkbox。把会触发硬门禁的不可逆操作（建表/迁移、认证、契约）作为 task 写进 goal，配合「Goal 预授权」避免重复阻塞。
-- **`.local/` 仓库本地产物区（推荐）**：运行时产物（多服务后台进程 pid/日志/构建二进制/缓存）+ 活跃 plan 统一收进 `.local/`，整体 `.gitignore`，一处忽略而非逐文件加。比把活跃 plan 放 `docs/plan.md` 单独 ignore 更一致——`docs/` 只放稳定可入库文档，本地临时产物有统一去处；比散落 `/tmp` 更可靠（不被系统清理、跨机器路径一致）。子目录按用途分：`.local/dev/`（运行时）、`.local/plan/`（活跃计划）。
+- **`.local/` 仓库本地产物区（推荐）**：运行时产物（pid/日志/构建二进制/缓存）+ 活跃 plan + sub-agent backlog 统一收进 `.local/`，整体 `.gitignore`。`docs/` 只放稳定可入库文档，本地临时产物有统一去处；比散落 `/tmp` 更可靠（不被系统清理、跨机器路径一致）。子目录：`.local/dev/`（运行时 pid/logs/bin）、`.local/plan/`（活跃计划 + 短期 handoff）、`.local/backlog/`（sub-agent 委派任务）。
+- **`.local/backlog/<agent-slug>.md`**（异步委派）：不稳定的 sub-agent（如 codex、特定模型实例）用异步 backlog 委派——主 agent 把委派意图写成 backlog，不探测不等待不降级自干，继续自己的工作；sub-agent 被独立调起时读自己 backlog 拉走任务，完成后回写结果指针。不写 `state.json` 健康追踪（容量不可预测、探活能过但重任务即拒会拖累主 agent）。
 - **`docs/reference/`**：只写当前真实系统，未实现内容标 `Status: Not Implemented`。
-- **`docs/roadmap.md`**：未来方向、阶段目标、非目标。
 
 ## 上下文加载
 
-默认顺序：用户请求 → AGENTS/CLAUDE → docs/current.md → architecture → 任务文件 → 命令入口 →（要求继续 goal 时）.local/plan/plan.md → 必要时 roadmap/operations/decisions/搜索。预算分级 T0（问答）→ T1（小改）→ T2（多文件/结构）→ T3（重构/迁移）。文档与代码冲突时以可运行代码为准。
+默认顺序：用户请求 → AGENTS/CLAUDE → docs/current.md → architecture → 任务文件 → 命令入口 →（要求继续 goal 时）.local/plan/plan.md →（被作为 sub-agent 调起时）.local/backlog/<my-slug>.md → 必要时 roadmap/decision/INDEX/搜索。预算分级 T0（问答）→ T1（小改）→ T2（多文件/结构）→ T3（重构/迁移）。文档与代码冲突时以可运行代码为准。
 
 ## 命令入口与验证
 

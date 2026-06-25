@@ -1,5 +1,17 @@
 # Changelog
 
+## 6.4.2
+
+- §6.1 表格：roadmap 已完成阶段只留一行指针（不写全文，细节归 architecture/git log）；新增 `decision/INDEX.md` 一行索引（active/superseded/deprecated），agent 一眼扫完方向决策。
+- §6.2：current.md「短期下一步」最多 5 项——超过说明该拆 goal 或写 plan.md，避免短期焦点膨胀回长期计划。
+- §6.4–6.6 重构（修 §6.3 重号）：§6.4 Active Goal Ledger；§6.5 `.local/` 强化——给出 `dev/pids|logs|bin`、`plan/`、`backlog/` 完整子目录结构；§6.6 新增 Sub-agent task backlog 异步委派模式。
+- §6.6 sub-agent backlog：主 agent 不承担不稳定 sub-agent（codex 等）的健康管理与同步探测——改异步 backlog（`.local/backlog/<agent-slug>.md`），主 agent 写委派意图后继续自己工作，sub-agent 被调起时读 backlog 拉任务。明确「不写 state.json 健康追踪（容量不可预测、探活能过但重任务即拒会拖累主 agent）」。
+- §7 上下文加载：新增「被作为 sub-agent 调起时，先读自己 `.local/backlog/<my-slug>.md`」。
+- §13 最短版 + short.md：加 current.md 下一步上限 5 项、ADR INDEX、`.local/` 收 backlog、sub-agent 异步委派原则。
+- SKILL.md：文档系统段重构（修 roadmap 重号、加 INDEX/backlog/异步委派）、上下文加载加 backlog。
+- dist/AGENTS.md + dist/CLAUDE.md + dist/CURSOR.mdc 文档规则同步以上全部。
+- 版本号 6.4.1 → 6.4.2（VERSION / plugin.json / README / 本机 skill 同步）。
+
 ## 6.4.1
 
 - monorepo 从「可选思考方向」升为「AI 协作推荐默认形态」：§5 开头明确「一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证，用少量空间换最大 agent 操作空间」，新项目默认 monorepo。同步 §13 最短版、SKILL.md、dist/AGENTS.md/CLAUDE.md/CURSOR.mdc。
