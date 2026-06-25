@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.4.0
+
+- Trim §3 tool-use discipline from 30 lines to 3: "read before edit, parallel independent reads, dangerous commands default off" — the removed content (search layering, Read-over-cat, no-auto-retry) is model default behavior, writing it out implies "without this rule the agent would misbehave" and wastes per-turn context. v6.md keeps the full version as reference; dist/templates/SKILL use the 3-line compression.
+- Add T0/T1 fast path to §2: simple tasks (Q&A, single-file fix) skip Frame/Decide/Preview/Compact, only do Inspect→Apply→Verify→Handoff; T2/T3 (multi-file, refactor, migration) run full 8 steps. Makes the compression explicit so agents don't run full ceremony on a one-line change.
+- Compress §13 shortest version: removed 60% overlap with §1/§5/§8/§10, kept only the 8-step flow + commit rule + permission gate + boundary + verification hard-gate.
+- Compress Appendix A Kilo table: dropped "corresponding contract principle" column (redundant with row content) and the trailing restatement paragraph; merged into a 5-row table + 1-line closure.
+- Trim SKILL "when to enable" from 10 trigger conditions to 1 sentence (skill is always callable once installed; the 10 conditions don't decide activation).
+- Sync dist/{AGENTS,CLAUDE,CURSOR}, templates/{AGENTS,CLAUDE}, root CLAUDE.md to the 3-line tool/sub-agent compression.
+- Bump version 6.3.0 → 6.4.0.
+
 ## 6.3.0
 
 - Reclassify `git commit` from "irreversible operation" to "reversible edit": code changes + commit are the agent's job, run verification gate then commit, don't ask per-step — commit is a checkpoint for review, not a final decision; `git revert`/`git reset` is the safety net. This removes the friction where the agent stops to ask "commit?" after every round (user says yes ~90% of the time) without gaining safety, since commit is fully reversible.

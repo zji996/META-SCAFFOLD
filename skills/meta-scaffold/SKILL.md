@@ -2,7 +2,7 @@
 name: meta-scaffold
 description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md、docs/decision（ADR）与 .local/plan 的 Goal Execution Ledger；定义验证命令；规范工具使用与子 agent 编排；压缩未来 AI 工作上下文。
 license: MIT
-version: 6.3.0
+version: 6.4.0
 ---
 
 # META-SCAFFOLD
@@ -19,7 +19,7 @@ version: 6.3.0
 
 ## 何时启用
 
-任务涉及：初始化新仓库、重组既有仓库、判断 monorepo 形态、区分 `apps/`/`packages/`/`libs/`/`services/`、创建/更新 AGENTS/CLAUDE/Cursor 规则、维护 docs/current.md 与架构文档、定义命令入口、规范工具使用或子 agent 编排、多步骤任务交接。简单任务压缩流程，但不跳过安全约束。
+任务涉及仓库结构、文档、AI 交接、验证流程、多步骤任务交接时启用。简单任务压缩流程，但不跳过安全约束。
 
 ## 执行协议
 
@@ -38,10 +38,9 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 
 ## 工具使用纪律
 
-- **批量并行**：多个相互独立的读取/搜索一次性并行发起，不串行浪费（后步依赖前步时才串行）。
-- **先读后改**：编辑前先读；对未读文件不做 `replaceAll` 等大范围操作。
-- **搜索分层**：知路径直接 Read；不知路径用 Glob；不知内容用 Grep；开放式多轮探索用 subagent。
-- **执行纪律**：用专用工具而非 shell 做文件操作（Read 而非 cat）；长进程用进程管理工具而非 `&`/`nohup`；危险或不可逆命令默认不执行。
+- 先读后改；对未读文件不做 `replaceAll` 等大范围操作。
+- 独立读取/搜索并行发起（后步依赖前步时串行）。
+- 危险或不可逆命令默认不执行；长进程用进程管理工具不用 `&`/`nohup`。
 
 ## 子 Agent 编排（条件化）
 
@@ -108,7 +107,7 @@ apps/A      -> apps/B      默认禁止
 
 ## Kilo 平台适配（可选）
 
-运行环境为 Kilo 时：满足并行条件且需写隔离/版本对比用 `agent_manager`（worktree/local），纯研究用 `task`；开发服务器/watcher 用 `background_process` 不用 `&`；完成非平凡改文件后用 `suggest` 建议 code review（未提交用 `/local-review-uncommitted`）；高影响歧义用 `question`。子 agent 工具均为条件触发，不强求，不擅长则回退串行。
+运行环境为 Kilo 时：写隔离/多版本对比用 `agent_manager`（worktree），纯研究用 `task`；开发服务器/watcher 用 `background_process` 不用 `&`；完成非平凡改文件后用 `suggest` 建议 code review；高影响歧义用 `question`。均条件触发，不强求，不擅长则回退串行。
 
 ## 输出风格
 
