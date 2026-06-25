@@ -52,7 +52,7 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 
 ## 仓库形态与边界
 
-可按 monorepo 边界思考，但不为 monorepo 而 monorepo。安全默认值：按边界思考，只落地真实需要的目录。`apps/` 放可独立运行/构建/部署的单元；`packages/` 或 `libs/` 放共享能力（ui/contracts/config/core/test-utils/sdk）。
+**monorepo 是 AI 协作的推荐默认形态**：一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证。用少量空间换最大 agent 操作空间。已有 polyrepo 不强制合并，新项目默认 monorepo。安全默认值：按边界思考，只落地真实需要的目录。`apps/` 放可独立运行/构建/部署的单元；`packages/` 或 `libs/` 放共享能力（ui/contracts/config/core/test-utils/sdk）。
 
 依赖方向（硬约束）：
 
@@ -66,10 +66,11 @@ apps/A      -> apps/B      默认禁止
 
 ## 文档系统
 
-最小结构：`README.md`、`AGENTS.md`、`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`。复杂后再加 operations/decisions，再复杂才拆目录。不为完整创建空目录。
+最小结构：`README.md`、`AGENTS.md`、`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`、`docs/decision/`。`decision/` 是核心文档，不是可选。
 
-- **`docs/current.md`**：AI 在根部说明后优先读的上下文压缩（当前目标、背景、已确认方向、边界、状态、验收、验证命令、下一步）。不是聊天记录。
-- **`docs/decision/`**（ADR，可选）：易被后续 AI 推翻的方向性决策（为何 monorepo、为何货运化、定价/抽成策略）记为编号决策记录；决策一旦确认即作为开发依据，新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。
+- **`docs/current.md`（短期焦点）**：AI 在根部说明后优先读的上下文压缩。**只记当前焦点、短期下一步、阻塞、关键架构事实、验证命令**。已完成 goal 不在此留存细节——压缩成一行指针指向 roadmap 或状态表。修复历史归 `git log`。目标是让下一轮 AI 用最少 token 接上当前工作。
+- **`docs/decision/`（ADR，核心设计记忆）**：用户的方向性想法常是细碎、跨会话的；ADR 是这些想法的沉淀点。每个「为什么这么做」记一条编号记录（`00NN-short-slug.md`），新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。
+- **`docs/roadmap.md`**：已完成阶段（一行指针）、未来方向、阶段目标、非目标。
 - **`.local/plan/plan.md`**（可选，活跃 goal ledger）：长目标/多轮 goal 的可恢复进度。顶部放 Goal Execution Ledger（Last updated / Current focus / Next unchecked item / Blockers / Active Checklist）。用户要求继续 goal 时从第一个未勾选项接着做，交接前更新 checkbox。把会触发硬门禁的不可逆操作（建表/迁移、认证、契约）作为 task 写进 goal，配合「Goal 预授权」避免重复阻塞。
 - **`.local/` 仓库本地产物区（推荐）**：运行时产物（多服务后台进程 pid/日志/构建二进制/缓存）+ 活跃 plan 统一收进 `.local/`，整体 `.gitignore`，一处忽略而非逐文件加。比把活跃 plan 放 `docs/plan.md` 单独 ignore 更一致——`docs/` 只放稳定可入库文档，本地临时产物有统一去处；比散落 `/tmp` 更可靠（不被系统清理、跨机器路径一致）。子目录按用途分：`.local/dev/`（运行时）、`.local/plan/`（活跃计划）。
 - **`docs/reference/`**：只写当前真实系统，未实现内容标 `Status: Not Implemented`。

@@ -1,7 +1,7 @@
 {
   "name": "meta-scaffold",
   "description": "META-SCAFFOLD v6 as a reusable AI project collaboration skill: inspect reality first, change minimally, apply disciplined tool use and conditional sub-agent orchestration, verify, hand off, and compact durable context.",
-  "version": "6.4.0",
+  "version": "6.4.1",
   "author": {
     "name": "zji996"
   },

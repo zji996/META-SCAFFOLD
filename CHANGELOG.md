@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.4.1
+
+- monorepo 从「可选思考方向」升为「AI 协作推荐默认形态」：§5 开头明确「一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证，用少量空间换最大 agent 操作空间」，新项目默认 monorepo。同步 §13 最短版、SKILL.md、dist/AGENTS.md/CLAUDE.md/CURSOR.mdc。
+- `docs/decision/`（ADR）从「复杂后再加的可选」升为核心文档，与 current/roadmap/reference 并列：§6.1 最小结构加入 `docs/decision/`；新增 §6.3 详述 ADR 作为「用户细碎方向性想法的沉淀点」——每个 why 记一条编号记录、新决策覆盖旧决策不改旧文件、agent 读 ADR 即知「这条路已想过不要重新提议」。原 §6.4 operations+decisions 合并精简。
+- `docs/current.md` 定位收紧为「短期焦点」：§6.2 明确「只记当前焦点 + 短期下一步 + 阻塞 + 关键架构事实 + 验证命令；已完成 goal 不在此留存细节（归 roadmap 一行指针），修复历史归 git log；目的是让下一轮 AI 用最少 token 接上当前工作」。templates/AGENTS.meta-scaffold.md 同步。
+- dist/AGENTS.md + dist/CLAUDE.md + dist/CURSOR.mdc 仓库结构规则 + 文档规则同步以上三点。
+- 版本号 6.4.0 → 6.4.1（VERSION / plugin.json / README / 本机 skill 同步）。
+
 ## 6.4.0
 
 - Trim §3 tool-use discipline from 30 lines to 3: "read before edit, parallel independent reads, dangerous commands default off" — the removed content (search layering, Read-over-cat, no-auto-retry) is model default behavior, writing it out implies "without this rule the agent would misbehave" and wastes per-turn context. v6.md keeps the full version as reference; dist/templates/SKILL use the 3-line compression.

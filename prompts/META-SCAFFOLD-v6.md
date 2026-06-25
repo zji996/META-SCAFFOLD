@@ -130,7 +130,7 @@ Inspect → Frame → Decide → Preview → Apply → Verify → Handoff → Co
 
 ## 5. 仓库形态与依赖边界
 
-可按 monorepo 边界思考，但不为 monorepo 而 monorepo。只有存在多个独立运行单元、共享 contracts/config/UI/core，或需统一验证与协作规则时，monorepo 才有明显收益。
+**monorepo 是 AI 协作的推荐默认形态**：一次 Inspect 即全局视野（agent 读一个 AGENTS.md + current.md 就知道所有 app/package 边界与命令）；共享层 `packages/` 自然沉淀避免重复造轮子；验证命令统一一套跑全栈；跨 app 重构在一个 git 历史里可追溯。用少量空间换最大幅度的 agent 操作空间，上下文成本节省远大于 clone/CI 成本。已有 polyrepo 不强制合并，但新项目默认 monorepo。
 
 > 安全默认值：按 monorepo 边界思考，只落地真实需要的目录。
 
@@ -176,22 +176,30 @@ apps/A      → apps/B       默认禁止
 README.md
 AGENTS.md
 docs/
-  current.md                         # AI 优先读的上下文压缩
-  roadmap.md                         # 未来方向
+  current.md                         # 当前焦点 + 短期下一步（AI 优先读）
+  roadmap.md                         # 已完成阶段 + 未来方向 + 非目标
   reference/architecture.md          # 当前真实架构
+  decision/                          # 方向性决策记录（ADR），编号递增
 ```
 
-复杂后再自然增加 `docs/reference/operations.md`、`decisions.md`，再复杂才拆目录。不为完整创建大量空目录。
+`decision/` 与 current/roadmap/reference 并列为核心文档，不是「复杂后再加」的可选项。重复流程 runbook 记为 `docs/reference/operations.md`。
 
 | 文件 | 写什么 | 不写什么 |
 | --- | --- | --- |
-| `current.md` | 当前目标、边界、状态、验收、下一步 | 全量历史、未来想象 |
+| `current.md` | 当前焦点、短期下一步、阻塞、关键架构事实、验证命令 | 已完成 goal 细节（归 roadmap）、修复历史（归 git log）、未来想象 |
 | `reference/*` | 当前真实系统：架构、模块、数据流、API、部署 | 未实现计划（除非标 `Status: Not Implemented`） |
-| `roadmap.md` | 未来方向、阶段目标、非目标 | 当前系统事实 |
+| `roadmap.md` | 已完成阶段（一行指针）、未来方向、阶段目标、非目标 | 当前系统事实、修复历史 |
+| `decision/*` | 方向性决策的 why：为何 monorepo、为何选某框架、为何暂不做某事 | 实现细节、当前状态、重复流程 |
 
-### 6.2 `docs/current.md`
+### 6.2 `docs/current.md`（短期焦点）
 
-AI 在根部协作说明后优先读的上下文文件，回答：当前目标、用户意图/背景、已确认方向、不要改的边界、当前状态、完成标准、验证命令、下一步。不是任务追踪器，不是聊天记录。
+AI 在根部协作说明后优先读的上下文文件，**只回答「现在到哪了、下一步做什么、关键边界与命令」**。已完成 goal 不在此留存细节——压缩成一行指针指向 roadmap 或状态表。修复历史归 `git log`。目标是让下一轮 AI 用最少 token 接上当前工作，而不是读一遍项目编年史。
+
+### 6.3 `docs/decision/`（ADR，核心设计记忆）
+
+用户的方向性想法常是细碎、跨会话的；ADR 是这些想法的沉淀点。每个「为什么这么做」记一条编号记录（`00NN-short-slug.md`），新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。ADR 一旦确认即作为开发依据，后续 AI 不每轮重开已定讨论。
+
+价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。
 
 ### 6.3 Active Goal Ledger（`.local/plan/plan.md`，可选）
 
@@ -213,11 +221,7 @@ Blockers: <none，或具体阻塞>
 
 规则：用户要求继续 goal/推进 plan 时，先读顶部 ledger，从第一个未勾选项继续；checklist 项要小到一轮可验证；每轮结束/压缩/换目标/遇 blocker 前更新 checkbox、`Next unchecked item`、blocker；稳定事实写入 current/roadmap/reference，不要只留在可能被忽略的 plan 里；不在 plan 写 secrets；把会触发硬门禁的不可逆操作（建表/迁移、认证、契约）作为 task 写进 goal，配合「Goal 预授权」（见 9.4）避免重复阻塞。
 
-### 6.4 operations 与 decisions
-
-重复流程（部署/回滚/发布/排障/迁移/事故）记为 runbook；易被后续 AI 推翻的选择（为何 monorepo、为何 `api` 放 `apps/`、为何暂不用某框架）记为 decision。小项目先用单文件，内容多再拆目录。
-
-### 6.5 `.local/` 仓库本地产物区（可选，推荐）
+### 6.4 `.local/` 仓库本地产物区（可选，推荐）
 
 运行时产物（多服务后台进程 pid/日志、构建二进制、缓存）与本地活跃文档（如 6.3 的 plan ledger）统一收进 `.local/`，整体一行 `.gitignore`，而非逐文件加忽略、或散落 `/tmp`（易被系统清理、跨机器路径不一致）。`docs/` 只放稳定可入库文档，本地临时产物有统一去处。按用途分子目录（如 `.local/dev/` 运行时、`.local/plan/` 活跃计划）。
 
@@ -390,7 +394,7 @@ proposal 机制不阻塞：goal 内产出 schema/设计 proposal 是设计产物
 ```text
 先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接，并按需 Compact 到 docs/current.md。T0/T1 小改只需 Inspect→Apply→Verify→Handoff。
 
-默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
+默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步，已完成 goal 归 roadmap，方向决策归 decision/ADR。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
 ```
 
 ---
