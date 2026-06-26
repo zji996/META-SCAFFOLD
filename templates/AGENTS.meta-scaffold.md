@@ -40,7 +40,7 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 - 先检查真实仓库状态，再提出结构建议。
 - 只修改和请求直接相关的文件。
 - 代码 commit 是可逆操作（git 兜底），跑完验证门禁即提交，不逐个问——commit 是 checkpoint 便于 review，不是定案。
-- 方向性 docs 写入（新建 ADR、改写决策记录、roadmap 方向变更）需用户确认后再提交；`docs/current.md` 客观状态更新除外。
+- 方向性 docs 写入（新建 ADR、改写决策记录、roadmap 方向变更）需用户确认后再提交；`docs/current.md` 客观状态更新除外（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。
 - 未确认前不要删除、移动或覆盖已有文件；不删预先存在的 dead code（可指出）。
 - 不要为了完整感创建空目录；不把未来计划写成当前事实。
 - `apps/` 放独立运行单元；`packages/` 或 `libs/` 放共享能力。
@@ -94,7 +94,7 @@ Blockers: <none, or concrete blocker>
 
 Goal 预授权：把会触发硬门禁的不可逆操作（建表/迁移、认证、契约改动）作为 task 显式写进 goal。用户确认 plan 即对该 goal task 范围预授权，推进时直接执行 + 勾选 ledger，不再逐个问——只有超出 task 范围、与决策记录冲突或不可回滚操作（force push、删生产数据）才停下问。goal 内的 schema/设计 proposal 是设计产物，与决策一致即自动放行执行，不二次确认。
 
-Commit 纪律：代码改动 + commit 是可逆操作（git 兜底），跑完验证门禁即提交，不逐个问——commit 是 checkpoint 便于 review，不是定案。方向性 docs 写入（新建 ADR、改写决策记录、roadmap 方向变更）需用户确认后再提交；`docs/current.md` 客观状态更新除外。
+Commit 纪律：代码改动 + commit 是可逆操作（git 兜底），跑完验证门禁即提交，不逐个问——commit 是 checkpoint 便于 review，不是定案。方向性 docs 写入（新建 ADR、改写决策记录、roadmap 方向变更）需用户确认后再提交；`docs/current.md` 客观状态更新除外（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。
 
 上游完整 skill：
 

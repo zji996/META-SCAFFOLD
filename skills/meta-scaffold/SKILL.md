@@ -2,7 +2,7 @@
 name: meta-scaffold
 description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md、docs/decision（ADR）与 .local/plan 的 Goal Execution Ledger；定义验证命令；规范工具使用与子 agent 编排；压缩未来 AI 工作上下文。
 license: MIT
-version: 6.4.2
+version: 6.4.3
 ---
 
 # META-SCAFFOLD
@@ -69,11 +69,11 @@ apps/A      -> apps/B      默认禁止
 最小结构：`README.md`、`AGENTS.md`、`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`、`docs/decision/`。`decision/` 是核心文档，不是可选。
 
 - **`docs/current.md`（短期焦点）**：AI 在根部说明后优先读的上下文压缩。**只记当前焦点、短期下一步、阻塞、关键架构事实、验证命令**。已完成 goal 不在此留存细节——压缩成一行指针指向 roadmap 或状态表。修复历史归 `git log`。目标是让下一轮 AI 用最少 token 接上当前工作。
-- **`docs/decision/`（ADR，核心设计记忆）**：用户的方向性想法常是细碎、跨会话的；ADR 是这些想法的沉淀点。每个「为什么这么做」记一条编号记录（`00NN-short-slug.md`），新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。
-- **`docs/roadmap.md`**：已完成阶段（一行指针，细节归 architecture/git log）、未来方向、阶段目标、非目标。
+- **`docs/decision/`（ADR，核心设计记忆）**：用户的方向性想法常是细碎、跨会话的；ADR 是这些想法的沉淀点。每个「为什么这么做」记一条编号记录（`00NN-short-slug.md`），新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。**首次为既有项目批量补建历史 ADR 属可逆治理**（把已存在的隐含决策显式化），可直接执行后在交接时提示用户 review，不按逐条方向性写入门禁处理；之后日常逐条新增仍按方向性写入规则。
+- **`docs/roadmap.md`**：已完成阶段（一行指针 + 可附一两句定性结论/里程碑意义，细节归 architecture/git log）、未来方向、阶段目标、非目标。
 - **`docs/decision/INDEX.md`**：一行列所有 ADR + 状态（active/superseded by 00NN/deprecated），agent 一眼扫完方向决策，ADR 多了再加。
 - **`.local/plan/plan.md`**（可选，活跃 goal ledger）：长目标/多轮 goal 的可恢复进度。顶部放 Goal Execution Ledger（Last updated / Current focus / Next unchecked item / Blockers / Active Checklist）。用户要求继续 goal 时从第一个未勾选项接着做，交接前更新 checkbox。把会触发硬门禁的不可逆操作（建表/迁移、认证、契约）作为 task 写进 goal，配合「Goal 预授权」避免重复阻塞。
-- **`.local/` 仓库本地产物区（推荐）**：运行时产物（pid/日志/构建二进制/缓存）+ 活跃 plan + sub-agent backlog 统一收进 `.local/`，整体 `.gitignore`。`docs/` 只放稳定可入库文档，本地临时产物有统一去处；比散落 `/tmp` 更可靠（不被系统清理、跨机器路径一致）。子目录：`.local/dev/`（运行时 pid/logs/bin）、`.local/plan/`（活跃计划 + 短期 handoff）、`.local/backlog/`（sub-agent 委派任务）。
+- **`.local/` 仓库本地产物区（推荐）**：运行时产物（pid/日志/构建二进制/缓存）+ 活跃 plan + sub-agent backlog 统一收进 `.local/`，整体 `.gitignore`。`docs/` 只放稳定可入库文档，本地临时产物有统一去处；比散落 `/tmp` 更可靠（不被系统清理、跨机器路径一致）。按产物类型分子目录，**命名沿用项目既有约定**（「自然形态先于强制模板」），如 `.local/run/`、`.local/plan/`、`.local/backlog/`；不强制 `dev/pids|logs|bin`。
 - **`.local/backlog/<agent-slug>.md`**（异步委派）：不稳定的 sub-agent（如 codex、特定模型实例）用异步 backlog 委派——主 agent 把委派意图写成 backlog，不探测不等待不降级自干，继续自己的工作；sub-agent 被独立调起时读自己 backlog 拉走任务，完成后回写结果指针。不写 `state.json` 健康追踪（容量不可预测、探活能过但重任务即拒会拖累主 agent）。
 - **`docs/reference/`**：只写当前真实系统，未实现内容标 `Status: Not Implemented`。
 
@@ -98,7 +98,7 @@ apps/A      -> apps/B      默认禁止
 ## 权限与硬门禁
 
 - **代码 commit 是可逆操作**（git 兜底），跑完验证门禁即提交，不逐个问——commit 是 checkpoint 便于 review，不是定案。`docs/current.md` 客观状态更新同理。
-- **方向性 docs 写入**（新建 ADR、改写决策记录、roadmap 方向变更）影响后续 AI 与人，需用户确认后再提交。
+- **方向性 docs 写入**（新建 ADR、改写决策记录、roadmap 方向变更）影响后续 AI 与人，需用户确认后再提交（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。
 - **不可逆/破坏性操作**（删除、覆盖、大迁移、目录搬家、DB schema、公开 API、认证权限、部署流程、force push）必须先问用户，默认拒绝。
 - **例外：已批准 plan 的预授权范围**。当操作属于用户已确认 plan 的 goal 明确列出的 task 目标产物、且与 plan 决策记录一致，即视为已获预授权，直接执行（并记入进度日志），不逐个问确认——否则同一硬门禁会在每个 goal 上重复阻塞。覆盖该 goal task 范围的建表/migration、认证代码、契约修改。仍必须先问：超出当前 goal task 范围、与决策记录冲突、删除/覆盖已存在文件、不可回滚操作（force push、删生产数据）。
 - **proposal 机制不阻塞**：goal 内产出 schema/设计 proposal 是设计产物；写定后若与 plan 决策一致即自动放行执行，无需二次人工确认；只有 proposal 引入了 plan 未涵盖且影响后续的决策才需要问。推进 agent 自行核对「goal task 范围 + plan 决策记录」，不要把已确认 goal 的固有操作误判为 blocked。

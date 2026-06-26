@@ -64,7 +64,7 @@ install_agents() {
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
 
-继续 long-running goal 时，如果有 `docs/plan.md` 或 active goal 文件，先读顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
+继续 long-running goal 时，先读 `.local/plan/plan.md`（或项目约定的 active goal 文件）顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
 <!-- META-SCAFFOLD:END -->
 EOF
 )
@@ -86,7 +86,7 @@ install_claude() {
 Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 ```
 
-继续 long-running goal 时，如果有 `docs/plan.md` 或 active goal 文件，先读顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
+继续 long-running goal 时，先读 `.local/plan/plan.md`（或项目约定的 active goal 文件）顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
 <!-- META-SCAFFOLD:END -->
 EOF
 )
@@ -112,6 +112,7 @@ copy_if_absent() {
 install_templates() {
   copy_if_absent "templates/docs/current.md" "$TARGET_DIR/docs/current.md"
   copy_if_absent "templates/docs/roadmap.md" "$TARGET_DIR/docs/roadmap.md"
+  copy_if_absent "templates/docs/decision/INDEX.md" "$TARGET_DIR/docs/decision/INDEX.md"
   copy_if_absent "templates/docs/reference/architecture.md" "$TARGET_DIR/docs/reference/architecture.md"
   copy_if_absent "templates/scaffold.plan.yaml" "$TARGET_DIR/scaffold.plan.yaml"
 }

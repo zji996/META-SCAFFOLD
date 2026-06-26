@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.4.3
+
+- 修 install.sh 与「ADR 核心化」矛盾：templates/all 模式新增 `docs/decision/INDEX.md` 落地（v6.4.1 把 decision/ 升为核心文档但安装脚本一直没建）。新增 `templates/docs/decision/INDEX.md` 模板；`scripts/check.sh` 补建该模板的必需项检查与安装器产物断言。
+- 修 install.sh 嵌入文案过时：`install_agents` / `install_claude` 的 active goal 引导从 `docs/plan.md` 改为 `.local/plan/plan.md`（与 v6.4.2 §6.5 推荐路径一致）。
+- §6.3 / §10 新增「批量补建历史 ADR 属可逆治理」豁免：首次为既有项目把已存在的隐含决策显式化成编号 ADR + INDEX 是治理行为（可逆），可直接执行后提示 review，不按逐条方向性写入门禁处理；之后逐条新增仍按方向性写入规则。区分「显式化已存在决策」（治理）与「引入新决策」（方向性写入）。同步 SKILL、short.md、dist/{AGENTS,CLAUDE,CURSOR}、templates、`.cursor/rules/meta-scaffold.mdc`。
+- §6.1 / §6.2 / §13 放宽 roadmap 已完成阶段：从「只留一行指针」改为「一行指针 + 可附一两句定性结论/里程碑意义（细节仍归 architecture/git log）」，避免与 current.md 去历史化叠加后里程碑叙述无处可放。同步全部分发件。
+- §6.5 / SKILL / dist `.local/` 子目录示例去硬编码：从固定 `dev/{pids,logs,bin}` 改为「按产物类型分子目录，命名沿用项目既有约定」（如 `.local/run/`），与「自然形态先于强制模板」一致；避免示例反向引导重命名既有 `.local/run/`。
+- 修 `.cursor/rules/meta-scaffold.mdc` 仓库内规则漂移：之前未同步 6.4.1 的 ADR 段，现与 `dist/CURSOR.mdc` 对齐。
+- 版本号 6.4.2 → 6.4.3（VERSION / plugin.json / README / SKILL frontmatter / 本机 skill 同步）。
+
 ## 6.4.2
 
 - §6.1 表格：roadmap 已完成阶段只留一行指针（不写全文，细节归 architecture/git log）；新增 `decision/INDEX.md` 一行索引（active/superseded/deprecated），agent 一眼扫完方向决策。

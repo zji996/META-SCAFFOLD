@@ -188,7 +188,7 @@ docs/
 | --- | --- | --- |
 | `current.md` | 当前焦点、短期下一步、阻塞、关键架构事实、验证命令 | 已完成 goal 细节（归 roadmap）、修复历史（归 git log）、未来想象 |
 | `reference/*` | 当前真实系统：架构、模块、数据流、API、部署 | 未实现计划（除非标 `Status: Not Implemented`） |
-| `roadmap.md` | 已完成阶段（一行指针，细节归 architecture/git log）、未来方向、阶段目标、非目标 | 当前系统事实、修复历史、已完成 goal 全文 |
+| `roadmap.md` | 已完成阶段（一行指针 + 可附一两句定性结论/里程碑意义，细节归 architecture/git log）、未来方向、阶段目标、非目标 | 当前系统事实、修复历史、已完成 goal 全文细节 |
 | `decision/INDEX.md` | 一行列所有 ADR + 状态（active/superseded/deprecated） | ADR 正文 |
 | `decision/*` | 方向性决策的 why：为何 monorepo、为何选某框架、为何暂不做某事 | 实现细节、当前状态、重复流程 |
 
@@ -205,6 +205,8 @@ AI 在根部协作说明后优先读的上下文文件，**只回答「现在到
 价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。
 
 `docs/decision/INDEX.md` 一行列所有 ADR + 状态（active/superseded by 00NN/deprecated），agent 一眼扫完所有方向决策，不用逐个读正文。ADR 多了再加索引文件。
+
+**首次为既有项目批量补建历史 ADR 属可逆文档治理**：可直接执行（从已确认方向/历史决策提炼成编号 ADR + INDEX），在交接时提示用户 review，不按逐条方向性写入门禁处理；之后日常逐条新增 ADR 仍按 §10 方向性写入规则（涉及新决策方向时与用户确认）。区分点：治理是把已存在的隐含决策显式化（可逆），方向性写入是引入尚未确认的新决策。
 
 ### 6.4 Active Goal Ledger（`.local/plan/plan.md`，可选）
 
@@ -228,14 +230,11 @@ Blockers: <none，或具体阻塞>
 
 ### 6.5 `.local/` 仓库本地产物区（可选，推荐）
 
-运行时产物（多服务后台进程 pid/日志、构建二进制、缓存）与本地活跃文档（如 6.4 的 plan ledger）统一收进 `.local/`，整体一行 `.gitignore`，而非逐文件加忽略、或散落 `/tmp`（易被系统清理、跨机器路径不一致）。`docs/` 只放稳定可入库文档，本地临时产物有统一去处。参考子目录：
+运行时产物（多服务后台进程 pid/日志、构建二进制、缓存）与本地活跃文档（如 6.4 的 plan ledger）统一收进 `.local/`，整体一行 `.gitignore`，而非逐文件加忽略、或散落 `/tmp`（易被系统清理、跨机器路径不一致）。`docs/` 只放稳定可入库文档，本地临时产物有统一去处。按产物类型分子目录，**命名沿用项目既有约定**（「自然形态先于强制模板」）；下面是一种参考布局，不是强制结构：
 
 ```text
 .local/
-  dev/
-    pids/      # 后台服务 pidfile（<svc>.pid），manage.sh <grp> up 产物
-    logs/      # 后台服务日志（<svc>.log），tail 用，down/up 轮转
-    bin/       # 本地构建二进制
+  run/ 或 dev/        # 后台服务 pidfile/日志/构建二进制（命名沿用 manage.sh 现状，如常见 .local/run/）
   plan/
     plan.md          # 活跃 goal ledger（见 6.4）
     README.md        # .local 用法说明（可选）
@@ -420,7 +419,7 @@ proposal 机制不阻塞：goal 内产出 schema/设计 proposal 是设计产物
 ```text
 先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接，并按需 Compact 到 docs/current.md。T0/T1 小改只需 Inspect→Apply→Verify→Handoff。
 
-默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步（最多 5 项），已完成 goal 归 roadmap，方向决策归 decision/ADR（含 INDEX 一行索引）。`.local/` 收运行时产物 + 活跃 plan + sub-agent backlog（不稳定的 sub-agent 用异步 backlog 委派，主 agent 不探测不等待）。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
+默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步（最多 5 项），已完成 goal 归 roadmap（一行指针 + 可附一两句定性结论），方向决策归 decision/ADR（含 INDEX 一行索引）。`.local/` 收运行时产物 + 活跃 plan + sub-agent backlog（命名沿用项目约定；不稳定的 sub-agent 用异步 backlog 委派，主 agent 不探测不等待）。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
 ```
 
 ---
