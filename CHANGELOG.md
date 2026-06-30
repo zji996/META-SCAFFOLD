@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.5.3
+
+- §8 多实例端口防冲突段提升 `manage.sh ports` 自省命令为一等入口建议：load profile 后直接打印每个 service 的解析端口、角色（本机进程 / 隧道本机端 / 远端宿主暴露端口 / 容器内端口）、当前 `port_instance` 前缀与是否偏移，让操作员一条命令拿到真实端口而无需手算派生公式或翻 profile/env。同步 SKILL。
+- 版本号对齐：补记 6.5.2、6.5.3 的 CHANGELOG；同步 VERSION、plugin.json、README 版本号（前两个 commit 仅改了 SKILL frontmatter，漏更其余版本承载文件）。
+
+## 6.5.2
+
+- §8 多实例端口防冲突段澄清 SSH 隧道 / hybrid 拓扑下的双端偏移：隧道本机 local 端（host-exposed）和远端宿主暴露端口都偏移，链路是 `local(偏移) → 远端宿主(偏移) → 容器内(固定)`；只偏移一端会让本机进程连到一个远端无人监听的端口而握手 reset。改 `port_instance` 后必须重启依赖该端口的长连接（隧道、已建立的 DB 连接、screen/nohup 进程），否则旧进程仍持有失效端口规格而「看起来在跑」——`<group> tunnels` 类命令应比对运行进程的端口规格，不匹配就重建，而非仅凭 pid 存活就报 already running。同步 SKILL。
+
 ## 6.5.1
 
 - §8 多实例端口防冲突段补「落地注意」：偏移写进项目默认后，检查脚本里的端口断言、文档与 curl 示例中的硬编码端口都会失效，必须改为从 profile 动态推导期望值，或用 `manage.sh ports` 这类自省命令取最终端口；否则同一偏移会让门禁/示例与真实端口静默错位。同步 SKILL、dist/{AGENTS,CLAUDE,CURSOR}、`.cursor/rules`。
