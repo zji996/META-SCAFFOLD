@@ -26,7 +26,7 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 命令编排（可选）：
 
 - **多服务本地编排**：后端多服务需本地并起时，避免裸 `go run <svc> &` / `nohup`；用 `manage.sh <group> up|down|logs` 封装，pidfile 落 `.local/`，自动注入各服务 env 端口。
-- **多实例端口防冲突**：同一台机器并行多个实例时，用 profile 级 `port_instance` 一次性偏移整组端口。派生公式 `<instance 前缀> + <原端口首位 × 100 + base % 100>`（保留首位+末两位，避免 `×000` 类端口互相覆盖），如 `port_instance = "12"` 让 8080→12880、5432→12532、9000→12900；profile 显式 `ports.<service>` 仍优先。
+- **多实例端口防冲突**：同一台机器并行多个实例时，用 profile 级 `port_instance` 一次性偏移整组端口。派生公式 `<instance 前缀> + <原端口首位 × 100 + base % 100>`（保留首位+末两位，避免 `×000` 类端口互相覆盖），如 `port_instance = "12"` 让 8080→12880、5432→12532、9000→12900；profile 显式 `ports.<service>` 仍优先。落地注意：偏移写进项目默认后，检查脚本端口断言、文档与 curl 示例里的硬编码端口会失效，须改为从 profile 动态推导或用 `manage.sh ports` 取最终端口。
 
 工具使用纪律：
 

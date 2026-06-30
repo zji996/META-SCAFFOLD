@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.5.1
+
+- §8 多实例端口防冲突段补「落地注意」：偏移写进项目默认后，检查脚本里的端口断言、文档与 curl 示例中的硬编码端口都会失效，必须改为从 profile 动态推导期望值，或用 `manage.sh ports` 这类自省命令取最终端口；否则同一偏移会让门禁/示例与真实端口静默错位。同步 SKILL、dist/{AGENTS,CLAUDE,CURSOR}、`.cursor/rules`。
+- SKILL frontmatter / plugin.json / README 版本号 6.5.0 → 6.5.1。
+
 ## 6.5.0
 
 - §2.7 Handoff 新增「交接提示词（Handoff Prompt）」机制（§2.7.1）：长会话收尾时，在状态报告之外另起一段结构化、可直接粘贴到新会话首条消息的加载入口（当前状态/已完成/验证/后续候选/硬约束），让下轮 AI 不依赖本会话历史即接即做。与 `docs/current.md` 末尾的「重开会话指引」呼应——current.md 给整体视图，交接提示词给最短启动路径，两者二选一或并存。同步 SKILL、short.md、dist/{AGENTS,CLAUDE,CURSOR}、`.cursor/rules`。
