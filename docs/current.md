@@ -2,7 +2,7 @@
 
 ## Current goal
 
-Maintain META-SCAFFOLD v6 as a reusable public skill repository. v6 adds disciplined tool use, conditional sub-agent orchestration, spec/plan-driven development, and explicit permission hard-gates, while compressing the full contract from 983 to ~410 lines by removing duplicates and model-known common sense. v6.1 adds Goal pre-authorization so confirmed plans no longer re-block on every irreversible goal task. v6.2 adds the `.local/` repo-local artifacts zone (runtime pids/logs/binaries + active goal ledger unified under `.local/`, one-line gitignore), moves the default plan path to `.local/plan/plan.md`, adds ADR guidance, and adds multi-service `manage.sh up|down|logs` orchestration guidance.
+Maintain META-SCAFFOLD v6 as a reusable public skill repository. v6.5 adds the structured Handoff Prompt mechanism (a paste-ready session-start loader emitted at long-session close, complementing current.md's session-reopen pointer) and an optional multi-instance port-collision pattern (`port_instance` derivation `<prefix> + <first digit × 100 + base % 100>`, avoiding the ×000 collision of the naive last-three-digits approach). v6.1–6.4 layered Goal pre-authorization, the `.local/` artifacts zone, ADR as core doc, current.md short-focus tightening, and T0/T1 fast path.
 
 ## Confirmed direction
 

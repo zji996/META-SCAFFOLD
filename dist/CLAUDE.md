@@ -21,6 +21,12 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 7. 交接时说明变更文件、验证结果、风险和下一轮起点。
 8. 保持 `docs/current.md` 简洁，只记录仍会影响未来工作的内容。
 9. 继续 long-running goal 时，先读 `.local/plan/plan.md` 顶部执行账本，从第一个未勾选项接着做，交接前更新 checkbox、`Next unchecked item` 和 blocker。
+10. 长会话收尾时，在状态报告之外另起一段**交接提示词**——结构化、可直接粘贴到新会话首条消息的加载入口（当前状态/已完成/验证/后续候选/硬约束），让下轮 AI 不依赖本会话历史即接即做；模板见单源 `prompts/META-SCAFFOLD-v6.md` §2.7.1。
+
+命令编排（可选）：
+
+- **多服务本地编排**：后端多服务需本地并起时，避免裸 `go run <svc> &` / `nohup`；用 `manage.sh <group> up|down|logs` 封装，pidfile 落 `.local/`，自动注入各服务 env 端口。
+- **多实例端口防冲突**：同一台机器并行多个实例时，用 profile 级 `port_instance` 一次性偏移整组端口。派生公式 `<instance 前缀> + <原端口首位 × 100 + base % 100>`（保留首位+末两位，避免 `×000` 类端口互相覆盖），如 `port_instance = "12"` 让 8080→12880、5432→12532、9000→12900；profile 显式 `ports.<service>` 仍优先。
 
 工具使用纪律：
 

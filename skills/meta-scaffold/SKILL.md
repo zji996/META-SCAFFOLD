@@ -2,7 +2,7 @@
 name: meta-scaffold
 description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md、docs/decision（ADR）与 .local/plan 的 Goal Execution Ledger；定义验证命令；规范工具使用与子 agent 编排；压缩未来 AI 工作上下文。
 license: MIT
-version: 6.4.3
+version: 6.5.0
 ---
 
 # META-SCAFFOLD
@@ -33,8 +33,41 @@ Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
 - **Preview**：重大改动前说明计划 diff（会改什么/碰哪些文件/不碰哪些/为何/如何验证/回滚）。已授权可直接改时压缩成一句。
 - **Apply**：匹配仓库现有风格，每行改动可追溯到用户请求或验证失败。
 - **Verify**：优先运行已有命令；无法验证就准确说明原因并给出用户可运行命令。
-- **Handoff**：报告改了什么、验证了什么、什么失败或未跑、剩余风险、下一轮起点。
+- **Handoff**：报告改了什么、验证了什么、什么失败或未跑、剩余风险、下一轮起点。在长会话结束/用户要求继续前，额外产出**下轮交接提示词**（见下）。
 - **Compact**：只把仍影响未来工作的判断写入 `docs/current.md`；用 active plan 时更新顶部执行账本。
+
+## 交接提示词（Handoff Prompt）
+
+相比 `/compact` 把整段会话压成摘要，**交接提示词**是「结构化、可复用、一句话加载入口」——一段可直接粘贴到新会话首条消息的 prompt，让下轮 AI 不依赖本会话历史、按指定顺序加载、即接即做。规则化后比一次性 compact 更稳：加载顺序固定、当前状态/硬约束显式、不丢关键事实。
+
+每轮长工作收尾时（提交后、停机前），在状态报告之外另起一段交接提示词，结构固定：
+
+```text
+继续 <项目> 项目工作。先按序加载上下文：
+<AGENTS> → <docs/current.md> → <architecture> → <roadmap> → <.local/plan/plan.md>。
+
+## 当前状态
+工作区<干净/有未提交>，最新 HEAD：
+- <最近 1-2 个 commit 短 hash + message>
+
+本轮已完成：
+1. ...
+2. ...
+
+## 最新验证
+<逐条列出本轮跑绿的 make/命令；写明既有非阻塞 warning>
+
+## 后续优先候选
+1. ...
+2. ...
+
+## 硬约束
+<本项目不可违反的边界 + 验证门禁 + 不可逆操作门禁，从 AGENTS 提炼>
+
+帮忙继续下工作，尽量完成的内容多一点。
+```
+
+要点：**短**——只写能放进新会话首条消息的量；**可粘贴**——不引用本会话消息、不假设下轮 AI 看过上一轮；**自包含**——commit hash、验证命令、约束都写实，不靠"见上文"。`docs/current.md` 顶部的「重开会话指引」指针 + 交接提示词二选一或并存：current.md 给读到它的人/AI 整体视图，交接提示词给直接粘贴启动的最短路径。
 
 ## 工具使用纪律
 
@@ -68,7 +101,7 @@ apps/A      -> apps/B      默认禁止
 
 最小结构：`README.md`、`AGENTS.md`、`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`、`docs/decision/`。`decision/` 是核心文档，不是可选。
 
-- **`docs/current.md`（短期焦点）**：AI 在根部说明后优先读的上下文压缩。**只记当前焦点、短期下一步、阻塞、关键架构事实、验证命令**。已完成 goal 不在此留存细节——压缩成一行指针指向 roadmap 或状态表。修复历史归 `git log`。目标是让下一轮 AI 用最少 token 接上当前工作。
+- **`docs/current.md`（短期焦点）**：AI 在根部说明后优先读的上下文压缩。**只记当前焦点、短期下一步、阻塞、关键架构事实、验证命令**。已完成 goal 不在此留存细节——压缩成一行指针指向 roadmap 或状态表。修复历史归 `git log`。目标是让下一轮 AI 用最少 token 接上当前工作。**末尾保留「重开会话指引」**：一行声明上下文加载顺序 + 活跃文档指针（AGENTS → current → architecture → plan/roadmap/ADR），与「交接提示词」机制呼应——人/AI 读 current.md 得整体视图，粘贴交接提示词得最短启动路径，两者不重复劳动。scaffold 新项目时 AGENTS.md 的「上下文加载顺序」段即此机制的种子模板。
 - **`docs/decision/`（ADR，核心设计记忆）**：用户的方向性想法常是细碎、跨会话的；ADR 是这些想法的沉淀点。每个「为什么这么做」记一条编号记录（`00NN-short-slug.md`），新决策覆盖旧决策而非改旧文件。`docs/current.md` 顶部指向当前活跃决策。价值：把用户零散的判断积累成项目的设计记忆，让项目随用户想法逐步推进而非每次从零开始；agent 读 ADR 即知「这条路已想过，不要重新提议」。**首次为既有项目批量补建历史 ADR 属可逆治理**（把已存在的隐含决策显式化），可直接执行后在交接时提示用户 review，不按逐条方向性写入门禁处理；之后日常逐条新增仍按方向性写入规则。
 - **`docs/roadmap.md`**：已完成阶段（一行指针 + 可附一两句定性结论/里程碑意义，细节归 architecture/git log）、未来方向、阶段目标、非目标。
 - **`docs/decision/INDEX.md`**：一行列所有 ADR + 状态（active/superseded by 00NN/deprecated），agent 一眼扫完方向决策，ADR 多了再加。
@@ -86,6 +119,8 @@ apps/A      -> apps/B      默认禁止
 沿用已有入口（`pnpm`/`make`/`just`/`task`/`cargo`/`go test`/`pytest`）；没有则补薄 `manage.sh`/`justfile`。README、AGENTS、CI、AI 交接指向同一套命令。
 
 **多服务本地编排**：后端多服务（微服务/多语言栈）需本地并起时，避免裸 `go run <svc> &` / `nohup`（留孤儿进程、pid 不可控）。在 `manage.sh` 封装 `<group> up|down|logs` 子命令：`up` = 并行 build 二进制 + 后台起（写 pidfile 到 `.local/`，自动注入各服务 env 端口）；`down` = 按 pidfile 干净停；`logs` = tail 不停服务。`up/down` 符合操作动词直觉；pidfile 落 `.local/`（见文档系统）。改代码后 `down && up` 重编重启，或 `up --no-build` 秒起复用二进制。
+
+**多实例端口防冲突（可选模式）**：同一台机器并行多个实例（两套 local-dev、本机 + CI、多人共用开发机）时，用 profile 级 `port_instance` 一次性偏移整组端口，而非逐个改 `ports.*`。派生公式：`<instance 前缀> + <原端口首位数字 × 100 + base % 100>`——保留原端口的「首位 + 末两位」作中段，前置 instance。例如 `port_instance = "12"` 让 api 8080→12880、postgres 5432→12532、minio 9000→12900。该公式优于「末三位法」之处：末三位法对 `×000` 类常用端口（8000/3000/9000）会全映射到同一值（12000），而首位+末两位法能区分不同首位段。容器内部端口不偏移，只偏移宿主暴露端口；profile 显式 `ports.<service>` 仍优先于 `port_instance`，作为单端口逃生口。限制：派生只保留首位与末两位，仅当两个默认端口的「首位相同且末两位也相同」时才碰撞，新增服务端口后可加配置体检守住；instance 实际可用到约 64（端口上限 65535）。
 
 **Fallback 硬门禁**：能运行就运行，不能就说明原因；命令不存在不假装运行过；失败不静默换命令；不用 silent fallback 掩盖关键路径错误；失败如实报告跑了什么、失败在哪、是否本轮引起、已修什么、剩余风险。
 

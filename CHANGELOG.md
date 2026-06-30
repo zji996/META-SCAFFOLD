@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.5.0
+
+- §2.7 Handoff 新增「交接提示词（Handoff Prompt）」机制（§2.7.1）：长会话收尾时，在状态报告之外另起一段结构化、可直接粘贴到新会话首条消息的加载入口（当前状态/已完成/验证/后续候选/硬约束），让下轮 AI 不依赖本会话历史即接即做。与 `docs/current.md` 末尾的「重开会话指引」呼应——current.md 给整体视图，交接提示词给最短启动路径，两者二选一或并存。同步 SKILL、short.md、dist/{AGENTS,CLAUDE,CURSOR}、`.cursor/rules`。
+- §8 多服务本地编排新增「多实例端口防冲突（可选模式）」：同一台机器并行多个实例时，用 profile 级 `port_instance` 一次性偏移整组端口。派生公式 `<instance 前缀> + <原端口首位 × 100 + base % 100>`（保留首位+末两位），如 `port_instance = "12"` 让 8080→12880、5432→12532、9000→12900。该公式优于「末三位法」之处：末三位法对 `×000` 类常用端口（8000/3000/9000）会全映射到同一值，而首位+末两位法能区分不同首位段；容器内部端口不偏移，profile 显式 `ports.<service>` 仍优先。同步 SKILL、short.md、dist/{AGENTS,CLAUDE,CURSOR}、`.cursor/rules`。
+- §13 最短版 + short.md：加交接提示词提及与端口模式一行。
+- 版本号 6.4.3 → 6.5.0（VERSION / plugin.json / README / SKILL frontmatter / 本机 skill 同步）。
+
 ## 6.4.3
 
 - 修 install.sh 与「ADR 核心化」矛盾：templates/all 模式新增 `docs/decision/INDEX.md` 落地（v6.4.1 把 decision/ 升为核心文档但安装脚本一直没建）。新增 `templates/docs/decision/INDEX.md` 模板；`scripts/check.sh` 补建该模板的必需项检查与安装器产物断言。

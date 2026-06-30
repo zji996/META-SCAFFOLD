@@ -76,7 +76,42 @@ Inspect → Frame → Decide → Preview → Apply → Verify → Handoff → Co
 
 ### 2.7 Handoff：紧凑交接
 
-报告：改了什么、验证了什么、什么失败或未跑、剩余风险、下一轮起点。
+报告：改了什么、验证了什么、什么失败或未跑、剩余风险、下一轮起点。在长会话结束或用户要求继续前，额外产出**下轮交接提示词**（见 2.7.1）。
+
+### 2.7.1 交接提示词（Handoff Prompt）
+
+相比 `/compact` 把整段会话压成摘要，**交接提示词**是「结构化、可复用、一句话加载入口」——一段可直接粘贴到新会话首条消息的 prompt，让下轮 AI 不依赖本会话历史、按指定顺序加载、即接即做。规则化后比一次性 compact 更稳：加载顺序固定、当前状态/硬约束显式、不丢关键事实。
+
+每轮长工作收尾时（提交后、停机前），在状态报告之外另起一段交接提示词，结构固定：
+
+```text
+继续 <项目> 项目工作。先按序加载上下文：
+<AGENTS> → <docs/current.md> → <architecture> → <roadmap> → <.local/plan/plan.md>。
+
+## 当前状态
+工作区<干净/有未提交>，最新 HEAD：
+- <最近 1-2 个 commit 短 hash + message>
+
+## 本轮已完成
+1. ...
+2. ...
+
+## 最新验证
+<逐条列出本轮跑绿的 make/命令；写明既有非阻塞 warning>
+
+## 后续优先候选
+1. ...
+2. ...
+
+## 硬约束
+<本项目不可违反的边界 + 验证门禁 + 不可逆操作门禁，从 AGENTS 提炼>
+
+帮忙继续下工作，尽量完成的内容多一点。
+```
+
+要点：**短**——只写能放进新会话首条消息的量；**可粘贴**——不引用本会话消息、不假设下轮 AI 看过上一轮；**自包含**——commit hash、验证命令、约束都写实，不靠"见上文"。
+
+`docs/current.md` 末尾的「重开会话指引」指针与交接提示词二选一或并存：current.md 给读到它的人/AI 整体视图，交接提示词给直接粘贴启动的最短路径，两者不重复劳动。scaffold 新项目时，AGENTS.md 的「上下文加载顺序」段即此机制的种子模板。
 
 ### 2.8 Compact：更新上下文
 
@@ -286,6 +321,8 @@ Blockers: <none，或具体阻塞>
 
 **多服务本地编排**：后端微服务/多语言栈需本地并起时，避免裸 `go run <svc> &` / `nohup`（留孤儿进程、pid 不可控）。在 `manage.sh` 封装 `<group> up|down|logs` 子命令：`up` = 并行 build 二进制 + 后台起（pidfile 落 `.local/`，自动注入各服务 env 端口）；`down` = 按 pidfile 干净停；`logs` = tail 不停服务。`up/down` 符合操作动词直觉；改代码后 `down && up` 重编重启，或 `up --no-build` 复用二进制秒起。
 
+**多实例端口防冲突（可选模式）**：同一台机器并行多个实例（两套 local-dev、本机 + CI、多人共用开发机）时，用 profile 级 `port_instance` 一次性偏移整组端口，而非逐个改 `ports.*`。派生公式：`<instance 前缀> + <原端口首位数字 × 100 + base % 100>`——保留原端口的「首位 + 末两位」作中段，前置 instance。例如 `port_instance = "12"` 让 api 8080→12880、postgres 5432→12532、minio 9000→12900。该公式优于「末三位法」之处：末三位法对 `×000` 类常用端口（8000/3000/9000）会全映射到同一值（12000），而首位+末两位法能区分不同首位段。容器内部端口不偏移，只偏移宿主暴露端口；profile 显式 `ports.<service>` 仍优先于 `port_instance`，作为单端口逃生口。限制：派生只保留首位与末两位，仅当两个默认端口的「首位相同且末两位也相同」时才碰撞（如 1234 与 1434），新增服务端口后可加配置体检守住；instance 实际可用到约 64（端口上限 65535）。
+
 ### Fallback 硬门禁
 
 验证原则是**硬约束，不是建议**：
@@ -417,9 +454,9 @@ proposal 机制不阻塞：goal 内产出 schema/设计 proposal 是设计产物
 只能放一小段到系统提示词或 AGENTS 顶部时，用这版：
 
 ```text
-先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接，并按需 Compact 到 docs/current.md。T0/T1 小改只需 Inspect→Apply→Verify→Handoff。
+先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接（长会话收尾额外产出可粘贴的交接提示词），并按需 Compact 到 docs/current.md。T0/T1 小改只需 Inspect→Apply→Verify→Handoff。
 
-默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步（最多 5 项），已完成 goal 归 roadmap（一行指针 + 可附一两句定性结论），方向决策归 decision/ADR（含 INDEX 一行索引）。`.local/` 收运行时产物 + 活跃 plan + sub-agent backlog（命名沿用项目约定；不稳定的 sub-agent 用异步 backlog 委派，主 agent 不探测不等待）。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
+默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步（最多 5 项），已完成 goal 归 roadmap（一行指针 + 可附一两句定性结论），方向决策归 decision/ADR（含 INDEX 一行索引）。`.local/` 收运行时产物 + 活跃 plan + sub-agent backlog（命名沿用项目约定；不稳定的 sub-agent 用异步 backlog 委派，主 agent 不探测不等待）。多服务用 manage.sh up|down|logs 封装，pidfile 落 `.local/`；多实例端口防冲突可选 `port_instance`（`<前缀>+<首位×100+末两位>`，如 12 → 8080 变 12880）。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
 ```
 
 ---
