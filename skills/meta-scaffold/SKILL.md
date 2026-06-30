@@ -2,7 +2,7 @@
 name: meta-scaffold
 description: 项目结构与 AI 协作治理 skill。用于创建、重组、维护或交接软件仓库；判断 monorepo/app/package 边界；编写 AGENTS/CLAUDE/Cursor 规则；维护 docs/current.md、docs/decision（ADR）与 .local/plan 的 Goal Execution Ledger；定义验证命令；规范工具使用与子 agent 编排；压缩未来 AI 工作上下文。
 license: MIT
-version: 6.5.1
+version: 6.5.2
 ---
 
 # META-SCAFFOLD
@@ -120,7 +120,7 @@ apps/A      -> apps/B      默认禁止
 
 **多服务本地编排**：后端多服务（微服务/多语言栈）需本地并起时，避免裸 `go run <svc> &` / `nohup`（留孤儿进程、pid 不可控）。在 `manage.sh` 封装 `<group> up|down|logs` 子命令：`up` = 并行 build 二进制 + 后台起（写 pidfile 到 `.local/`，自动注入各服务 env 端口）；`down` = 按 pidfile 干净停；`logs` = tail 不停服务。`up/down` 符合操作动词直觉；pidfile 落 `.local/`（见文档系统）。改代码后 `down && up` 重编重启，或 `up --no-build` 秒起复用二进制。
 
-**多实例端口防冲突（可选模式）**：同一台机器并行多个实例（两套 local-dev、本机 + CI、多人共用开发机）时，用 profile 级 `port_instance` 一次性偏移整组端口，而非逐个改 `ports.*`。派生公式：`<instance 前缀> + <原端口首位数字 × 100 + base % 100>`——保留原端口的「首位 + 末两位」作中段，前置 instance。例如 `port_instance = "12"` 让 api 8080→12880、postgres 5432→12532、minio 9000→12900。该公式优于「末三位法」之处：末三位法对 `×000` 类常用端口（8000/3000/9000）会全映射到同一值（12000），而首位+末两位法能区分不同首位段。容器内部端口不偏移，只偏移宿主暴露端口；profile 显式 `ports.<service>` 仍优先于 `port_instance`，作为单端口逃生口。限制：派生只保留首位与末两位，仅当两个默认端口的「首位相同且末两位也相同」时才碰撞，新增服务端口后可加配置体检守住；instance 实际可用到约 64（端口上限 65535）。落地注意：偏移写进项目默认后，检查脚本里的端口断言、文档与 curl 示例中的硬编码端口都会失效，必须改为从 profile 动态推导期望值，或用 `manage.sh ports` 这类自省命令取最终端口；否则同一偏移会让门禁/示例与真实端口静默错位。
+**多实例端口防冲突（可选模式）**：同一台机器并行多个实例（两套 local-dev、本机 + CI、多人共用开发机）时，用 profile 级 `port_instance` 一次性偏移整组端口，而非逐个改 `ports.*`。派生公式：`<instance 前缀> + <原端口首位数字 × 100 + base % 100>`——保留原端口的「首位 + 末两位」作中段，前置 instance。例如 `port_instance = "12"` 让 api 8080→12880、postgres 5432→12532、minio 9000→12900。该公式优于「末三位法」之处：末三位法对 `×000` 类常用端口（8000/3000/9000）会全映射到同一值（12000），而首位+末两位法能区分不同首位段。容器内部端口不偏移，只偏移宿主暴露端口；profile 显式 `ports.<service>` 仍优先于 `port_instance`，作为单端口逃生口。限制：派生只保留首位与末两位，仅当两个默认端口的「首位相同且末两位也相同」时才碰撞，新增服务端口后可加配置体检守住；instance 实际可用到约 64（端口上限 65535）。落地注意：偏移写进项目默认后，检查脚本里的端口断言、文档与 curl 示例中的硬编码端口都会失效，必须改为从 profile 动态推导期望值，或用 `manage.sh ports` 这类自省命令取最终端口；否则同一偏移会让门禁/示例与真实端口静默错位。SSH 隧道/hybrid 拓扑下两端都要用同一 `port_instance`：隧道本机 local 端（host-exposed）和远端宿主暴露端口都偏移，链路是 `local(偏移) → 远端宿主(偏移) → 容器内(固定)`；只偏移一端会让本机进程连到一个远端无人监听的端口而握手 reset。改 `port_instance` 后必须重启依赖该端口的长连接（隧道、已建立的 DB 连接、screen/nohup 进程），否则旧进程仍持有失效端口规格而「看起来在跑」——`<group> tunnels` 类命令应比对运行进程的端口规格，不匹配就重建，而非仅凭 pid 存活就报 already running。
 
 **Fallback 硬门禁**：能运行就运行，不能就说明原因；命令不存在不假装运行过；失败不静默换命令；不用 silent fallback 掩盖关键路径错误；失败如实报告跑了什么、失败在哪、是否本轮引起、已修什么、剩余风险。
 
