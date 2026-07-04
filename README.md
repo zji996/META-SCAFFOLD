@@ -253,7 +253,7 @@ bash scripts/check.sh
 
 ## 版本
 
-当前版本：`v6.5.3` / `Stable Draft`
+当前版本：`v6.5.4` / `Stable Draft`
 
 ## License
 
