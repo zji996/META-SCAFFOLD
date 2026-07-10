@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.6.1
+
+- 目的驱动再压缩：去掉八步仪式串；`SKILL.md` 按「优化 / 读取 / 授权 / 结构 / 记忆 / 收尾」组织，约 60 行。
+- 否定式避坑句改为条件与结果；`short.md` 收成一句目的。
+- 明确提交/PR 策略服从仓库；预授权的具体范围由项目 AGENTS 内联，skill 只保留“已批准计划内不重复授权”的一般原则。
+- `docs/current.md` 改为审后动作清单；ports / handoff references 先写目的再写做法。
+- `check.sh` 不再断言八步协议字符串。
+
 ## 6.6.0
 
 - 将 `skills/meta-scaffold/` 设为唯一运行时内容源：`SKILL.md` 从 160+ 行收敛到约 70 行，handoff、repository patterns、platform setup 拆入按需 `references/`。

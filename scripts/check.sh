@@ -56,7 +56,9 @@ grep -q '^name: meta-scaffold$' skills/meta-scaffold/SKILL.md || { echo "missing
 grep -q '^description:' skills/meta-scaffold/SKILL.md || { echo "missing skill description" >&2; exit 1; }
 grep -q '^license: MIT$' skills/meta-scaffold/SKILL.md || { echo "missing skill license" >&2; exit 1; }
 grep -q "version: \"$version\"" skills/meta-scaffold/SKILL.md || { echo "skill metadata version mismatch" >&2; exit 1; }
-grep -q 'Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact' skills/meta-scaffold/SKILL.md || { echo "missing protocol" >&2; exit 1; }
+grep -q '降低仓库长期理解成本' skills/meta-scaffold/SKILL.md || { echo "missing purpose statement" >&2; exit 1; }
+grep -q 'references/handoff.md' skills/meta-scaffold/SKILL.md || { echo "missing handoff reference" >&2; exit 1; }
+grep -q 'references/repository-patterns.md' skills/meta-scaffold/SKILL.md || { echo "missing repository-patterns reference" >&2; exit 1; }
 grep -q 'zji996/META-SCAFFOLD' README.md || { echo "README missing public import path" >&2; exit 1; }
 grep -q "v$version" README.md || { echo "README version mismatch" >&2; exit 1; }
 

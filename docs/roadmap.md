@@ -2,14 +2,13 @@
 
 ## 近期
 
-- 发布并验证 v6.6.0 的 Codex/Kilo 单 runtime 安装链路。
-- 基于真实使用反馈继续删除常驻上下文中的通用常识和平台耦合。
-- 在版本稳定后创建 tag release。
+- 以 v6.6.1 作为目的驱动、跨平台单 runtime 基线。
+- 用误触发率、跨会话恢复率、常驻 token 成本评估，而不是规则行数。
+- 检查消费仓是否仍引用已删除的 skill 章节，并把项目授权/commit 纪律留在各自 AGENTS。
 
 ## 后续
 
-- 仅在真实 Agent Skills 实现需要时增加薄适配器或 remote manifest。
-- 用跨会话恢复率、误触发率和常驻 token 成本评估 skill，而不是按规则数量评估。
+- 仅在真实 Agent Skills 实现需要时新增或调整薄适配器、remote manifest。
 
 ## 非目标
 
