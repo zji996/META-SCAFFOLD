@@ -1,76 +1,16 @@
 # CLAUDE.md
 
-## META-SCAFFOLD v6
+## META-SCAFFOLD v6.6
 
-把本节作为 AI coding agent 的项目治理契约。默认中文协作和编写项目交接文档，除非用户另有要求或仓库已明确使用其他语言。
+仓库治理、结构调整、项目记忆或跨会话交接任务优先使用 `meta-scaffold` skill。若当前 agent 不支持 skills，遵循以下最小契约：
 
-核心协议：
+- 先读用户请求、当前目录项目规则和直接相关文件；需要当前状态时再读 `docs/current.md`。
+- 小任务直接修改并验证；多文件或结构调整才先说明目标、事实、假设、成功标准和非目标。
+- 尊重现有仓库形态。只有部署、所有权、复用或验证成本明确受益时才新增 app/package 边界或建议 monorepo。
+- 采用 `apps/`/`packages/` 时，允许 app 依赖共享包，禁止共享包反向依赖 app；跨 app 走契约或服务接口。
+- 高影响操作按项目规则取得授权；已批准计划内明确步骤不重复阻塞。
+- 优先运行已有验证入口；失败或未运行必须如实说明，不 silent fallback。
+- 项目记忆按寿命放入 `docs/current.md`、ADR、reference、roadmap 或本地 plan，不把 current 写成工作日志。
+- 结果和交接必须自包含，不使用“见上文”代替关键事实。只有暂停或换会话时才生成 handoff prompt。
 
-```text
-Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
-```
-
-执行协议：
-
-1. 修改文件前先检查真实仓库。
-2. 非简单任务先说明目标、假设、成功标准和非目标。
-3. 只对高影响歧义提问；低风险歧义使用安全默认值继续。
-4. 重大改动前先 Preview。
-5. 只修改任务所需文件。
-6. 使用已有命令验证，或说明为什么无法验证。
-7. 交接时说明变更文件、验证结果、风险和下一轮起点。
-8. 保持 `docs/current.md` 简洁，只记录仍会影响未来工作的内容。
-9. 继续 long-running goal 时，先读 `.local/plan/plan.md` 顶部执行账本，从第一个未勾选项接着做，交接前更新 checkbox、`Next unchecked item` 和 blocker。
-10. 长会话收尾时，在状态报告之外另起一段**交接提示词**——结构化、可直接粘贴到新会话首条消息的加载入口（当前状态/已完成/验证/后续候选/硬约束），让下轮 AI 不依赖本会话历史即接即做；模板见单源 `prompts/META-SCAFFOLD-v6.md` §2.7.1。
-
-命令编排（可选）：
-
-- **多服务本地编排**：后端多服务需本地并起时，避免裸 `go run <svc> &` / `nohup`；用 `manage.sh <group> up|down|logs` 封装，pidfile 落 `.local/`，自动注入各服务 env 端口。
-- **多实例端口防冲突**：同一台机器并行多个实例时，用 profile 级 `port_instance` 一次性偏移整组端口。派生公式 `<instance 前缀> + <原端口首位 × 100 + base % 100>`（保留首位+末两位，避免 `×000` 类端口互相覆盖），如 `port_instance = "12"` 让 8080→12880、5432→12532、9000→12900；profile 显式 `ports.<service>` 仍优先。落地注意：偏移写进项目默认后，检查脚本端口断言、文档与 curl 示例里的硬编码端口会失效，须改为从 profile 动态推导或用 `manage.sh ports` 取最终端口。
-
-工具使用纪律：
-
-- 先读后改；对未读文件不做大范围 `replaceAll`。
-- 独立读取/搜索并行发起（后步依赖前步时串行）。
-- 危险或不可逆命令默认不执行；长进程用进程管理工具不用 `&`/`nohup`。
-
-子 Agent 编排（条件化，不强求）：任务可拆成独立、无共享写、自包含且够重的子任务时才并行分发；有顺序依赖或写同一文件则串行。
-
-仓库结构规则：
-
-- **monorepo 是 AI 协作的推荐默认形态**：一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证。用少量空间换最大 agent 操作空间。新项目默认 monorepo，只落地真实需要的目录。
-- `apps/` 放可独立运行、构建或部署的单元。
-- `packages/` 或 `libs/` 放共享代码。
-- 默认依赖方向：允许 `apps/* -> packages/*`；禁止 `packages/* -> apps/*`；默认禁止 `apps/A -> apps/B`。
-- 跨 app 协作应使用 HTTP、RPC、queue、event、schema、protobuf 或 contracts package，而不是直接 import。
-
-文档规则：
-
-- 最小有用文档：`docs/current.md`、`docs/roadmap.md`、`docs/reference/architecture.md`、`docs/decision/`（ADR）+ `docs/decision/INDEX.md`（一行索引）。
-- `docs/current.md` 只记当前焦点 + 短期下一步（最多 5 项）+ 阻塞 + 关键架构事实 + 验证命令。已完成 goal 不在此留存细节（归 roadmap 一行指针），修复历史归 `git log`。目的是让下一轮 AI 用最少 token 接上当前工作。
-- `docs/decision/`（ADR）是核心设计记忆：用户方向性想法常细碎跨会话，ADR 是沉淀点。每个「为什么这么做」记一条编号记录（`00NN-slug.md`），新决策覆盖旧决策不改旧文件。`INDEX.md` 一行列所有 ADR + 状态。agent 读 ADR 即知「这条路已想过，不要重新提议」。首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review。
-- `docs/roadmap.md` 已完成阶段留一行指针 + 可附一两句定性结论/里程碑意义（细节归 architecture/git log），其余是未来方向、阶段目标、非目标。
-- `docs/plan.md` 或 `.local/plan/plan.md` 可作为快速变化的 active goal ledger；用 Markdown checkbox 保存可恢复进度，不保存稳定事实或 secrets。优先 `.local/plan/`（与本地产物同归 `.local/`，整体 gitignore）。
-- `.local/` 收运行时产物（pid/logs/bin）+ 活跃 plan + sub-agent backlog，整体 gitignore。按产物类型分子目录，命名沿用项目既有约定（如 `run/`、`plan/`、`backlog/`），不强制固定结构。
-- `.local/backlog/<agent-slug>.md` 异步委派不稳定 sub-agent：主 agent 写委派意图后继续自己工作，不探测不等待；sub-agent 被调起时读自己 backlog 拉任务。不写 `state.json` 健康追踪。
-- `docs/reference/` 只写当前事实，未实现内容标 `Status: Not Implemented`。
-- 未来计划写入 roadmap，不得写成已实现事实。
-
-验证规则（硬门禁）：
-
-- 优先使用已有命令，例如 `pnpm lint`、`pnpm typecheck`、`pnpm test`、`pnpm build`、`make check`、`just check`、`task check` 或 `./manage.sh check all`。
-- README、AGENTS、CI 和 AI 交接应指向同一组命令。
-- 命令不存在不假装运行过；验证失败不静默换命令；不用 silent fallback 掩盖关键路径错误；失败如实报告。
-
-硬门禁（不做，除非用户明确授权）：
-
-- 代码 commit 是可逆操作（git 兜底），跑完验证门禁即提交，不逐个问——commit 是 checkpoint 便于 review，不是定案。`docs/current.md` 客观状态更新同理。
-- 方向性 docs 写入（新建 ADR、改写决策记录、roadmap 方向变更）需用户确认后再提交（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。
-- 已批准 plan 的 goal task 范围内操作（建表/migration、认证、契约）视为预授权，推进时直接执行不逐个问；超出范围、与决策冲突或不可回滚操作（force push、删生产数据）仍需先问。
-- 未批准移动、删除或覆盖已有文件。
-- 顺手重构或格式化无关文件；未说明原因新增依赖；为不可能场景堆防御代码。
-- 删除预先存在的 dead code（可指出不擅自清理）。
-- 改变公开 API、DB schema、认证权限、部署流程。
-- 把 secret、token、真实密钥写进文档或示例。
-- 为了显得完整创建空目录；把共享库放进 `apps/`；让共享包依赖 apps。
-- 把 AI 推测写成项目事实；用 silent fallback 掩盖失败。
+运行时完整内容：`skills/meta-scaffold/SKILL.md`。

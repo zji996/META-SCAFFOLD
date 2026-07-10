@@ -1,0 +1,14 @@
+{
+  "skills": [
+    {
+      "name": "meta-scaffold",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/handoff.md",
+        "references/platforms.md",
+        "references/repository-patterns.md"
+      ]
+    }
+  ]
+}

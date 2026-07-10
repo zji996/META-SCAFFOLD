@@ -1,4 +1,4 @@
 interface:
-  display_name: "Meta Scaffold"
-  short_description: "治理仓库结构、文档、验证、交接、工具使用与子 agent 编排"
-  default_prompt: "使用 $meta-scaffold 检查这个仓库，做最小安全改动，完成验证，并留下简洁交接上下文。"
+  display_name: "META-SCAFFOLD"
+  short_description: "治理仓库结构、项目记忆、验证入口、决策记录与跨会话交接"
+  default_prompt: "使用 $meta-scaffold 审查当前仓库治理，只加载必要上下文，提出并实施最小可验证改进。"

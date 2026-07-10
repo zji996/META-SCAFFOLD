@@ -43,10 +43,18 @@ append_block_once() {
 }
 
 install_skill() {
-  fetch_file "skills/meta-scaffold/SKILL.md" "$TARGET_DIR/skills/meta-scaffold/SKILL.md"
-  fetch_file "skills/meta-scaffold/agents/openai.yaml" "$TARGET_DIR/skills/meta-scaffold/agents/openai.yaml"
-  echo "installed: skills/meta-scaffold/SKILL.md"
-  echo "installed: skills/meta-scaffold/agents/openai.yaml"
+  local files=(
+    "SKILL.md"
+    "agents/openai.yaml"
+    "references/handoff.md"
+    "references/platforms.md"
+    "references/repository-patterns.md"
+  )
+  local file
+  for file in "${files[@]}"; do
+    fetch_file "skills/meta-scaffold/$file" "$TARGET_DIR/skills/meta-scaffold/$file"
+    echo "installed: skills/meta-scaffold/$file"
+  done
 }
 
 install_agents() {
@@ -58,13 +66,7 @@ install_agents() {
 
 当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，先读取并遵守 `skills/meta-scaffold/SKILL.md`。
 
-默认协议：
-
-```text
-Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
-```
-
-继续 long-running goal 时，先读 `.local/plan/plan.md`（或项目约定的 active goal 文件）顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
+小任务直接修改并验证；复杂任务才显式说明事实、假设、成功标准和计划。输出与交接必须自包含，只有暂停或换会话时才生成 handoff prompt。
 <!-- META-SCAFFOLD:END -->
 EOF
 )
@@ -80,13 +82,7 @@ install_claude() {
 
 当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，先读取并遵守 `skills/meta-scaffold/SKILL.md`。
 
-默认协议：
-
-```text
-Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
-```
-
-继续 long-running goal 时，先读 `.local/plan/plan.md`（或项目约定的 active goal 文件）顶部执行账本，从第一个未勾选项继续，并在交接前更新 checkbox、`Next unchecked item` 和 blocker。
+小任务直接修改并验证；复杂任务才显式说明事实、假设、成功标准和计划。输出与交接必须自包含，只有暂停或换会话时才生成 handoff prompt。
 <!-- META-SCAFFOLD:END -->
 EOF
 )

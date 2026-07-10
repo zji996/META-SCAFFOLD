@@ -2,50 +2,34 @@
 
 ## Current goal
 
-Maintain META-SCAFFOLD v6 as a reusable public skill repository. v6.5 adds the structured Handoff Prompt mechanism (a paste-ready session-start loader emitted at long-session close, complementing current.md's session-reopen pointer) and an optional multi-instance port-collision pattern (`port_instance` derivation `<prefix> + <first digit × 100 + base % 100>`, avoiding the ×000 collision of the naive last-three-digits approach). v6.1–6.4 layered Goal pre-authorization, the `.local/` artifacts zone, ADR as core doc, current.md short-focus tightening, and T0/T1 fast path.
+Prepare v6.6.0 for review as one Agent Skills-compatible runtime shared by Codex and Kilo Code.
 
 ## Confirmed direction
 
-- Repository name: `META-SCAFFOLD`.
-- Main reusable entry: `skills/meta-scaffold/SKILL.md`.
-- Codex/OpenAI UI metadata entry: `skills/meta-scaffold/agents/openai.yaml`.
-- Single source of truth (full contract): `prompts/META-SCAFFOLD-v6.md`.
-- Shortest embeddable version: `prompts/META-SCAFFOLD-v6.short.md`.
-- No v5 backward compatibility: v5 prompt files were removed; downstream imports must migrate to v6.
-- Skill body and primary AI-facing distributions are Chinese-first.
-- All distributions (SKILL / AGENTS / CLAUDE / CURSOR / templates / plugin / cursor rule) derive from the v6 contract; do not maintain long-form copies separately.
-- Long-running goals should use a top-of-file `Goal Execution Ledger` in
-  `docs/plan.md` or another active goal file: Markdown checkboxes, `Next
-  unchecked item`, and blockers. Stable facts still belong in `docs/current.md`,
-  roadmap, or reference docs.
-- Root README must explain convenient import methods.
-- Public GitHub target assumed by install commands: `zji996/META-SCAFFOLD`.
-- Preferred Codex install command uses the preinstalled skill installer:
-  `python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py --repo zji996/META-SCAFFOLD --path skills/meta-scaffold`.
-- Local Codex install refresh entry: `./scripts/install-codex-skill.sh`.
-- Remote smoke entry for raw URL and Codex GitHub install: `./scripts/smoke-remote.sh`.
+- `skills/meta-scaffold/` is the runtime source of truth.
+- `SKILL.md` contains only core governance decisions; handoff, repository patterns, and platform setup load from `references/` when relevant.
+- Prompts, dist files, templates, Claude, and Cursor entries are human-review copies or thin adapters, not independent rule sets.
+- Small tasks must not perform the full workflow as ceremony.
+- Monorepo, commits, subagents, handoff prompts, and platform-specific tools are conditional, not global defaults.
+- Handoffs and status reports must be self-contained and must not rely on chat history or “see above.”
+- Codex and Kilo install the exact same directory through `scripts/install-agent-skill.sh`; Kilo remote discovery uses `skills/index.json`.
 
 ## Boundaries
 
-- Keep the repository lightweight.
-- Do not add package managers or build tools unless needed.
-- Do not make templates look like mandatory architecture.
-- Keep installation safe: append or create, avoid overwriting existing project files.
-- Sub-agent orchestration is conditional, never mandatory; never write "must use subagent".
+- Keep the repository lightweight and compatible with the Agent Skills format.
+- Preserve legacy install entry points when a thin wrapper is sufficient.
+- Installers may replace only an existing path that identifies as `name: meta-scaffold`, and only with explicit force.
+- Do not add platform tool names to core governance semantics.
 
 ## Verification
 
 ```bash
 ./scripts/check.sh
+python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/meta-scaffold
 ```
 
-Optional remote smoke:
+After publishing, run `./scripts/smoke-remote.sh` and refresh local installs with:
 
 ```bash
-./scripts/smoke-remote.sh
+META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all
 ```
-
-## Next starting point
-
-- For distribution changes, run `./scripts/check.sh`, then `./scripts/smoke-remote.sh` after pushing.
-- Refresh the local Codex install with `META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh`.

@@ -1,29 +1,11 @@
-# meta-scaffold skill
+# meta-scaffold
 
-主入口：
+运行时入口为 `SKILL.md`，细节按需读取 `references/`。同一目录同时支持 Codex、Kilo Code 和其他 Agent Skills 实现。
 
-```text
-skills/meta-scaffold/SKILL.md
-```
-
-当 AI agent 需要处理仓库形态、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，使用本 skill。
-
-快速导入到其他项目：
+本地同步：
 
 ```bash
-mkdir -p skills/meta-scaffold
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md \
-  -o skills/meta-scaffold/SKILL.md
+./scripts/install-agent-skill.sh all
 ```
 
-然后在 `AGENTS.md` 或 `CLAUDE.md` 中引用它。
-
-安装到 Codex 全局 skills：
-
-```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo zji996/META-SCAFFOLD \
-  --path skills/meta-scaffold
-```
-
-安装后重启 Codex。
+完整安装说明见仓库根 `README.md`。

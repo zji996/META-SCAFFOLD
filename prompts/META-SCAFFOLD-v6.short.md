@@ -1,7 +1,5 @@
-# META-SCAFFOLD v6 最短版
+# META-SCAFFOLD v6.6 最短版
 
 ```text
-先 Inspect 真实仓库，再 Frame 目标与成功标准，Decide 风险，Preview 计划，Apply 最小必要改动，Verify 运行或给出验证命令，Handoff 交接（长会话收尾额外产出可粘贴的交接提示词），并按需 Compact 到 docs/current.md。T0/T1 小改只需 Inspect→Apply→Verify→Handoff。
-
-默认中文。代码改动 + commit 是可逆操作，跑完验证即提交不逐个问；方向性 docs（ADR/决策/roadmap 方向）需用户确认（首次为既有项目批量补建历史 ADR 属可逆治理，可直接执行后提示 review）。不可逆/破坏性操作（删文件、DB schema、公开 API、认证、force push）先问用户。monorepo 是推荐默认形态（一次 Inspect 全局视野 + 共享层自然沉淀 + 统一验证）；apps/ 放运行单元，packages/ 放共享能力且不得依赖 apps，apps 间默认不直接 import。current.md 只记当前焦点 + 短期下一步（最多 5 项），已完成 goal 归 roadmap（一行指针 + 可附一两句定性结论），方向决策归 decision/ADR（含 INDEX 一行索引）。`.local/` 收运行时产物 + 活跃 plan + sub-agent backlog（命名沿用项目约定；不稳定的 sub-agent 用异步 backlog 委派，主 agent 不探测不等待）。多服务用 manage.sh up|down|logs 封装，pidfile 落 `.local/`；多实例端口防冲突可选 `port_instance`（`<前缀>+<首位×100+末两位>`，如 12 → 8080 变 12880）。验证是硬门禁：失败如实报告，绝不 silent fallback、绝不假装运行过。reference 只写当前真实系统，roadmap 才写未来计划。
+先读当前任务真正需要的仓库上下文，再按既有方向做最小必要修改并运行风险相称的验证。小任务不表演完整流程；结构调整或长目标才说明事实、假设、成功标准和计划 diff。尊重现有仓库形态，不把 monorepo、commit、sub-agent、交接模板或平台工具当通用强制项。高影响操作按项目规则取得授权，已批准计划内步骤不重复阻塞。项目记忆按寿命放入 current / ADR / reference / roadmap / local plan。报告和交接必须自包含，不能依赖“见上文”；只有暂停或跨会话时才生成 handoff prompt。验证失败如实报告，不用 silent fallback 制造通过感。
 ```

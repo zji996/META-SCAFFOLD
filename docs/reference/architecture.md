@@ -2,13 +2,16 @@
 
 ## Purpose
 
-This repository packages the META-SCAFFOLD v6 meta prompt as reusable artifacts for AI coding agents.
+This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime for Codex, Kilo Code, and other coding agents.
 
 ## Source of truth
 
-- `skills/meta-scaffold/SKILL.md`: primary reusable skill.
+- `skills/meta-scaffold/`: runtime source of truth.
+- `skills/meta-scaffold/SKILL.md`: concise core workflow and governance rules.
+- `skills/meta-scaffold/references/`: handoff, repository-pattern, and platform details loaded only when relevant.
 - `skills/meta-scaffold/agents/openai.yaml`: Codex/OpenAI skill UI metadata.
-- `prompts/META-SCAFFOLD-v6.md`: full v6 contract (single source of truth).
+- `skills/index.json`: Kilo Code remote skill manifest.
+- `prompts/META-SCAFFOLD-v6.md`: human-review contract derived from the runtime skill.
 - `prompts/META-SCAFFOLD-v6.short.md`: shortest embeddable version.
 
 ## Distribution files
@@ -30,10 +33,12 @@ This repository packages the META-SCAFFOLD v6 meta prompt as reusable artifacts 
 
 `scripts/install.sh` can run from a local clone or through a raw GitHub URL. It installs selected artifacts into a target project and avoids overwriting existing docs/templates.
 
-`scripts/install-codex-skill.sh` installs the local clone into `${CODEX_HOME:-~/.codex}/skills/meta-scaffold`. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
+`scripts/install-agent-skill.sh` installs the same runtime directory into Codex, Kilo Code, or both. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
 
-`scripts/smoke-remote.sh` verifies the public raw installer and the Codex GitHub skill installer from temporary directories.
+`scripts/install-codex-skill.sh` remains a compatibility wrapper for the Codex-only path.
+
+`scripts/smoke-remote.sh` verifies the public raw installer, Kilo remote manifest, and Codex GitHub skill installer from temporary directories.
 
 ## Verification
 
-`./scripts/check.sh` validates required files, skill metadata, plugin JSON, README import path, local installer behavior, and Codex local installer safety.
+`./scripts/check.sh` validates required files, metadata, JSON manifests, project installation, identical Codex/Kilo installs, and safe replacement behavior.

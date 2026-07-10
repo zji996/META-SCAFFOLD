@@ -1,21 +1,35 @@
 # META-SCAFFOLD
 
-> A reusable AI project-collaboration meta-prompt / skill.  
-> Goal: make coding agents inspect the real repository first, apply the smallest necessary change, verify outcomes, and hand off cleanly.
+> A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6 is not a directory template or framework template. It is a reusable project-governance skill that can be installed through raw URLs, Git submodule, Git subtree, `skills/`, `AGENTS.md`, `CLAUDE.md`, or Cursor rules.
+META-SCAFFOLD v6.6 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Codex, Kilo Code, and other compatible agents.
 
-The core of v6: disciplined tool use, conditional sub-agent orchestration, spec/plan-driven development, permission hard-gates, and a full contract compressed to ~410 lines by removing duplicates and model-known common sense. `prompts/META-SCAFFOLD-v6.md` is the single source of truth.
+It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
-Core protocol:
+## One runtime
 
-```text
-Inspect -> Frame -> Decide -> Preview -> Apply -> Verify -> Handoff -> Compact
+`skills/meta-scaffold/` is the runtime source of truth. `SKILL.md` stays concise; handoff, repository, and platform details live in `references/` and load only when relevant.
+
+Sync the same local clone to Codex and Kilo Code:
+
+```bash
+./scripts/install-agent-skill.sh all
 ```
 
-## Recommended install
+Refresh an existing installation:
 
-If you use Codex, install META-SCAFFOLD into the global Codex skills directory first:
+```bash
+META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all
+```
+
+Default destinations:
+
+- Codex: `${CODEX_HOME:-~/.codex}/skills/meta-scaffold`
+- Kilo Code: `${KILO_HOME:-~/.kilo}/skills/meta-scaffold`
+
+## GitHub installation
+
+Codex:
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
@@ -23,104 +37,57 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --path skills/meta-scaffold
 ```
 
-Codex installs it to:
+Kilo Code can load the same release through `kilo.jsonc`:
 
-```text
-${CODEX_HOME:-~/.codex}/skills/meta-scaffold
+```jsonc
+{
+  "skills": {
+    "urls": [
+      "https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/"
+    ]
+  }
+}
 ```
 
-Restart Codex after installation. While maintaining this repository, refresh the local Codex install from the current clone:
+The URL serves [`skills/index.json`](./skills/index.json).
+
+## Project installation
 
 ```bash
-./scripts/install-codex-skill.sh
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh \
+  | bash -s -- . all
 ```
 
-Replace an existing local install with:
+The installer copies the complete skill, appends thin AGENTS/CLAUDE references without overwriting existing content, installs the Cursor rule, and creates missing governance templates only when absent.
 
-```bash
-META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh
-```
+## v6.6 changes
 
-## Per-project install
-
-Install everything into a target project:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh | bash -s -- . all
-```
-
-This installs `skills/meta-scaffold/SKILL.md` and `skills/meta-scaffold/agents/openai.yaml`, then appends or creates the requested project-level agent files.
-
-Install only the skill:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh | bash -s -- . skill
-```
-
-Manual install:
-
-```bash
-mkdir -p skills/meta-scaffold
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/skills/meta-scaffold/SKILL.md \
-  -o skills/meta-scaffold/SKILL.md
-```
-
-Then add this to your project `AGENTS.md` or `CLAUDE.md`:
-
-```markdown
-Before inspecting, restructuring, documenting, or modifying this project, read and follow `skills/meta-scaffold/SKILL.md`.
-```
-
-## Other entry points
-
-```bash
-# Per-project AGENTS.md
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/templates/AGENTS.meta-scaffold.md -o AGENTS.md
-
-# Per-project CLAUDE.md
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/templates/CLAUDE.meta-scaffold.md -o CLAUDE.md
-
-# Cursor project rule
-mkdir -p .cursor/rules
-curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/.cursor/rules/meta-scaffold.mdc -o .cursor/rules/meta-scaffold.mdc
-```
-
-## Versioned import
-
-Submodule:
-
-```bash
-git submodule add https://github.com/zji996/META-SCAFFOLD.git vendor/META-SCAFFOLD
-```
-
-Subtree:
-
-```bash
-git subtree add --prefix=vendor/META-SCAFFOLD https://github.com/zji996/META-SCAFFOLD.git main --squash
-```
+- Monorepo, commits, subagents, and handoff prompts are no longer global defaults.
+- Small tasks do not perform the full workflow as ceremony.
+- Handoffs must be self-contained and may not depend on “see above.”
+- Platform-specific Kilo tool names are removed from core governance.
+- Multi-service, local-artifact, and multi-instance port patterns are progressive references.
+- Runtime content has one source; prompts, dist files, and templates are review copies or thin adapters.
 
 ## Main files
 
 | Path | Purpose |
 | --- | --- |
-| `skills/meta-scaffold/SKILL.md` | Main reusable skill. |
-| `skills/meta-scaffold/agents/openai.yaml` | Codex/OpenAI skill UI metadata. |
-| `prompts/META-SCAFFOLD-v6.md` | Full v6 contract (single source of truth). |
-| `prompts/META-SCAFFOLD-v6.short.md` | Short embeddable prompt. |
-| `dist/AGENTS.md` | Single-file AGENTS distribution. |
-| `dist/CLAUDE.md` | Single-file CLAUDE distribution. |
-| `dist/CURSOR.mdc` | Single-file Cursor rule distribution. |
-| `scripts/install.sh` | Installer for target projects. |
-| `scripts/install-codex-skill.sh` | Local clone installer for Codex global skills. |
-| `scripts/check.sh` | Repository integrity check. |
+| `skills/meta-scaffold/SKILL.md` | Concise runtime core |
+| `skills/meta-scaffold/references/` | Progressive details |
+| `skills/index.json` | Kilo remote manifest |
+| `prompts/META-SCAFFOLD-v6.md` | Human-review contract |
+| `scripts/install-agent-skill.sh` | Unified Codex/Kilo sync |
+| `scripts/install.sh` | Project installer |
+| `scripts/check.sh` | Repository validation |
 
 ## Maintenance
 
 ```bash
 ./scripts/check.sh
-./scripts/smoke-remote.sh
-META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-codex-skill.sh
 ```
+
+Version: `v6.6.0` / `Stable Draft`
 
 ## License
 

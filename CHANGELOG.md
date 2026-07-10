@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.6.0
+
+- 将 `skills/meta-scaffold/` 设为唯一运行时内容源：`SKILL.md` 从 160+ 行收敛到约 70 行，handoff、repository patterns、platform setup 拆入按需 `references/`。
+- 修复真实使用摩擦：完整八步流程改为检查表；monorepo、commit、sub-agent、handoff prompt 不再是全局默认；普通完成答复不强制附交接提示词。
+- 明确自包含输出：禁止用“见上文/按之前内容”代替关键事实，只有暂停、换会话或明确要求时才生成 handoff prompt。
+- 移除核心中的 Kilo 专属工具名；平台差异只处理 skill 安装、发现和 UI 元数据。
+- 新增 `scripts/install-agent-skill.sh [codex|kilo|all]`，将同一 runtime 安装到 Codex 与 Kilo；保留 `install-codex-skill.sh` 兼容包装。
+- 新增 `skills/index.json`，支持 Kilo Code `skills.urls` 远端发现；项目安装器同步完整 references。
+- `prompts/`、dist、templates、Claude/Cursor 入口降为人工审阅版或薄适配器，避免多份长规则漂移。
+
 ## 6.5.4
 
 - §8 多实例端口防冲突段精简：去掉「末三位法」历史对比描述，只保留正确的首位+末两位法规则。同步 SKILL。
