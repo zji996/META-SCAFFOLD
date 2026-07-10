@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime for Codex, Kilo Code, and other coding agents.
+This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime for Codex, Kilo Code, Cursor, and other coding agents.
 
 ## Source of truth
 
@@ -33,7 +33,7 @@ This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime fo
 
 `scripts/install.sh` can run from a local clone or through a raw GitHub URL. It installs selected artifacts into a target project and avoids overwriting existing docs/templates.
 
-`scripts/install-agent-skill.sh` installs the same runtime directory into Codex, Kilo Code, or both. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
+`scripts/install-agent-skill.sh` installs the same runtime directory into Codex, Kilo Code, Cursor, or all three. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
 
 `scripts/install-codex-skill.sh` remains a compatibility wrapper for the Codex-only path.
 
@@ -41,4 +41,4 @@ This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime fo
 
 ## Verification
 
-`./scripts/check.sh` validates required files, metadata, JSON manifests, project installation, identical Codex/Kilo installs, and safe replacement behavior.
+`./scripts/check.sh` validates required files, metadata, JSON manifests, project installation, identical Codex/Kilo/Cursor installs, and safe replacement behavior.

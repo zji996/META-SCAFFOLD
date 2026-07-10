@@ -7,6 +7,7 @@ TARGET="${1:-all}"
 FORCE="${META_SCAFFOLD_FORCE_INSTALL:-0}"
 CODEX_SKILLS_ROOT="${META_SCAFFOLD_CODEX_SKILLS_ROOT:-${CODEX_HOME:-$HOME/.codex}/skills}"
 KILO_SKILLS_ROOT="${META_SCAFFOLD_KILO_SKILLS_ROOT:-${KILO_HOME:-$HOME/.kilo}/skills}"
+CURSOR_SKILLS_ROOT="${META_SCAFFOLD_CURSOR_SKILLS_ROOT:-${CURSOR_HOME:-$HOME/.cursor}/skills}"
 
 [[ -f "$SOURCE/SKILL.md" ]] || { echo "missing: $SOURCE/SKILL.md" >&2; exit 1; }
 
@@ -40,12 +41,16 @@ case "$TARGET" in
   kilo)
     install_to kilo "$KILO_SKILLS_ROOT"
     ;;
+  cursor)
+    install_to cursor "$CURSOR_SKILLS_ROOT"
+    ;;
   all)
     install_to codex "$CODEX_SKILLS_ROOT"
     install_to kilo "$KILO_SKILLS_ROOT"
+    install_to cursor "$CURSOR_SKILLS_ROOT"
     ;;
   *)
-    echo "Usage: $0 [codex|kilo|all]" >&2
+    echo "Usage: $0 [codex|kilo|cursor|all]" >&2
     exit 2
     ;;
 esac

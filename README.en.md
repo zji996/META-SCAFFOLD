@@ -2,7 +2,7 @@
 
 > A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6.6 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Codex, Kilo Code, and other compatible agents.
+META-SCAFFOLD v6.6 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Codex, Kilo Code, Cursor, and other compatible agents.
 
 It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
@@ -10,7 +10,7 @@ It does not impose a directory template or restate generic coding ability. Its c
 
 `skills/meta-scaffold/` is the runtime source of truth. `SKILL.md` stays concise; handoff, repository, and platform details live in `references/` and load only when relevant.
 
-Sync the same local clone to Codex and Kilo Code:
+Sync the same local clone to Codex, Kilo Code, and Cursor:
 
 ```bash
 ./scripts/install-agent-skill.sh all
@@ -26,6 +26,7 @@ Default destinations:
 
 - Codex: `${CODEX_HOME:-~/.codex}/skills/meta-scaffold`
 - Kilo Code: `${KILO_HOME:-~/.kilo}/skills/meta-scaffold`
+- Cursor: `${CURSOR_HOME:-~/.cursor}/skills/meta-scaffold`
 
 ## GitHub installation
 
@@ -77,7 +78,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 | `skills/meta-scaffold/references/` | Progressive details |
 | `skills/index.json` | Kilo remote manifest |
 | `prompts/META-SCAFFOLD-v6.md` | Human-review contract |
-| `scripts/install-agent-skill.sh` | Unified Codex/Kilo sync |
+| `scripts/install-agent-skill.sh` | Unified Codex/Kilo/Cursor sync |
 | `scripts/install.sh` | Project installer |
 | `scripts/check.sh` | Repository validation |
 
@@ -87,7 +88,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 ./scripts/check.sh
 ```
 
-Version: `v6.6.1` / `Stable Draft`
+Version: `v6.6.2` / `Stable Draft`
 
 ## License
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.6.2
+
+- 统一安装器新增 `cursor` 目标，`all` 同步 Codex、Kilo Code、Cursor 三端同一 runtime。
+- Cursor 个人 skill 安装到 `~/.cursor/skills/meta-scaffold`；明确禁止写入系统内置目录 `~/.cursor/skills-cursor/`。
+- `check.sh` 新增 Cursor 安装、三端逐字一致与 force 刷新回归验证。
+
 ## 6.6.1
 
 - 目的驱动再压缩：去掉八步仪式串；`SKILL.md` 按「优化 / 读取 / 授权 / 结构 / 记忆 / 收尾」组织，约 60 行。

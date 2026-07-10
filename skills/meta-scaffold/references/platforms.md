@@ -1,12 +1,13 @@
 # Platform Installation
 
-`skills/meta-scaffold/` 是唯一运行时内容源。不要维护 Codex 版和 Kilo 版正文；安装器只把同一目录同步到不同发现位置。
+`skills/meta-scaffold/` 是唯一运行时内容源。不要维护 Codex、Kilo、Cursor 三份正文；安装器只把同一目录同步到不同发现位置。
 
 ## 本地 clone 同步
 
 ```bash
 ./scripts/install-agent-skill.sh codex
 ./scripts/install-agent-skill.sh kilo
+./scripts/install-agent-skill.sh cursor
 ./scripts/install-agent-skill.sh all
 ```
 
@@ -20,8 +21,9 @@ META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all
 
 - Codex：`${CODEX_HOME:-~/.codex}/skills/meta-scaffold`
 - Kilo Code：`${KILO_HOME:-~/.kilo}/skills/meta-scaffold`
+- Cursor：`${CURSOR_HOME:-~/.cursor}/skills/meta-scaffold`
 
-安装后开启新会话；Kilo Code 也可使用 `/reload` 重新扫描。
+安装后开启新会话；Kilo Code 也可使用 `/reload` 重新扫描。不要写入 `~/.cursor/skills-cursor/`，该目录由 Cursor 管理内置 skills。
 
 ## GitHub 安装
 
@@ -37,7 +39,7 @@ Codex 可从仓库路径安装 `skills/meta-scaffold`。Kilo Code 可在 `kilo.j
 }
 ```
 
-该 URL 读取 `skills/index.json`，其中列出的文件与 Codex 安装目录完全相同。
+该 URL 读取 `skills/index.json`，其中列出的文件与本地三端安装目录完全相同。Cursor 个人 skill 使用 `~/.cursor/skills/`；项目 skill 使用 `.cursor/skills/`。
 
 ## 平台边界
 

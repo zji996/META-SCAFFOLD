@@ -2,7 +2,7 @@
 
 > 面向 coding agent 的仓库治理 skill：理解真实仓库，做最小必要改变，维护可恢复的项目记忆，并用真实验证结束工作。
 
-META-SCAFFOLD v6.6 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Codex、Kilo Code 和其他兼容实现。
+META-SCAFFOLD v6.6 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Codex、Kilo Code、Cursor 和其他兼容实现。
 
 它不是目录模板，也不替模型重复讲通用编码常识。核心只保留会改变工程结果的内容：
 
@@ -28,11 +28,11 @@ skills/meta-scaffold/
     └── repository-patterns.md
 ```
 
-`SKILL.md` 保持精简；交接模板、仓库模式和平台安装只在任务相关时加载。Codex 与 Kilo 不维护两份正文。
+`SKILL.md` 保持精简；交接模板、仓库模式和平台安装只在任务相关时加载。Codex、Kilo、Cursor 不维护三份正文。
 
-## 本地同步 Codex + Kilo
+## 本地同步 Codex + Kilo + Cursor
 
-从 clone 同步同一版本到两个全局发现目录：
+从 clone 同步同一版本到三个全局发现目录：
 
 ```bash
 ./scripts/install-agent-skill.sh all
@@ -43,12 +43,14 @@ skills/meta-scaffold/
 ```bash
 ./scripts/install-agent-skill.sh codex
 ./scripts/install-agent-skill.sh kilo
+./scripts/install-agent-skill.sh cursor
 ```
 
 默认目标：
 
 - Codex：`${CODEX_HOME:-~/.codex}/skills/meta-scaffold`
 - Kilo Code：`${KILO_HOME:-~/.kilo}/skills/meta-scaffold`
+- Cursor：`${CURSOR_HOME:-~/.cursor}/skills/meta-scaffold`
 
 已有同名 skill 默认不覆盖。确认刷新：
 
@@ -118,7 +120,7 @@ v6.6 针对实际使用中的上下文摩擦做了收敛：
 | [`skills/index.json`](./skills/index.json) | Kilo remote manifest |
 | [`prompts/META-SCAFFOLD-v6.md`](./prompts/META-SCAFFOLD-v6.md) | 人工审阅版契约 |
 | [`dist/`](./dist/) | 不支持 skills 的薄分发件 |
-| [`scripts/install-agent-skill.sh`](./scripts/install-agent-skill.sh) | Codex/Kilo 统一同步 |
+| [`scripts/install-agent-skill.sh`](./scripts/install-agent-skill.sh) | Codex/Kilo/Cursor 统一同步 |
 | [`scripts/install.sh`](./scripts/install.sh) | 项目安装器 |
 | [`scripts/check.sh`](./scripts/check.sh) | 本仓库验证 |
 
@@ -134,7 +136,7 @@ v6.6 针对实际使用中的上下文摩擦做了收敛：
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.6.1` / `Stable Draft`
+当前版本：`v6.6.2` / `Stable Draft`
 
 ## License
 
