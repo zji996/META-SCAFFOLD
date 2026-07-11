@@ -88,7 +88,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 ./scripts/check.sh
 ```
 
-Version: `v6.6.2` / `Stable Draft`
+Version: `v6.6.3` / `Stable Draft`
 
 ## License
 

@@ -20,6 +20,10 @@
 - 已批准计划中明确列出的高影响步骤：计划范围内不重复问；越界或与 ADR 冲突再确认。
 - 提交 / 分支 / PR / 发布服从当前仓库。
 
+## 跨 Agent 调用
+
+需要调用其他 agent CLI（如 Grok）时：只走 headless（`grok -p` + `--yolo`），写清边界；默认不互调、不嵌套、不并行双写；结束后主控自行 diff 与验证。示例见 `skills/meta-scaffold/references/platforms.md`。
+
 ## 结构与记忆
 
 - 尊重现有形态；仅有明确收益时才新增边界或建议 monorepo。
@@ -36,4 +40,4 @@
 
 - 结构 / 多服务 / 端口：`skills/meta-scaffold/references/repository-patterns.md`
 - 交接模板：`skills/meta-scaffold/references/handoff.md`
-- 安装：`skills/meta-scaffold/references/platforms.md`
+- 安装 / 跨 Agent CLI：`skills/meta-scaffold/references/platforms.md`

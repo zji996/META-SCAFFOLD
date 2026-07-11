@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.6.3
+
+- `SKILL.md` 在「能改什么」之后增加精简「跨 Agent 调用」：其他 agent CLI（如 Codex → Grok）只走 headless + auto-approve，默认不互调/不嵌套/不并行双写，结束后主控自行 diff 与验证。
+- `references/platforms.md` 补充 Grok headless 命令示例与续聊约定。
+- 同步 `prompts/`、dist 薄适配器与 templates 一行摘要。
+
 ## 6.6.2
 
 - 统一安装器新增 `cursor` 目标，`all` 同步 Codex、Kilo Code、Cursor 三端同一 runtime。

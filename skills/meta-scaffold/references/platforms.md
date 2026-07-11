@@ -46,3 +46,21 @@ Codex 可从仓库路径安装 `skills/meta-scaffold`。Kilo Code 可在 `kilo.j
 - skill 正文描述治理语义，不指定平台专属工具名。
 - UI 元数据放 `agents/openai.yaml`；不影响 Kilo Code。
 - 平台缺少某个工具时使用其提供的等价能力，不因此改变授权、验证或文档规则。
+
+## 跨 Agent CLI（如 Codex → Grok）
+
+其他 agent 经 shell 调用 Grok 时只用 headless，不要进 TUI：
+
+```bash
+# 默认只读
+grok -p "<任务>" --cwd <repo> --tools "read_file,grep,list_dir" --yolo --output-format plain
+
+# 允许改文件
+grok -p "<任务与禁区>" --cwd <repo> --yolo --output-format plain --max-turns 30
+
+# 续聊：先 json 取 sessionId，再 --resume <id>；或同目录 -c
+```
+
+- PATH 找不到时用 `~/.grok/bin/grok`。
+- 无人值守必须 `--yolo`；认证用本机 login 缓存或 `XAI_API_KEY`，密钥不进仓库。
+- 主控与子 agent 串行写仓；子任务结束后主控 `git diff` 并跑仓库验证。

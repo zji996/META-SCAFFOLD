@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.6.2 keeps the review-approved purpose-driven runtime and adds one installer path for Codex, Kilo Code, and Cursor.
+v6.6.3 keeps the purpose-driven runtime and adds a short cross-agent CLI rule (headless only, no default mutual nesting / parallel dual-write).
 
 ## Next
 

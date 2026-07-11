@@ -136,7 +136,7 @@ v6.6 针对实际使用中的上下文摩擦做了收敛：
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.6.2` / `Stable Draft`
+当前版本：`v6.6.3` / `Stable Draft`
 
 ## License
 
