@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.8.0 publishes the purpose-driven runtime as a global Pi package, switches cross-agent delegation to Pi print mode, and keeps project-local vendoring optional.
+v6.8.1 makes hosted CI opt-in: unless the user explicitly requests it, agents reuse local validation instead of creating, restoring, or expanding GitHub Actions or similar hosted workflows.
 
 ## Next
 
@@ -18,6 +18,7 @@ v6.8.0 publishes the purpose-driven runtime as a global Pi package, switches cro
 - Handoffs are self-contained and generated only for pauses, session changes, agent changes, or explicit requests.
 - Codex, Kilo, and Cursor install the same directory; Kilo remote discovery uses `skills/index.json`.
 - Pi consumes the public repository as a user-level git package; `pi update --extensions` refreshes it without copying the skill into each project.
+- Hosted CI is not added, restored, or expanded by default; existing CI remains project state, and local verification is reported honestly as local.
 
 ## Boundaries
 

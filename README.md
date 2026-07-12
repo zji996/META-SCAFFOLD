@@ -163,7 +163,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.8.0` / `Stable Draft`
+当前版本：`v6.8.1` / `Stable Draft`
 
 ## License
 

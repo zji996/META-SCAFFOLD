@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.8.1
+
+- 新增托管 CI 默认策略：除非用户明确要求，不创建、恢复或主动扩展 GitHub Actions 等消耗托管计算时长的 CI。
+- 优先复用并记录仓库已有的本地编译、测试、lint 或统一检查入口；本地验证不得冒充远程 CI。
+- 已有 CI 保持为项目现状，不因默认策略擅自删除；同步 runtime、人工审阅版、最短版、薄适配器、模板与版本元数据。
+
 ## 6.8.0
 
 - 跨 agent CLI 默认从 Grok 切换为 Pi print mode：`timeout 20m pi --no-session -p`，沿用调用方本机 provider、模型、extensions 与 skills。
