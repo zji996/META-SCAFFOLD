@@ -110,18 +110,22 @@ META_SCAFFOLD_RAW_BASE="file://$ROOT" bash "$remote_installer" "$remote_target" 
 codex_home="$tmp/codex-home"
 kilo_home="$tmp/kilo-home"
 cursor_home="$tmp/cursor-home"
-CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" ./scripts/install-agent-skill.sh all >/dev/null
+global_home="$tmp/global-home"
+META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$global_home/skills" CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" ./scripts/install-agent-skill.sh all >/dev/null
 [[ -f "$codex_home/skills/meta-scaffold/SKILL.md" ]] || { echo "codex skill installer failed" >&2; exit 1; }
 [[ -f "$kilo_home/skills/meta-scaffold/SKILL.md" ]] || { echo "kilo skill installer failed" >&2; exit 1; }
 [[ -f "$cursor_home/skills/meta-scaffold/SKILL.md" ]] || { echo "cursor skill installer failed" >&2; exit 1; }
+[[ -f "$global_home/skills/meta-scaffold/SKILL.md" ]] || { echo "global skill installer failed" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$kilo_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "agent skill installs drifted" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$cursor_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "Cursor skill install drifted" >&2; exit 1; }
+cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$global_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "global skill install drifted" >&2; exit 1; }
 
 printf '\n# stale local copy\n' >> "$codex_home/skills/meta-scaffold/SKILL.md"
-CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all >/dev/null
+META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$global_home/skills" CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all >/dev/null
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$kilo_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced agent skill refresh drifted" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$cursor_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced Cursor skill refresh drifted" >&2; exit 1; }
 cmp skills/meta-scaffold/SKILL.md "$codex_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced agent skill refresh is stale" >&2; exit 1; }
+cmp skills/meta-scaffold/SKILL.md "$global_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced global skill refresh is stale" >&2; exit 1; }
 
 legacy_root="$tmp/legacy-codex-skills"
 ./scripts/install-codex-skill.sh "$legacy_root" >/dev/null

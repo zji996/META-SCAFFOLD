@@ -2,7 +2,7 @@
 
 > A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6.6 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Codex, Kilo Code, Cursor, and other compatible agents.
+META-SCAFFOLD v6.8 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
 
 It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
@@ -10,7 +10,16 @@ It does not impose a directory template or restate generic coding ability. Its c
 
 `skills/meta-scaffold/` is the runtime source of truth. `SKILL.md` stays concise; handoff, repository, and platform details live in `references/` and load only when relevant.
 
-Sync the same local clone to Codex, Kilo Code, and Cursor:
+For Pi, install the public repository once at user scope instead of vendoring the skill into every project:
+
+```bash
+pi install git:github.com/zji996/META-SCAFFOLD
+pi update --extensions
+```
+
+The `skills/meta-scaffold/` path remains the standard package source layout; consuming projects do not need to copy it. Maintainers can run `make link-pi-local` for a live local checkout.
+
+Sync the same local clone to the vendor-neutral global directory, Codex, Kilo Code, and Cursor:
 
 ```bash
 ./scripts/install-agent-skill.sh all
@@ -24,6 +33,7 @@ META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all
 
 Default destinations:
 
+- Agent Skills / Pi: `${META_SCAFFOLD_GLOBAL_SKILLS_ROOT:-~/.agents/skills}/meta-scaffold`
 - Codex: `${CODEX_HOME:-~/.codex}/skills/meta-scaffold`
 - Kilo Code: `${KILO_HOME:-~/.kilo}/skills/meta-scaffold`
 - Cursor: `${CURSOR_HOME:-~/.cursor}/skills/meta-scaffold`
@@ -61,8 +71,10 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 The installer copies the complete skill, appends thin AGENTS/CLAUDE references without overwriting existing content, installs the Cursor rule, and creates missing governance templates only when absent.
 
-## v6.6 changes
+## v6.8 changes
 
+- Pi user-level package installation and update are the recommended global workflow.
+- Cross-agent delegation defaults to Pi print mode with serial writes and primary-agent review.
 - Monorepo, commits, subagents, and handoff prompts are no longer global defaults.
 - Small tasks do not perform the full workflow as ceremony.
 - Handoffs must be self-contained and may not depend on “see above.”
@@ -78,7 +90,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 | `skills/meta-scaffold/references/` | Progressive details |
 | `skills/index.json` | Kilo remote manifest |
 | `prompts/META-SCAFFOLD-v6.md` | Human-review contract |
-| `scripts/install-agent-skill.sh` | Unified Codex/Kilo/Cursor sync |
+| `scripts/install-agent-skill.sh` | Unified global/Codex/Kilo/Cursor sync |
 | `scripts/install.sh` | Project installer |
 | `scripts/check.sh` | Repository validation |
 
@@ -86,9 +98,10 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 
 ```bash
 ./scripts/check.sh
+make refresh-global
 ```
 
-Version: `v6.6.3` / `Stable Draft`
+Version: `v6.8.0` / `Stable Draft`
 
 ## License
 

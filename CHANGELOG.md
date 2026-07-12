@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.8.0
+
+- 跨 agent CLI 默认从 Grok 切换为 Pi print mode：`timeout 20m pi --no-session -p`，沿用调用方本机 provider、模型、extensions 与 skills。
+- Pi 推荐通过 `pi install git:github.com/zji996/META-SCAFFOLD` 用户级 package 全局使用，并以 `pi update --extensions` 维护；业务项目无需 vendor skill。
+- clone 安装器新增 `global` / `pi` 目标，写入 vendor-neutral `~/.agents/skills/meta-scaffold`；`all` 同步 global、Codex、Kilo 与 Cursor。
+- 增加简洁任务契约、300K 上下文/压缩余量建议、进程生命周期与主控复审规则；禁止并行双写同一工作树。
+- `.local/plan/` 仅保留仍在推进且需要恢复的账本；完成后将稳定事实迁移到正式文档并删除本地计划。
+- 同步 runtime skill、人工审阅 prompt、dist/Cursor 薄适配器、templates、版本元数据与项目 current/roadmap。
+
 ## 6.6.3
 
 - `SKILL.md` 在「能改什么」之后增加精简「跨 Agent 调用」：其他 agent CLI（如 Codex → Grok）只走 headless + auto-approve，默认不互调/不嵌套/不并行双写，结束后主控自行 diff 与验证。

@@ -1,4 +1,4 @@
-# META-SCAFFOLD Contract v6.6
+# META-SCAFFOLD Contract v6.8
 
 > 人工审阅版。运行时唯一内容源：`skills/meta-scaffold/`（`SKILL.md` + 按需 `references/`）。
 
@@ -22,13 +22,13 @@
 
 ## 跨 Agent 调用
 
-需要调用其他 agent CLI（如 Grok）时：只走 headless（`grok -p` + `--yolo`），写清边界；默认不互调、不嵌套、不并行双写；结束后主控自行 diff 与验证。示例见 `skills/meta-scaffold/references/platforms.md`。
+需要委派其他 agent CLI 时默认使用 Pi print mode：`timeout 20m pi --no-session -p "<任务>"`。任务契约写清目标、必要边界、成功标准和验证；Pi 使用本机完整能力。主控与 Pi 串行写仓，等待进程退出后自行复审 diff 并运行门禁。完整配置与生命周期见 `skills/meta-scaffold/references/platforms.md`。
 
 ## 结构与记忆
 
 - 尊重现有形态；仅有明确收益时才新增边界或建议 monorepo。
 - `apps/` → `packages/` 允许；反向禁止；跨 app 走契约或服务接口。
-- 信息按寿命放入 current / ADR / reference / roadmap / `.local/plan`；current 不做工作日志。
+- 信息按寿命放入 current / ADR / reference / roadmap / `.local/plan`；current 不做工作日志，完成的 local plan 迁移稳定事实后删除。
 
 ## 验证与交接
 

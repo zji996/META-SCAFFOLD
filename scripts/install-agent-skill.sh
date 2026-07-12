@@ -8,6 +8,7 @@ FORCE="${META_SCAFFOLD_FORCE_INSTALL:-0}"
 CODEX_SKILLS_ROOT="${META_SCAFFOLD_CODEX_SKILLS_ROOT:-${CODEX_HOME:-$HOME/.codex}/skills}"
 KILO_SKILLS_ROOT="${META_SCAFFOLD_KILO_SKILLS_ROOT:-${KILO_HOME:-$HOME/.kilo}/skills}"
 CURSOR_SKILLS_ROOT="${META_SCAFFOLD_CURSOR_SKILLS_ROOT:-${CURSOR_HOME:-$HOME/.cursor}/skills}"
+GLOBAL_SKILLS_ROOT="${META_SCAFFOLD_GLOBAL_SKILLS_ROOT:-$HOME/.agents/skills}"
 
 [[ -f "$SOURCE/SKILL.md" ]] || { echo "missing: $SOURCE/SKILL.md" >&2; exit 1; }
 
@@ -44,13 +45,17 @@ case "$TARGET" in
   cursor)
     install_to cursor "$CURSOR_SKILLS_ROOT"
     ;;
+  pi|global)
+    install_to global "$GLOBAL_SKILLS_ROOT"
+    ;;
   all)
+    install_to global "$GLOBAL_SKILLS_ROOT"
     install_to codex "$CODEX_SKILLS_ROOT"
     install_to kilo "$KILO_SKILLS_ROOT"
     install_to cursor "$CURSOR_SKILLS_ROOT"
     ;;
   *)
-    echo "Usage: $0 [codex|kilo|cursor|all]" >&2
+    echo "Usage: $0 [global|pi|codex|kilo|cursor|all]" >&2
     exit 2
     ;;
 esac

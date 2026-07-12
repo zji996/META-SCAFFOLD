@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime for Codex, Kilo Code, Cursor, and other coding agents.
+This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime for Pi, Codex, Kilo Code, Cursor, and other coding agents.
 
 ## Source of truth
 
@@ -13,6 +13,8 @@ This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime fo
 - `skills/index.json`: Kilo Code remote skill manifest.
 - `prompts/META-SCAFFOLD-v6.md`: human-review contract derived from the runtime skill.
 - `prompts/META-SCAFFOLD-v6.short.md`: shortest embeddable version.
+
+The source layout is a package boundary, not a requirement for consuming repositories to vendor the skill. Pi loads the repository globally as a git or local package; other harnesses receive the same directory through their user-level discovery paths.
 
 ## Distribution files
 
@@ -33,7 +35,9 @@ This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime fo
 
 `scripts/install.sh` can run from a local clone or through a raw GitHub URL. It installs selected artifacts into a target project and avoids overwriting existing docs/templates.
 
-`scripts/install-agent-skill.sh` installs the same runtime directory into Codex, Kilo Code, Cursor, or all three. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
+`scripts/install-agent-skill.sh` installs the same runtime directory into the vendor-neutral `~/.agents/skills`, Codex, Kilo Code, Cursor, or all targets. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
+
+Pi's preferred distribution is `pi install git:github.com/zji996/META-SCAFFOLD`; maintainers may use `pi install /absolute/path/to/META-SCAFFOLD` so a single local checkout is the live global source.
 
 `scripts/install-codex-skill.sh` remains a compatibility wrapper for the Codex-only path.
 
@@ -41,4 +45,4 @@ This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime fo
 
 ## Verification
 
-`./scripts/check.sh` validates required files, metadata, JSON manifests, project installation, identical Codex/Kilo/Cursor installs, and safe replacement behavior.
+`./scripts/check.sh` validates required files, metadata, JSON manifests, project installation, identical global/Codex/Kilo/Cursor installs, and safe replacement behavior.
