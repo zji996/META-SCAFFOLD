@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.8.3
+
+- Pi 跨 agent 委派默认改为前台一次性 print mode + JSON 流：`timeout 20m pi --no-session --mode json -p`，实时观察生命周期、工具调用、工具结果与完成事件。
+- 主控持续消费 JSON 事件并按实质变化汇报进度；`--verbose` 仅用于启动日志，不作为任务进度通道。
+- 禁止用 shell 后台方式脱离主控；JSON 完成事件不替代真实 exit code 与进程退出确认，中断后仍先确认 Pi 和外层超时进程均已停止。
+- JSON 工具事件按敏感输出处理：只摘要必要进度，不未经筛选长期落盘或原样转发。
+
 ## 6.8.2
 
 - 治理状态拆分为 implementation/foundation、production enablement、default policy 与 validation evidence，避免用单一 `Implemented` 掩盖未启用或未验证边界。

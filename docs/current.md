@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.8.2 tightens governance review after real Pi delegation: capability status is recorded across implementation, production enablement, default policy, and evidence; proposed goals stay distinct from active plans; benchmark evidence is traceable and Pi completion requires a real process exit.
+v6.8.3 makes Pi delegation observable by default: the primary agent runs one-shot print mode in the foreground with a JSON event stream, reports material progress, protects sensitive tool output, and still requires a real process exit before taking over the worktree.
 
 ## Next
 
@@ -22,6 +22,7 @@ v6.8.2 tightens governance review after real Pi delegation: capability status is
 - Governance reviews separate implementation/foundation, production enablement, default policy, and validation evidence instead of collapsing them into one status label.
 - Benchmark numbers live in dedicated evidence documents when practical; current/roadmap/ADR retain qualitative conclusions and links.
 - Pi output-channel completion is not treated as process completion; the primary agent confirms the Pi and timeout processes exited before writing.
+- Pi delegation uses foreground `--no-session --mode json -p`; the primary agent consumes lifecycle and tool events, summarizes material progress, and does not treat `--verbose` as a progress channel.
 
 ## Boundaries
 

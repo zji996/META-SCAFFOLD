@@ -71,17 +71,21 @@ Codex 可从仓库路径安装 `skills/meta-scaffold`。Kilo Code 可在 `kilo.j
 
 ## 跨 Agent CLI（默认 Pi）
 
-其他 agent 经 shell 委派子任务时默认使用 Pi 的 print 模式。Pi 从当前目录读取 `AGENTS.md` 等上下文；本机 provider、模型和密钥由 Pi 自身配置，不写入仓库或提示词。
+其他 agent 经 shell 委派子任务时默认使用 Pi 的前台一次性 print 模式，并以 JSON 流观察执行过程。Pi 从当前目录读取 `AGENTS.md` 等上下文；本机 provider、模型和密钥由 Pi 自身配置，不写入仓库或提示词。
 
 ```bash
 # 调研或实现；是否修改由任务本身决定
-(cd <repo> && timeout 20m pi --no-session -p "<任务>")
+(cd <repo> && timeout 20m pi --no-session --mode json -p "<任务>")
 ```
 
 - Pi 默认使用本机完整工具、extensions 与 skills；不按任务类型额外裁剪能力。
 - `--no-session` 仅表示这次委派不写会话历史，不限制模型在本次任务中的上下文与工具使用。
+- `--mode json` 实时输出生命周期、工具调用、工具结果与完成事件；主控持续消费事件，并按正在读取、修改和验证的实质变化定期汇报进度。
+- 保持命令在前台运行，通过调用平台的 session/cell 轮询机制读取增量输出；不要用 shell `&`、`nohup` 或脱离主控的静默后台进程。
+- `--verbose` 主要增加启动日志，不替代 `--mode json` 的任务进度可见性。
 - `timeout` 防止无人值守任务长期占用；若平台没有该命令，使用平台等价超时机制。
 - 主控与子 agent 串行写仓；子任务结束后主控 `git diff` 并跑仓库验证。
+- JSON 事件可能包含工具参数、文件内容或命令结果；只向用户摘要必要进度，不未经筛选长期落盘或原样转发敏感输出。
 - Pi 配置与认证留在 `~/.pi/agent/`；密钥不进入仓库、命令参数或任务文本。
 
 推荐长仓库审计使用 300K 上下文，并保持保守压缩余量。自定义模型条目：
@@ -125,7 +129,7 @@ Codex 可从仓库路径安装 `skills/meta-scaffold`。Kilo Code 可在 `kilo.j
 
 ### 进程与会话生命周期
 
-- `pi --no-session -p` 是前台一次性子进程；正常返回后不保留委派会话。
-- 平台工具报告空输出、session/cell 结束或输出通道关闭，不等于 Pi 与外层 `timeout` 进程已退出。主控必须取得真实 exit code，并在写仓前用平台或 OS 进程查询确认两者均已消失。
+- `pi --no-session --mode json -p` 是前台一次性子进程；正常返回后不保留委派会话。
+- JSON 完成事件、平台工具报告空输出、session/cell 结束或输出通道关闭，都不等于 Pi 与外层 `timeout` 进程已退出。主控必须取得真实 exit code，并在写仓前用平台或 OS 进程查询确认两者均已消失。
 - 主控不得在 Pi 仍写仓时并行修改同一文件。调用被中断或超时时，先确认进程退出，再审 diff。
 - 外部超时只约束进程生命周期，不替代任务验收与 Git 复审。

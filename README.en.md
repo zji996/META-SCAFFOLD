@@ -74,7 +74,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 ## v6.8 changes
 
 - Pi user-level package installation and update are the recommended global workflow.
-- Cross-agent delegation defaults to Pi print mode with serial writes and primary-agent review.
+- Cross-agent delegation defaults to foreground Pi print mode with a JSON event stream, serial writes, and primary-agent review.
 - Governance status separates implementation, production enablement, default policy, and evidence; proposed goals do not masquerade as active plans.
 - Benchmark results stay traceable in dedicated evidence documents, and Pi completion requires the real process to exit rather than only the output channel closing.
 - Monorepo, commits, subagents, and handoff prompts are no longer global defaults.
@@ -103,7 +103,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 make refresh-global
 ```
 
-Version: `v6.8.2` / `Stable Draft`
+Version: `v6.8.3` / `Stable Draft`
 
 ## License
 

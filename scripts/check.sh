@@ -59,6 +59,8 @@ grep -q "version: \"$version\"" skills/meta-scaffold/SKILL.md || { echo "skill m
 grep -q '降低仓库长期理解成本' skills/meta-scaffold/SKILL.md || { echo "missing purpose statement" >&2; exit 1; }
 grep -q 'references/handoff.md' skills/meta-scaffold/SKILL.md || { echo "missing handoff reference" >&2; exit 1; }
 grep -q 'references/repository-patterns.md' skills/meta-scaffold/SKILL.md || { echo "missing repository-patterns reference" >&2; exit 1; }
+grep -q 'pi --no-session --mode json -p' skills/meta-scaffold/SKILL.md || { echo "skill missing observable Pi delegation mode" >&2; exit 1; }
+grep -q 'pi --no-session --mode json -p' skills/meta-scaffold/references/platforms.md || { echo "platform reference missing observable Pi delegation mode" >&2; exit 1; }
 grep -q 'zji996/META-SCAFFOLD' README.md || { echo "README missing public import path" >&2; exit 1; }
 grep -q "v$version" README.md || { echo "README version mismatch" >&2; exit 1; }
 
