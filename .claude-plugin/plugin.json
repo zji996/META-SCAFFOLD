@@ -1,7 +1,7 @@
 {
   "name": "meta-scaffold",
   "description": "A cross-agent repository governance skill with progressive context, durable project memory, honest verification, and self-contained handoffs.",
-  "version": "6.8.3",
+  "version": "6.8.4",
   "author": {
     "name": "zji996"
   },

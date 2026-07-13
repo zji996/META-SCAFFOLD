@@ -8,6 +8,6 @@
 ./scripts/install-agent-skill.sh all
 ```
 
-Pi 用户级 package：`pi install git:github.com/zji996/META-SCAFFOLD`。
+Pi 可使用用户级 package，或使用 `~/.agents/skills` 中带稳定 shell wrapper 路径的 global 安装；二者不要同时安装。
 
 完整安装说明见仓库根 `README.md`。

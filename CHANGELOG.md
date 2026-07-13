@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.8.4
+
+- Pi 委派新增高信号 JSON 过滤脚本，只保留截断命令、写入路径、顶层工具错误、阶段文本与关键生命周期事件；原始 JSON 默认不落盘。
+- wrapper 接受显式 workdir，并在该目录内启动 Pi；prompt/events 相对路径以 workdir 解析，三参数旧调用继续兼容。
+- 任务契约与过滤日志统一放 `.local/run/`，主控按增量观察、复审 diff/artifact 并独立运行门禁。
+
 ## 6.8.3
 
 - Pi 跨 agent 委派默认改为前台一次性 print mode + JSON 流：`timeout 20m pi --no-session --mode json -p`，实时观察生命周期、工具调用、工具结果与完成事件。

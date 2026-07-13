@@ -7,7 +7,8 @@
         "agents/openai.yaml",
         "references/handoff.md",
         "references/platforms.md",
-        "references/repository-patterns.md"
+        "references/repository-patterns.md",
+        "scripts/pi-json-stream.sh"
       ]
     }
   ]

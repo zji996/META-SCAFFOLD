@@ -10,7 +10,7 @@ It does not impose a directory template or restate generic coding ability. Its c
 
 `skills/meta-scaffold/` is the runtime source of truth. `SKILL.md` stays concise; handoff, repository, and platform details live in `references/` and load only when relevant.
 
-For Pi, install the public repository once at user scope instead of vendoring the skill into every project:
+For skill-only Pi use, install the public repository once at user scope instead of vendoring it into every project:
 
 ```bash
 pi install git:github.com/zji996/META-SCAFFOLD
@@ -18,6 +18,8 @@ pi update --extensions
 ```
 
 The `skills/meta-scaffold/` path remains the standard package source layout; consuming projects do not need to copy it. Maintainers can run `make link-pi-local` for a live local checkout.
+
+For the stable shell wrapper path at `~/.agents/skills/meta-scaffold/scripts/pi-json-stream.sh`, use the global Agent Skills installation below instead of the Pi package. Do not install both because Pi will report a skill-name collision.
 
 Sync the same local clone to the vendor-neutral global directory, Codex, Kilo Code, and Cursor:
 
@@ -103,7 +105,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 make refresh-global
 ```
 
-Version: `v6.8.3` / `Stable Draft`
+Version: `v6.8.4` / `Stable Draft`
 
 ## License
 

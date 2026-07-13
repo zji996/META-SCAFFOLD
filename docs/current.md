@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.8.3 makes Pi delegation observable by default: the primary agent runs one-shot print mode in the foreground with a JSON event stream, reports material progress, protects sensitive tool output, and still requires a real process exit before taking over the worktree.
+v6.8.4 makes Pi delegation observable and cwd-safe by default: the primary agent runs one-shot print mode in an explicit workdir, consumes a high-signal filtered JSON stream, and still requires a real process exit before taking over the worktree.
 
 ## Next
 
@@ -17,12 +17,13 @@ v6.8.3 makes Pi delegation observable by default: the primary agent runs one-sho
 - The skill keeps only the general rule that explicitly approved plan steps do not require repeated authorization.
 - Handoffs are self-contained and generated only for pauses, session changes, agent changes, or explicit requests.
 - Codex, Kilo, and Cursor install the same directory; Kilo remote discovery uses `skills/index.json`.
-- Pi consumes the public repository as a user-level git package; `pi update --extensions` refreshes it without copying the skill into each project.
+- Pi uses either the user-level git package for skill-only consumption or `~/.agents/skills` for the stable delegation-wrapper path; the two installations must not coexist.
 - Hosted CI is not added, restored, or expanded by default; existing CI remains project state, and local verification is reported honestly as local.
 - Governance reviews separate implementation/foundation, production enablement, default policy, and validation evidence instead of collapsing them into one status label.
 - Benchmark numbers live in dedicated evidence documents when practical; current/roadmap/ADR retain qualitative conclusions and links.
 - Pi output-channel completion is not treated as process completion; the primary agent confirms the Pi and timeout processes exited before writing.
 - Pi delegation uses foreground `--no-session --mode json -p`; the primary agent consumes lifecycle and tool events, summarizes material progress, and does not treat `--verbose` as a progress channel.
+- The Pi wrapper binds an explicit workdir, resolves prompt/event paths against it, and keeps the legacy current-directory form only for compatibility.
 
 ## Boundaries
 

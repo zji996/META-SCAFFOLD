@@ -23,7 +23,7 @@
 
 ## 跨 Agent 调用
 
-需要委派其他 agent CLI 时默认使用 Pi 前台 print mode + JSON 流：`timeout 20m pi --no-session --mode json -p "<任务>"`。任务契约写清目标、必要边界、成功标准和验证；Pi 使用本机完整能力。主控持续消费事件并定期摘要实质进度，与 Pi 串行写仓，等待真实进程退出后自行复审 diff 并运行门禁。完整配置、输出安全与生命周期见 `skills/meta-scaffold/references/platforms.md`。
+需要委派其他 agent CLI 时默认使用 Pi 前台 print mode + 高信号 JSON 流：把任务契约写入临时文件，通过 `scripts/pi-json-stream.sh <timeout> <workdir> <prompt-file> <events-log>` 在显式工作目录前台执行。Pi 使用本机完整能力；主控持续消费过滤事件并定期摘要实质进度，与 Pi 串行写仓，等待真实进程退出后自行复审 diff 并运行门禁。完整配置、输出安全与生命周期见 `skills/meta-scaffold/references/platforms.md`。
 
 ## 结构与记忆
 

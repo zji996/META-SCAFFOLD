@@ -49,6 +49,7 @@ install_skill() {
     "references/handoff.md"
     "references/platforms.md"
     "references/repository-patterns.md"
+    "scripts/pi-json-stream.sh"
   )
   local file
   for file in "${files[@]}"; do

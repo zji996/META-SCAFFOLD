@@ -37,7 +37,7 @@ The source layout is a package boundary, not a requirement for consuming reposit
 
 `scripts/install-agent-skill.sh` installs the same runtime directory into the vendor-neutral `~/.agents/skills`, Codex, Kilo Code, Cursor, or all targets. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
 
-Pi's preferred distribution is `pi install git:github.com/zji996/META-SCAFFOLD`; maintainers may use `pi install /absolute/path/to/META-SCAFFOLD` so a single local checkout is the live global source.
+Pi may use `pi install git:github.com/zji996/META-SCAFFOLD` for skill-only consumption. Workflows that call the stable delegation wrapper path use the vendor-neutral `~/.agents/skills` installation instead; the two forms must not coexist.
 
 `scripts/install-codex-skill.sh` remains a compatibility wrapper for the Codex-only path.
 

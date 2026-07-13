@@ -23,6 +23,7 @@ required=(
   "skills/meta-scaffold/references/handoff.md"
   "skills/meta-scaffold/references/platforms.md"
   "skills/meta-scaffold/references/repository-patterns.md"
+  "skills/meta-scaffold/scripts/pi-json-stream.sh"
   "skills/index.json"
   "prompts/META-SCAFFOLD-v6.md"
   "prompts/META-SCAFFOLD-v6.short.md"
@@ -59,8 +60,9 @@ grep -q "version: \"$version\"" skills/meta-scaffold/SKILL.md || { echo "skill m
 grep -q '降低仓库长期理解成本' skills/meta-scaffold/SKILL.md || { echo "missing purpose statement" >&2; exit 1; }
 grep -q 'references/handoff.md' skills/meta-scaffold/SKILL.md || { echo "missing handoff reference" >&2; exit 1; }
 grep -q 'references/repository-patterns.md' skills/meta-scaffold/SKILL.md || { echo "missing repository-patterns reference" >&2; exit 1; }
-grep -q 'pi --no-session --mode json -p' skills/meta-scaffold/SKILL.md || { echo "skill missing observable Pi delegation mode" >&2; exit 1; }
+grep -q 'pi-json-stream.sh <timeout> <workdir>' skills/meta-scaffold/SKILL.md || { echo "skill missing explicit Pi workdir contract" >&2; exit 1; }
 grep -q 'pi --no-session --mode json -p' skills/meta-scaffold/references/platforms.md || { echo "platform reference missing observable Pi delegation mode" >&2; exit 1; }
+grep -q 'cd "$workdir"' skills/meta-scaffold/scripts/pi-json-stream.sh || { echo "Pi wrapper does not bind workdir" >&2; exit 1; }
 grep -q 'zji996/META-SCAFFOLD' README.md || { echo "README missing public import path" >&2; exit 1; }
 grep -q "v$version" README.md || { echo "README version mismatch" >&2; exit 1; }
 
@@ -98,6 +100,7 @@ trap 'rm -rf "$tmp"' EXIT
 [[ -f "$tmp/skills/meta-scaffold/SKILL.md" ]] || { echo "installer failed skill" >&2; exit 1; }
 [[ -f "$tmp/skills/meta-scaffold/agents/openai.yaml" ]] || { echo "installer failed skill metadata" >&2; exit 1; }
 [[ -f "$tmp/skills/meta-scaffold/references/platforms.md" ]] || { echo "installer failed skill references" >&2; exit 1; }
+[[ -f "$tmp/skills/meta-scaffold/scripts/pi-json-stream.sh" ]] || { echo "installer failed Pi wrapper" >&2; exit 1; }
 [[ -f "$tmp/.cursor/rules/meta-scaffold.mdc" ]] || { echo "installer failed cursor rule" >&2; exit 1; }
 [[ -f "$tmp/docs/current.md" ]] || { echo "installer failed docs/current.md" >&2; exit 1; }
 [[ -f "$tmp/docs/decision/INDEX.md" ]] || { echo "installer failed docs/decision/INDEX.md" >&2; exit 1; }
@@ -118,6 +121,7 @@ META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$global_home/skills" CODEX_HOME="$codex_home" 
 [[ -f "$kilo_home/skills/meta-scaffold/SKILL.md" ]] || { echo "kilo skill installer failed" >&2; exit 1; }
 [[ -f "$cursor_home/skills/meta-scaffold/SKILL.md" ]] || { echo "cursor skill installer failed" >&2; exit 1; }
 [[ -f "$global_home/skills/meta-scaffold/SKILL.md" ]] || { echo "global skill installer failed" >&2; exit 1; }
+[[ -f "$global_home/skills/meta-scaffold/scripts/pi-json-stream.sh" ]] || { echo "global skill Pi wrapper missing" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$kilo_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "agent skill installs drifted" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$cursor_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "Cursor skill install drifted" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$global_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "global skill install drifted" >&2; exit 1; }
@@ -128,6 +132,22 @@ cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$kilo_home/skills/meta-scaffold
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$cursor_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced Cursor skill refresh drifted" >&2; exit 1; }
 cmp skills/meta-scaffold/SKILL.md "$codex_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced agent skill refresh is stale" >&2; exit 1; }
 cmp skills/meta-scaffold/SKILL.md "$global_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced global skill refresh is stale" >&2; exit 1; }
+
+mock_bin="$tmp/mock-bin"
+mock_workdir="$tmp/pi-workdir"
+mkdir -p "$mock_bin" "$mock_workdir/.local/run"
+cat > "$mock_bin/pi" <<'EOF'
+#!/usr/bin/env bash
+printf '{"type":"message_update","assistantMessageEvent":{"type":"text_end","content":"cwd=%s"}}\n' "$PWD"
+printf '{"type":"agent_settled"}\n'
+EOF
+chmod +x "$mock_bin/pi"
+printf '%s\n' 'test prompt' > "$mock_workdir/.local/run/task.prompt"
+PATH="$mock_bin:$PATH" skills/meta-scaffold/scripts/pi-json-stream.sh \
+  1m "$mock_workdir" .local/run/task.prompt .local/run/task.events.jsonl \
+  > "$tmp/pi-wrapper.out"
+grep -Fq "cwd=$mock_workdir" "$tmp/pi-wrapper.out" || { echo "Pi wrapper ignored explicit workdir" >&2; exit 1; }
+cmp "$tmp/pi-wrapper.out" "$mock_workdir/.local/run/task.events.jsonl" >/dev/null || { echo "Pi wrapper event log drifted" >&2; exit 1; }
 
 legacy_root="$tmp/legacy-codex-skills"
 ./scripts/install-codex-skill.sh "$legacy_root" >/dev/null
