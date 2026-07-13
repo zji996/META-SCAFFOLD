@@ -130,6 +130,8 @@ v6.8 在目的驱动 runtime 基线上增加全局维护与 Pi 协作约定：
 
 - Pi 默认通过用户级 git package 全局安装和更新，业务项目无需复制 skill。
 - 跨 agent CLI 默认使用 Pi print mode，主控串行写仓并复核验证。
+- 治理状态分开 implementation、production enablement、default policy 与 evidence；建议 goal 不冒充 active plan。
+- benchmark 数字集中归档并可追溯；Pi 委派以真实进程退出而非输出通道结束为准。
 - monorepo、commit、sub-agent、handoff prompt 不再是全局默认。
 - 普通完成答复不再强制附加可粘贴交接模板。
 - 禁止用“见上文”“按之前内容”代替关键事实。
@@ -163,7 +165,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.8.1` / `Stable Draft`
+当前版本：`v6.8.2` / `Stable Draft`
 
 ## License
 

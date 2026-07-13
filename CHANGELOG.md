@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.8.2
+
+- 治理状态拆分为 implementation/foundation、production enablement、default policy 与 validation evidence，避免用单一 `Implemented` 掩盖未启用或未验证边界。
+- 明确 active plan、proposed next goal 与 historical completed goal；仅确认方向不自动创建 active goal。
+- benchmark 数字优先归档到专门文档，要求分章节证据等级与 artifact/schema/环境/日期可追溯；治理文档保留定性结论和链接。
+- 文档状态变更后搜索整树旧措辞，并核对链接及代码/配置权威来源。
+- Pi 生命周期新增真实进程退出检查；空输出、session/cell 结束或输出通道关闭不视为子进程已退出。
+
 ## 6.8.1
 
 - 新增托管 CI 默认策略：除非用户明确要求，不创建、恢复或主动扩展 GitHub Actions 等消耗托管计算时长的 CI。
