@@ -2,19 +2,20 @@
 
 ## Current focus
 
-v6.8.4 makes Pi delegation observable and cwd-safe by default: the primary agent runs one-shot print mode in an explicit workdir, consumes a high-signal filtered JSON stream, and still requires a real process exit before taking over the worktree.
+v6.9.0 makes a verified local commit the default completion checkpoint while keeping shared-state publication explicit: complete, scoped changes are committed atomically unless the repository or user opts out; push, remote creation, PRs, and releases still require repository/user authorization.
 
 ## Next
 
 1. Measure false-trigger rate, cross-session recovery, and persistent context cost in real Pi/Codex/Kilo/Cursor work.
 2. Audit consuming repositories for project-vendored copies and migrate them to user-level packages where version pinning is not required.
-3. Keep repository-specific authorization and commit policy inline in consuming AGENTS; add adapters only for real platform requirements.
+3. Measure whether the default local-commit checkpoint reduces dirty-worktree handoff cost without increasing mixed-scope commits; keep repository-specific overrides inline in consuming AGENTS.
 
 ## Confirmed
 
 - Runtime source of truth: `skills/meta-scaffold/`; prompts, dist, and templates are thin review or compatibility surfaces.
-- Repository structure and commit/PR/release policy belong to the consuming repository.
-- The skill keeps only the general rule that explicitly approved plan steps do not require repeated authorization.
+- Repository structure and push/PR/release policy belong to the consuming repository.
+- Unless a consuming repository or user opts out, complete scoped changes that pass proportionate verification receive an atomic local commit; existing/unrelated changes are never folded in merely to clean the worktree.
+- The skill also keeps the general rule that explicitly approved plan steps do not require repeated authorization.
 - Handoffs are self-contained and generated only for pauses, session changes, agent changes, or explicit requests.
 - Codex, Kilo, and Cursor install the same directory; Kilo remote discovery uses `skills/index.json`.
 - Pi uses either the user-level git package for skill-only consumption or `~/.agents/skills` for the stable delegation-wrapper path; the two installations must not coexist.

@@ -2,7 +2,7 @@
 
 > A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6.8 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
+META-SCAFFOLD v6.9 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
 
 It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
@@ -73,13 +73,19 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 The installer copies the complete skill, appends thin AGENTS/CLAUDE references without overwriting existing content, installs the Cursor rule, and creates missing governance templates only when absent.
 
-## v6.8 changes
+## v6.9 policy
+
+- Unless the repository overrides it or the user opts out, a complete, scoped change that passes proportionate verification receives an atomic local commit.
+- Automatic commits contain only the current task; incomplete or failing work is not committed merely to clean the worktree.
+- Pushes, remote creation, PRs, and releases still follow repository and user authorization.
+
+## v6.8 foundations
 
 - Pi user-level package installation and update are the recommended global workflow.
 - Cross-agent delegation defaults to foreground Pi print mode with a JSON event stream, serial writes, and primary-agent review.
 - Governance status separates implementation, production enablement, default policy, and evidence; proposed goals do not masquerade as active plans.
 - Benchmark results stay traceable in dedicated evidence documents, and Pi completion requires the real process to exit rather than only the output channel closing.
-- Monorepo, commits, subagents, and handoff prompts are no longer global defaults.
+- Monorepos, subagents, and handoff prompts are not global defaults.
 - Small tasks do not perform the full workflow as ceremony.
 - Handoffs must be self-contained and may not depend on “see above.”
 - Platform-specific Kilo tool names are removed from core governance.
@@ -105,7 +111,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 make refresh-global
 ```
 
-Version: `v6.8.4` / `Stable Draft`
+Version: `v6.9.0` / `Stable Draft`
 
 ## License
 

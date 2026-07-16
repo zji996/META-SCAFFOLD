@@ -63,6 +63,18 @@ grep -q 'references/repository-patterns.md' skills/meta-scaffold/SKILL.md || { e
 grep -q 'pi-json-stream.sh <timeout> <workdir>' skills/meta-scaffold/SKILL.md || { echo "skill missing explicit Pi workdir contract" >&2; exit 1; }
 grep -q 'pi --no-session --mode json -p' skills/meta-scaffold/references/platforms.md || { echo "platform reference missing observable Pi delegation mode" >&2; exit 1; }
 grep -q 'cd "$workdir"' skills/meta-scaffold/scripts/pi-json-stream.sh || { echo "Pi wrapper does not bind workdir" >&2; exit 1; }
+for f in \
+  skills/meta-scaffold/SKILL.md \
+  prompts/META-SCAFFOLD-v6.md \
+  prompts/META-SCAFFOLD-v6.short.md \
+  dist/AGENTS.md \
+  dist/CLAUDE.md \
+  dist/CURSOR.mdc \
+  .cursor/rules/meta-scaffold.mdc \
+  templates/AGENTS.meta-scaffold.md \
+  templates/CLAUDE.meta-scaffold.md; do
+  grep -q '原子本地 commit' "$f" || { echo "local commit policy drifted: $f" >&2; exit 1; }
+done
 grep -q 'zji996/META-SCAFFOLD' README.md || { echo "README missing public import path" >&2; exit 1; }
 grep -q "v$version" README.md || { echo "README version mismatch" >&2; exit 1; }
 

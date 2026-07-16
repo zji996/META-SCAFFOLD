@@ -2,7 +2,7 @@
 
 > 面向 coding agent 的仓库治理 skill：理解真实仓库，做最小必要改变，维护可恢复的项目记忆，并用真实验证结束工作。
 
-META-SCAFFOLD v6.8 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
+META-SCAFFOLD v6.9 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
 
 它不是目录模板，也不替模型重复讲通用编码常识。核心只保留会改变工程结果的内容：
 
@@ -128,15 +128,19 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 可选模式：`skill`、`agents`、`claude`、`cursor`、`templates`、`all`。
 
-## 设计变化
+## v6.9 策略
 
-v6.8 在目的驱动 runtime 基线上增加全局维护与 Pi 协作约定：
+- 仓库未覆盖且用户未禁止时，完整、边界清晰并通过相称验证的改动默认创建原子本地 commit。
+- 自动 commit 只包含本任务改动；未完成或验证失败不为清理工作区而提交。
+- push、建远程、PR 与发布继续按消费仓和用户授权执行。
+
+## v6.8 基础
 
 - Pi 默认通过用户级 git package 全局安装和更新，业务项目无需复制 skill。
 - 跨 agent CLI 默认使用 Pi 前台 print mode + JSON 流，主控持续观察进度、串行写仓并复核验证。
 - 治理状态分开 implementation、production enablement、default policy 与 evidence；建议 goal 不冒充 active plan。
 - benchmark 数字集中归档并可追溯；Pi 委派以真实进程退出而非输出通道结束为准。
-- monorepo、commit、sub-agent、handoff prompt 不再是全局默认。
+- monorepo、sub-agent、handoff prompt 不作为全局默认。
 - 普通完成答复不再强制附加可粘贴交接模板。
 - 禁止用“见上文”“按之前内容”代替关键事实。
 - Kilo 平台工具名从核心规则移除；平台差异只负责安装和发现。
@@ -169,7 +173,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.8.4` / `Stable Draft`
+当前版本：`v6.9.0` / `Stable Draft`
 
 ## License
 
