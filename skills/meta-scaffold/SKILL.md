@@ -24,6 +24,17 @@ metadata:
 - 优先复用仓库已有的本地编译、测试、lint 或统一检查入口，并把真实命令写入 agent 入口或项目文档；本地验证结果不得冒充远程 CI 结果。
 - 已存在的 CI 属于项目现状，不因本策略擅自删除；若任务必须修改它，先确认用户请求或仓库规则已明确授权。
 
+## Rust 开发构建策略
+
+当仓库包含 Rust 时，开发构建优先优化反馈延迟，生产构建再优化运行性能；不要把 `cargo run --release` 当作日常开发入口。
+
+- 快速反馈优先使用 `cargo check`、增量编译和仓库已有的局部测试入口；Linux 大型工程可优先评估 `mold` 或 `lld`，但不得假设所有环境已安装。
+- `profile.dev` 保持业务代码低优化；依赖若在 `opt-level = 0` 下严重拖慢调试，可先统一设为 `opt-level = 1`，仅对已确认热点依赖单独提高优化级别。
+- 可增加 `dev-fast` 等中间 profile，用于需要接近真实运行速度的调试；正式 release 默认从 `opt-level = 3` 与 ThinLTO 开始，FatLTO、`codegen-units = 1`、`panic = "abort"`、`target-cpu` 等只在真实 benchmark 和部署约束支持时启用。
+- LLVM 是 CI、基准测试和发布的真值后端；Cranelift 可作为本地 `run` / `test` 的可选快速路径，但不能替代 Stable LLVM 验证，也不得因项目含 `unsafe` 或 FFI 就直接判定不可用，应验证具体 intrinsic、SIMD、ABI 与平台支持。
+- GPU、CUDA、C/C++、链接脚本或其他原生依赖项目优先保持 `*-unknown-linux-gnu` 等成熟生产目标；musl、UPX 和完全静态分发属于交付选择，不作为高性能服务默认方案。
+- 优化前先测量：区分类型检查、宏展开、单态化、codegen、链接、build script 与原生编译耗时，避免用 Cranelift 或 profile 参数掩盖真正瓶颈。
+
 ## 先读什么
 
 按需加载，不扫全仓：
