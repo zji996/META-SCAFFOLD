@@ -1,6 +1,6 @@
 # AGENTS.md
 
-本项目使用 META-SCAFFOLD v6.9 处理仓库治理、结构、项目记忆、验证与跨会话交接。
+本项目使用 META-SCAFFOLD v6.10 处理仓库治理、结构、项目记忆、验证与跨会话交接。
 
 相关任务先读 `skills/meta-scaffold/SKILL.md`。核心约定：
 

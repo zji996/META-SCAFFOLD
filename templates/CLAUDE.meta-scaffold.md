@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-本项目使用 META-SCAFFOLD v6.9。仓库治理、结构、项目记忆、验证或跨会话交接先读：
+本项目使用 META-SCAFFOLD v6.10。仓库治理、结构、项目记忆、验证或跨会话交接先读：
 
 ```text
 skills/meta-scaffold/SKILL.md

@@ -2,7 +2,7 @@
 
 > 面向 coding agent 的仓库治理 skill：理解真实仓库，做最小必要改变，维护可恢复的项目记忆，并用真实验证结束工作。
 
-META-SCAFFOLD v6.9 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
+META-SCAFFOLD v6.10 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
 
 它不是目录模板，也不替模型重复讲通用编码常识。核心只保留会改变工程结果的内容：
 
@@ -128,7 +128,13 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 可选模式：`skill`、`agents`、`claude`、`cursor`、`templates`、`all`。
 
-## v6.9 策略
+## v6.10 策略
+
+- 临时本地服务优先使用内核/Docker 动态端口，并通过 `ports` 自省真实地址；只有端口必须预先可预测时才使用实例前缀派生。
+- 一台开发机只保留一个系统级 Caddy 等 HTTP 入口，项目用独立站点片段把 `<project>.localhost` 指向动态 Backend；数据库和 Redis 不经过反向代理。
+- 仓库未覆盖且用户未禁止时，完整、边界清晰并通过相称验证的改动默认创建原子本地 commit。
+
+## v6.9 基础
 
 - 仓库未覆盖且用户未禁止时，完整、边界清晰并通过相称验证的改动默认创建原子本地 commit。
 - 自动 commit 只包含本任务改动；未完成或验证失败不为清理工作区而提交。
@@ -173,7 +179,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.9.0` / `Stable Draft`
+当前版本：`v6.10.0` / `Stable Draft`
 
 ## License
 

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-## META-SCAFFOLD v6.9
+## META-SCAFFOLD v6.10
 
 仓库治理、结构调整、项目记忆或跨会话交接优先用 `meta-scaffold` skill。不支持 skills 时遵循：
 

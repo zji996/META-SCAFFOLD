@@ -62,6 +62,8 @@ grep -q 'references/handoff.md' skills/meta-scaffold/SKILL.md || { echo "missing
 grep -q 'references/repository-patterns.md' skills/meta-scaffold/SKILL.md || { echo "missing repository-patterns reference" >&2; exit 1; }
 grep -q 'pi-json-stream.sh <timeout> <workdir>' skills/meta-scaffold/SKILL.md || { echo "skill missing explicit Pi workdir contract" >&2; exit 1; }
 grep -q 'pi --no-session --mode json -p' skills/meta-scaffold/references/platforms.md || { echo "platform reference missing observable Pi delegation mode" >&2; exit 1; }
+grep -q 'published: 0' skills/meta-scaffold/references/repository-patterns.md || { echo "repository patterns missing kernel-assigned port mode" >&2; exit 1; }
+grep -q '系统级反向代理' skills/meta-scaffold/references/repository-patterns.md || { echo "repository patterns missing shared ingress mode" >&2; exit 1; }
 grep -q 'cd "$workdir"' skills/meta-scaffold/scripts/pi-json-stream.sh || { echo "Pi wrapper does not bind workdir" >&2; exit 1; }
 for f in \
   skills/meta-scaffold/SKILL.md \

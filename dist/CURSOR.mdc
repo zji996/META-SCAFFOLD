@@ -1,9 +1,9 @@
 ---
-description: META-SCAFFOLD v6.9 repository governance, project memory, verification and handoff
+description: META-SCAFFOLD v6.10 repository governance, project memory, verification and handoff
 alwaysApply: true
 ---
 
-# META-SCAFFOLD v6.9
+# META-SCAFFOLD v6.10
 
 - 按需读项目规则与相关文件；需要当前状态再读 `docs/current.md`。
 - 小改直接改并验证；结构调整或长目标才先对齐目标与计划。

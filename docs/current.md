@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.9.0 makes a verified local commit the default completion checkpoint while keeping shared-state publication explicit: complete, scoped changes are committed atomically unless the repository or user opts out; push, remote creation, PRs, and releases still require repository/user authorization.
+v6.10.0 makes collision-free local development evidence-driven: disposable services use kernel/Docker-assigned host ports and report resolved endpoints, while one machine-level ingress may map stable `<project>.localhost` names to dynamic backends. Deterministic instance prefixes remain available when ports must be known before startup. The v6.9 verified-local-commit policy remains unchanged.
 
 ## Next
 
@@ -25,6 +25,7 @@ v6.9.0 makes a verified local commit the default completion checkpoint while kee
 - Pi output-channel completion is not treated as process completion; the primary agent confirms the Pi and timeout processes exited before writing.
 - Pi delegation uses foreground `--no-session --mode json -p`; the primary agent consumes lifecycle and tool events, summarizes material progress, and does not treat `--verbose` as a progress channel.
 - The Pi wrapper binds an explicit workdir, resolves prompt/event paths against it, and keeps the legacy current-directory form only for compatibility.
+- Local port conventions prefer bind-time allocation plus endpoint introspection; a shared Caddy-like ingress owns 80/443, while deterministic instance-prefix ports remain a constrained fallback for tunnels, callbacks, or firewall rules.
 
 ## Boundaries
 

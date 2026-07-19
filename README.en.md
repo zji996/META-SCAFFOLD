@@ -2,7 +2,7 @@
 
 > A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6.9 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
+META-SCAFFOLD v6.10 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
 
 It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
@@ -73,7 +73,13 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 The installer copies the complete skill, appends thin AGENTS/CLAUDE references without overwriting existing content, installs the Cursor rule, and creates missing governance templates only when absent.
 
-## v6.9 policy
+## v6.10 policy
+
+- Prefer kernel/Docker-assigned dynamic host ports for disposable local services and expose resolved addresses through a `ports` command. Use deterministic instance prefixes only when ports must be known before startup.
+- Keep one machine-level HTTP ingress such as Caddy and let each project register an isolated `<project>.localhost` route to its dynamic backend. Databases and Redis do not go through the reverse proxy.
+- Unless a repository or user opts out, complete scoped changes that pass proportionate verification receive an atomic local commit.
+
+## v6.9 foundation
 
 - Unless the repository overrides it or the user opts out, a complete, scoped change that passes proportionate verification receives an atomic local commit.
 - Automatic commits contain only the current task; incomplete or failing work is not committed merely to clean the worktree.
@@ -111,7 +117,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 make refresh-global
 ```
 
-Version: `v6.9.0` / `Stable Draft`
+Version: `v6.10.0` / `Stable Draft`
 
 ## License
 
