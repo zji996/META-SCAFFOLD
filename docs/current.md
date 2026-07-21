@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.10.0 makes collision-free local development evidence-driven: disposable services use kernel/Docker-assigned host ports and report resolved endpoints, while one machine-level ingress may map stable `<project>.localhost` names to dynamic backends. Deterministic instance prefixes remain available when ports must be known before startup. The v6.9 verified-local-commit policy remains unchanged.
+v6.11.0 keeps collision-free local development evidence-driven (dynamic ports + shared `<project>.localhost` ingress) and adds an explicit Web/SPA rule: development defaults to Vite/HMR behind the stable domain, while production hosts static `dist`. The v6.9 verified-local-commit policy remains unchanged.
 
 ## Next
 

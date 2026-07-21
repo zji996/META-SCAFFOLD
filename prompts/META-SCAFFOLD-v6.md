@@ -1,4 +1,4 @@
-# META-SCAFFOLD Contract v6.10
+# META-SCAFFOLD Contract v6.11
 
 > 人工审阅版。运行时唯一内容源：`skills/meta-scaffold/`（`SKILL.md` + 按需 `references/`）。
 
