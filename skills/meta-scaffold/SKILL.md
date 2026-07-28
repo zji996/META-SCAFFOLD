@@ -4,7 +4,7 @@ description: 治理软件仓库的结构、AI 协作上下文、决策记录、�
 license: MIT
 metadata:
   author: zji996
-  version: "6.12.0"
+  version: "6.12.1"
 ---
 
 # META-SCAFFOLD
@@ -50,7 +50,7 @@ metadata:
 当团队需要数小时内验证 UI 构图，而生产功能必须经过 auth、API、状态与发布门禁时，把设计探索放进**独立开发态 build/app 边界**，不要在生产 App 留查询参数、认证旁路或假业务状态。
 
 - Sandbox 只放静态场景、mock 数据和设计所需的有限假交互；不接生产 API、任务状态或持久化，也不反向依赖生产业务模块。
-- Sandbox 可保留在主分支并接受自己的 typecheck/build/视觉验证，但不进入生产导航、Server/CDN 静态目录、镜像或发布构建；画面明确标注 design/mock，不能冒充已实现功能。
+- Sandbox 可保留在主分支并接受自己的 typecheck/build/视觉验证，但不进入生产导航、Server/CDN 静态目录、镜像或发布构建。Design/mock 身份由独立入口、页面元数据和快照说明清晰表达；默认不在用于评审与截图的画布上叠加工具栏、水印或切换器，也不能冒充已实现功能。
 - 定稿用截图加简短场景说明冻结 viewport、状态、关键交互和 mock 假设；真实功能在生产 App 按权限、数据、响应式与可访问性约束重新实现。
 - 仅在隔离收益真实存在时新增 app；一次性小实验仍可留在短期分支，避免为“沙盒”制造空边界。细节见 [references/repository-patterns.md](references/repository-patterns.md)。
 

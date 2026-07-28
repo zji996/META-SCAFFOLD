@@ -119,7 +119,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 make refresh-global
 ```
 
-Version: `v6.12.0` / `Stable Draft`
+Version: `v6.12.1` / `Stable Draft`
 
 ## License
 

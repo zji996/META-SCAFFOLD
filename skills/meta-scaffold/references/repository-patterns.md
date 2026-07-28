@@ -21,7 +21,7 @@
 - 依赖方向保持单向隔离：sandbox 不 import 生产业务模块，生产 app 不 import sandbox；稳定且真实复用的 token/原子组件才进入既有共享边界，不为少量样式提前造 package。
 - 开发生命周期应可脱离后端独立启动，并提供稳定入口或明确直连地址；生产镜像、静态托管、导航和发布任务显式排除 sandbox。
 - Sandbox 的 typecheck/build/Playwright 只证明设计稿可运行；产品完成仍由生产 app 的 API、权限、状态与端到端验证证明。
-- 评审快照记录 viewport、场景状态、关键交互、mock 假设与源码 revision。截图是视觉基线，不是完整行为契约。
+- 评审快照记录 viewport、场景状态、关键交互、mock 假设与源码 revision；用独立入口、页面元数据和快照说明记录 design/mock 身份，默认不在截图画布上叠加工具栏、水印或画布切换器。截图是视觉基线，不是完整行为契约。
 
 ## 文档
 
