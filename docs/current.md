@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.11.0 keeps collision-free local development evidence-driven (dynamic ports + shared `<project>.localhost` ingress) and adds an explicit Web/SPA rule: development defaults to Vite/HMR behind the stable domain, while production hosts static `dist`. The v6.9 verified-local-commit policy remains unchanged.
+v6.12.0 separates hour-scale UI exploration from production delivery: a development-only design sandbox uses mock scenes, independent lifecycle, and explicit release exclusion, while screenshots plus scenario notes preserve approved visual state. Existing Vite/HMR, dynamic ingress, and verified-local-commit policies remain unchanged.
 
 ## Next
 
@@ -26,6 +26,7 @@ v6.11.0 keeps collision-free local development evidence-driven (dynamic ports + 
 - Pi delegation uses foreground `--no-session --mode json -p`; the primary agent consumes lifecycle and tool events, summarizes material progress, and does not treat `--verbose` as a progress channel.
 - The Pi wrapper binds an explicit workdir, resolves prompt/event paths against it, and keeps the legacy current-directory form only for compatibility.
 - Local port conventions prefer bind-time allocation plus endpoint introspection; a shared Caddy-like ingress owns 80/443, while deterministic instance-prefix ports remain a constrained fallback for tunnels, callbacks, or firewall rules.
+- Design exploration may use an independent development-only app with multiple mock canvases; it does not call production APIs, create bidirectional app dependencies, or enter production navigation/images/static hosting/release builds. Runnable sandbox evidence remains distinct from implemented product evidence.
 
 ## Boundaries
 
