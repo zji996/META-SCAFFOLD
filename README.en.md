@@ -2,7 +2,7 @@
 
 > A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6.12 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
+META-SCAFFOLD v6.13 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
 
 It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
@@ -73,8 +73,10 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 The installer copies the complete skill, appends thin AGENTS/CLAUDE references without overwriting existing content, installs the Cursor rule, and creates missing governance templates only when absent.
 
-## v6.12 policy
+## v6.13 policy
 
+- For multiple projects on one machine, default to a system Caddy (or equivalent) plus per-project site fragments and stable `*.localhost` names. Humans and agents remember domains, not port numbers; do not treat a whole-repo port-offset scheme as the primary governance story.
+- Upstream / DB / cache ports only need to avoid collisions; `urls` lists intended domain entries and `ports` is for diagnosis. After a full stop, do not present the entry table as live.
 - When UI concepts need hour-scale iteration but production features require real auth, APIs, and state, use an independent development-only design sandbox. Mock canvases do not enter production navigation, images, static hosting, or release builds.
 - Freeze approved designs with screenshots plus short scenario notes. A runnable sandbox is not evidence that the production feature is implemented.
 - Prefer kernel/Docker-assigned dynamic host ports for disposable local services and expose resolved addresses through a `ports` command. Use deterministic instance prefixes only when ports must be known before startup.
@@ -119,7 +121,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 make refresh-global
 ```
 
-Version: `v6.12.1` / `Stable Draft`
+Version: `v6.13.0` / `Stable Draft`
 
 ## License
 

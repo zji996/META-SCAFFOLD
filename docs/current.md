@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.12.1 keeps design canvases capture-clean: design/mock identity lives in the independent ingress, page metadata, and snapshot notes instead of mandatory in-canvas toolbars, watermarks, or switchers. The v6.12.0 sandbox/release separation and existing Vite/HMR, dynamic ingress, and verified-local-commit policies remain unchanged.
+v6.13.0 prefers system Caddy + per-project `*.localhost` site fragments as the default multi-project isolation story; humans and agents use domains daily, and whole-repo port-offset schemes are no longer the primary governance axis. Upstream ports only need to avoid collisions. Capture-clean design sandboxes, Vite/HMR ingress, dynamic ports, and verified-local-commit policies remain.
 
 ## Next
 
@@ -25,7 +25,7 @@ v6.12.1 keeps design canvases capture-clean: design/mock identity lives in the i
 - Pi output-channel completion is not treated as process completion; the primary agent confirms the Pi and timeout processes exited before writing.
 - Pi delegation uses foreground `--no-session --mode json -p`; the primary agent consumes lifecycle and tool events, summarizes material progress, and does not treat `--verbose` as a progress channel.
 - The Pi wrapper binds an explicit workdir, resolves prompt/event paths against it, and keeps the legacy current-directory form only for compatibility.
-- Local port conventions prefer bind-time allocation plus endpoint introspection; a shared Caddy-like ingress owns 80/443, while deterministic instance-prefix ports remain a constrained fallback for tunnels, callbacks, or firewall rules.
+- Local multi-project isolation prefers system Caddy + per-project `*.localhost` sites; humans/agents use domains daily. Upstream ports only need to avoid collisions. Bind-time allocation plus `ports` introspection remains for disposable services; deterministic instance-prefix ports stay a constrained fallback for tunnels, callbacks, or firewall rules.
 - Design exploration may use an independent development-only app with multiple mock canvases; it does not call production APIs, create bidirectional app dependencies, or enter production navigation/images/static hosting/release builds. Independent ingress, page metadata, and snapshot notes identify mock evidence without polluting capture canvases; runnable sandbox evidence remains distinct from implemented product evidence.
 
 ## Boundaries

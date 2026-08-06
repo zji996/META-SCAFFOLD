@@ -4,7 +4,7 @@ description: 治理软件仓库的结构、AI 协作上下文、决策记录、�
 license: MIT
 metadata:
   author: zji996
-  version: "6.12.1"
+  version: "6.13.0"
 ---
 
 # META-SCAFFOLD
@@ -44,6 +44,16 @@ metadata:
 - **运维脚本**（如 `manage.sh dev up`）应启动 Vite 并写对代理，而不是把 `pnpm build` 当开发热路径；`pnpm build` / `check` 仍用于门禁与发布。
 - **排障**：用户反馈「样式没变」时，先确认浏览器入口是开发代理还是静态 `dist`，再查 HMR/缓存，而不是先怀疑 CSS 选择器写错。
 - 将上述约定写入项目 `AGENTS.md`（或等价入口），避免下一轮 agent 缺少上下文又绕回 `build`+静态托管。
+
+## 本机多项目入口：Caddy 域名优先
+
+同机并行多个仓库时，**人类与 agent 的默认入口是稳定本地域名，不是端口号**。
+
+- 一台开发机只跑一个系统级反向代理（推荐 Caddy：`import /etc/caddy/sites/*.caddy`）。每个项目维护可原子替换的独立 site 片段；`up` 注册、`down`/`pause` 注销并 graceful reload。系统 Caddy 进程本身常驻；停某个项目只卸该项目的 site。
+- 跨项目防冲靠 **独立 host / 路径命名空间**（如 `admin.localhost`、`app.localhost/<platform>/`、`farmer.localhost`），不要靠「全仓统一端口偏移」（如 `port_instance=28` → 全体 `28xxx`）作为治理主轴。域名冲突一眼可见；端口偏移难记、难文档化，且与「日常不写端口」目标矛盾。
+- upstream / 基础设施端口 **只要本机不冲突即可**；可用固定默认或 env 覆盖。编排脚本提供 `ports`/`status`/`urls`：`urls` 列域名入口，`ports` 仅诊断。文档与 `AGENTS.md` 优先写域名；端口表标注「upstream / 诊断，非日常入口」。
+- 仅当 SSH 隧道、外部回调、防火墙或人工连接必须在启动前可预测时，才引入实例前缀/偏移（见 [references/repository-patterns.md](references/repository-patterns.md)「多实例端口」）；有 Caddy 域名的 HTTP UI/API **默认不要**上偏移方案。
+- Android 模拟器/真机等无法使用宿主 `*.localhost` 的客户端，仍可直连 gateway 宿主端口；那是设备侧例外，不改变浏览器开发默认走域名。
 
 ## 设计沙盒与生产路径
 
