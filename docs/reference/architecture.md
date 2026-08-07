@@ -33,7 +33,7 @@ The source layout is a package boundary, not a requirement for consuming reposit
 
 ## Installer
 
-`scripts/install.sh` can run from a local clone or through a raw GitHub URL. It installs selected artifacts into a target project and avoids overwriting existing docs/templates.
+`scripts/install.sh` scaffolds consumer projects only: AGENTS/CLAUDE thin blocks, a compact Cursor rule, and missing docs/plan templates. It does **not** vendor `skills/meta-scaffold/` into business repositories; the legacy `skill` mode is rejected.
 
 `scripts/install-agent-skill.sh` installs the same runtime directory into the vendor-neutral `~/.agents/skills`, Codex, Kilo Code, Cursor, or all targets. Forced replacement is allowed only when the destination already identifies as `name: meta-scaffold`.
 
@@ -41,7 +41,7 @@ Pi may use `pi install git:github.com/zji996/META-SCAFFOLD` for skill-only consu
 
 `scripts/install-codex-skill.sh` remains a compatibility wrapper for the Codex-only path.
 
-`scripts/smoke-remote.sh` verifies the public raw installer, Kilo remote manifest, and Codex GitHub skill installer from temporary directories.
+`scripts/smoke-remote.sh` verifies the public raw project scaffolding installer, Kilo remote manifest, and Codex GitHub skill installer from temporary directories.
 
 ## Verification
 

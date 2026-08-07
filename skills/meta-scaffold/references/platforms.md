@@ -1,6 +1,15 @@
 # Platform Installation
 
-`skills/meta-scaffold/` 是公共仓库中的唯一运行时内容源，也是 Agent Skills / Pi package 的标准发布目录。消费项目不需要复制该目录；全局安装只是在用户级发现位置或 Pi package cache 中引用同一份发布内容。
+`skills/meta-scaffold/` 是公共仓库中的唯一运行时内容源，也是 Agent Skills / Pi package 的标准发布目录。消费项目**不要**复制该目录；全局安装只是在用户级发现位置或 Pi package cache 中引用同一份发布内容。接手业务仓的人主要读该仓的 `AGENTS.md`，不是仓内 `skills/`。
+
+## 项目脚手架（不复制 skill）
+
+`scripts/install.sh` 只向目标项目追加 AGENTS/CLAUDE 薄块、精简 Cursor rule，以及缺失时的 docs/plan 模板。它**不会**、也**不得**再把 `skills/meta-scaffold/` 写入业务仓。若调用旧的 `skill` 模式，安装器会拒绝并提示改用本文件的用户级安装。
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh \
+  | bash -s -- . all
+```
 
 ## Pi 全局安装（二选一）
 

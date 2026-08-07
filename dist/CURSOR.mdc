@@ -18,4 +18,4 @@ alwaysApply: true
 - 记忆按寿命放入 current / ADR / reference / roadmap；local plan 只留未完成账本。
 - 结果自包含；仅暂停或换会话时生成 handoff。
 
-完整 skill：`skills/meta-scaffold/SKILL.md`。
+完整 skill 安装在用户级发现目录（`~/.cursor/skills/meta-scaffold` 等）；业务仓不要 vendor `skills/meta-scaffold/`。项目契约以 `AGENTS.md` 为准。

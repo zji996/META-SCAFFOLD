@@ -15,9 +15,7 @@ manifest="$tmp/index.json"
 
 curl -fsSL "$RAW_BASE/scripts/install.sh" | bash -s -- "$target" all >/dev/null
 
-[[ -f "$target/skills/meta-scaffold/SKILL.md" ]] || { echo "remote installer missing skill" >&2; exit 1; }
-[[ -f "$target/skills/meta-scaffold/agents/openai.yaml" ]] || { echo "remote installer missing skill metadata" >&2; exit 1; }
-[[ -f "$target/skills/meta-scaffold/references/platforms.md" ]] || { echo "remote installer missing skill references" >&2; exit 1; }
+[[ ! -e "$target/skills" ]] || { echo "remote installer must not vendor skills/" >&2; exit 1; }
 [[ -f "$target/.cursor/rules/meta-scaffold.mdc" ]] || { echo "remote installer missing cursor rule" >&2; exit 1; }
 grep -q 'META-SCAFFOLD' "$target/AGENTS.md" || { echo "remote installer missing AGENTS block" >&2; exit 1; }
 

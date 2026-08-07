@@ -111,20 +111,25 @@ cmp dist/CURSOR.mdc .cursor/rules/meta-scaffold.mdc >/dev/null || { echo "Cursor
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 ./scripts/install.sh "$tmp" all >/dev/null
-[[ -f "$tmp/skills/meta-scaffold/SKILL.md" ]] || { echo "installer failed skill" >&2; exit 1; }
-[[ -f "$tmp/skills/meta-scaffold/agents/openai.yaml" ]] || { echo "installer failed skill metadata" >&2; exit 1; }
-[[ -f "$tmp/skills/meta-scaffold/references/platforms.md" ]] || { echo "installer failed skill references" >&2; exit 1; }
-[[ -f "$tmp/skills/meta-scaffold/scripts/pi-json-stream.sh" ]] || { echo "installer failed Pi wrapper" >&2; exit 1; }
+[[ ! -e "$tmp/skills" ]] || { echo "installer must not vendor skills/ into projects" >&2; exit 1; }
 [[ -f "$tmp/.cursor/rules/meta-scaffold.mdc" ]] || { echo "installer failed cursor rule" >&2; exit 1; }
 [[ -f "$tmp/docs/current.md" ]] || { echo "installer failed docs/current.md" >&2; exit 1; }
 [[ -f "$tmp/docs/decision/INDEX.md" ]] || { echo "installer failed docs/decision/INDEX.md" >&2; exit 1; }
 grep -q 'META-SCAFFOLD' "$tmp/AGENTS.md" || { echo "installer failed AGENTS append" >&2; exit 1; }
+grep -q '不要' "$tmp/AGENTS.md" || { echo "installer AGENTS block missing no-vendor guidance" >&2; exit 1; }
+
+if ./scripts/install.sh "$tmp" skill >/dev/null 2>&1; then
+  echo "installer skill mode must reject project vendoring" >&2
+  exit 1
+fi
 
 remote_installer="$tmp/install-remote.sh"
 remote_target="$tmp/remote-project"
 cp scripts/install.sh "$remote_installer"
-META_SCAFFOLD_RAW_BASE="file://$ROOT" bash "$remote_installer" "$remote_target" skill >/dev/null
-[[ -f "$remote_target/skills/meta-scaffold/references/platforms.md" ]] || { echo "remote-style installer failed skill references" >&2; exit 1; }
+META_SCAFFOLD_RAW_BASE="file://$ROOT" bash "$remote_installer" "$remote_target" all >/dev/null
+[[ ! -e "$remote_target/skills" ]] || { echo "remote-style installer vendored skills/" >&2; exit 1; }
+[[ -f "$remote_target/.cursor/rules/meta-scaffold.mdc" ]] || { echo "remote-style installer failed cursor rule" >&2; exit 1; }
+grep -q 'META-SCAFFOLD' "$remote_target/AGENTS.md" || { echo "remote-style installer failed AGENTS append" >&2; exit 1; }
 
 codex_home="$tmp/codex-home"
 kilo_home="$tmp/kilo-home"

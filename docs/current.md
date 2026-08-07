@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.13.0 prefers system Caddy + per-project `*.localhost` site fragments as the default multi-project isolation story; humans and agents use domains daily, and whole-repo port-offset schemes are no longer the primary governance axis. Upstream ports only need to avoid collisions. Capture-clean design sandboxes, Vite/HMR ingress, dynamic ports, and verified-local-commit policies remain.
+v6.13.1 keeps Caddy `*.localhost` as the default multi-project isolation story, and stops project installers from vendoring `skills/meta-scaffold/` into consumer repos. Skill installs are user-level only; consumer contract entry is each project's `AGENTS.md`. Capture-clean design sandboxes, Vite/HMR ingress, dynamic ports, and verified-local-commit policies remain.
 
 ## Next
 

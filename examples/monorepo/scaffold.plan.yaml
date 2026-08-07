@@ -12,7 +12,8 @@ repo:
 
 ai_collaboration:
   language: zh-first
-  skill_entry: skills/meta-scaffold/SKILL.md
+  agent_entry: AGENTS.md
+  # meta-scaffold is user-level only; do not vendor skills/meta-scaffold into this repo
   default_context:
     - AGENTS.md
     - docs/current.md

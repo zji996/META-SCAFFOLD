@@ -1,8 +1,8 @@
 # AGENTS.md
 
-本项目使用 META-SCAFFOLD v6.13 处理仓库治理、结构、项目记忆、验证与跨会话交接。
+本项目使用 META-SCAFFOLD v6.13 约定处理仓库治理、结构、项目记忆、验证与跨会话交接。
 
-相关任务先读 `skills/meta-scaffold/SKILL.md`。核心约定：
+**本文件是消费仓的 AI 契约入口。** `meta-scaffold` skill 安装在用户级发现目录（或 Pi package），不要在业务仓复制 `skills/meta-scaffold/`。核心约定：
 
 - 按需读上下文；小改直接改并验证；结构调整或长目标才先对齐目标与计划。
 - 尊重现有形态；仓库未禁止时，完整且验证通过的边界清晰改动默认创建不混入既有改动的原子本地 commit；push / PR / 发布按本文件授权。

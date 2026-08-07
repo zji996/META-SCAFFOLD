@@ -112,7 +112,9 @@ Kilo Code 可在 `kilo.jsonc` 使用同一发布目录：
 
 Kilo 会读取 [`skills/index.json`](./skills/index.json)。新会话会重新发现 skills；需要时使用 `/reload`。
 
-## 安装到项目
+## 安装到项目（脚手架，不复制 skill）
+
+Skill 只装用户级（见上文）。项目脚手架：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh \
@@ -121,12 +123,12 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 安装器会：
 
-- 安装完整 `skills/meta-scaffold/`，包含 references 和 OpenAI UI 元数据。
-- 向现有 `AGENTS.md` / `CLAUDE.md` 追加薄引用块，不覆盖原内容。
-- 安装 Cursor rule。
+- **不**往业务仓写入 `skills/meta-scaffold/`。
+- 向现有 `AGENTS.md` / `CLAUDE.md` 追加薄引用块（指向本文件契约 + 用户级 skill），不覆盖原内容。
+- 安装精简 Cursor rule（同样不指向仓内 skill 路径）。
 - 仅在不存在时创建 current、roadmap、ADR INDEX、architecture 和 plan 模板。
 
-可选模式：`skill`、`agents`、`claude`、`cursor`、`templates`、`all`。
+可选模式：`agents`、`claude`、`cursor`、`templates`、`all`。`skill` 模式会拒绝并提示改用 `install-agent-skill.sh`。
 
 ## v6.13 策略
 
@@ -167,7 +169,7 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 | [`prompts/META-SCAFFOLD-v6.md`](./prompts/META-SCAFFOLD-v6.md) | 人工审阅版契约 |
 | [`dist/`](./dist/) | 不支持 skills 的薄分发件 |
 | [`scripts/install-agent-skill.sh`](./scripts/install-agent-skill.sh) | Global/Codex/Kilo/Cursor 统一同步 |
-| [`scripts/install.sh`](./scripts/install.sh) | 项目安装器 |
+| [`scripts/install.sh`](./scripts/install.sh) | 项目脚手架（不 vendor skill） |
 | [`scripts/check.sh`](./scripts/check.sh) | 本仓库验证 |
 
 ## 维护
@@ -183,7 +185,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.13.0` / `Stable Draft`
+当前版本：`v6.13.1` / `Stable Draft`
 
 ## License
 

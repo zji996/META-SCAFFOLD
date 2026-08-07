@@ -4,7 +4,7 @@ description: 治理软件仓库的结构、AI 协作上下文、决策记录、�
 license: MIT
 metadata:
   author: zji996
-  version: "6.13.0"
+  version: "6.13.1"
 ---
 
 # META-SCAFFOLD
@@ -128,4 +128,4 @@ metadata:
 - 仅暂停、跨会话或用户要求时产出自包含 handoff；模板见 [references/handoff.md](references/handoff.md)。
 - 仍影响未来工作的事实才写入 `docs/current.md`。
 
-安装与平台发现见 [references/platforms.md](references/platforms.md)。
+安装与平台发现见 [references/platforms.md](references/platforms.md)。**业务仓不要 vendor 本目录**；消费仓契约入口是项目自己的 `AGENTS.md`。

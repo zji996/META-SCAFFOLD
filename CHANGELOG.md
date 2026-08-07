@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.13.1
+
+- 明确业务仓不 vendor `skills/meta-scaffold/`：`scripts/install.sh` 只做 AGENTS/CLAUDE/Cursor rule/docs 脚手架；旧 `skill` 模式拒绝并引导 `install-agent-skill.sh`。
+- 更新模板、dist、examples 与 platforms：消费仓契约入口是项目 `AGENTS.md`；skill 仅用户级发现目录或 Pi package。
+- check / smoke-remote 断言项目安装产物不得出现 `skills/`。
+
 ## 6.13.0
 
 - 明确本机多项目入口以系统级 Caddy（或同类）+ 独立 site + 稳定 `*.localhost` 为默认防冲方式；人类与 agent 日常记域名，不记端口。

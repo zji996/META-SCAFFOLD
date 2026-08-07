@@ -64,14 +64,16 @@ Kilo Code can load the same release through `kilo.jsonc`:
 
 The URL serves [`skills/index.json`](./skills/index.json).
 
-## Project installation
+## Project scaffolding (does not vendor the skill)
+
+Install the skill at user scope (above). Project scaffolding:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/main/scripts/install.sh \
   | bash -s -- . all
 ```
 
-The installer copies the complete skill, appends thin AGENTS/CLAUDE references without overwriting existing content, installs the Cursor rule, and creates missing governance templates only when absent.
+The installer does **not** copy `skills/meta-scaffold/` into consumer repos. It appends thin AGENTS/CLAUDE references, installs a compact Cursor rule, and creates missing governance templates only when absent. Mode `skill` is rejected in favor of `install-agent-skill.sh`.
 
 ## v6.13 policy
 
@@ -111,7 +113,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 | `skills/index.json` | Kilo remote manifest |
 | `prompts/META-SCAFFOLD-v6.md` | Human-review contract |
 | `scripts/install-agent-skill.sh` | Unified global/Codex/Kilo/Cursor sync |
-| `scripts/install.sh` | Project installer |
+| `scripts/install.sh` | Project scaffolding (no skill vendor) |
 | `scripts/check.sh` | Repository validation |
 
 ## Maintenance
@@ -121,7 +123,7 @@ The installer copies the complete skill, appends thin AGENTS/CLAUDE references w
 make refresh-global
 ```
 
-Version: `v6.13.0` / `Stable Draft`
+Version: `v6.13.1` / `Stable Draft`
 
 ## License
 

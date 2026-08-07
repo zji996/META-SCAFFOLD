@@ -42,20 +42,18 @@ append_block_once() {
   fi
 }
 
-install_skill() {
-  local files=(
-    "SKILL.md"
-    "agents/openai.yaml"
-    "references/handoff.md"
-    "references/platforms.md"
-    "references/repository-patterns.md"
-    "scripts/pi-json-stream.sh"
-  )
-  local file
-  for file in "${files[@]}"; do
-    fetch_file "skills/meta-scaffold/$file" "$TARGET_DIR/skills/meta-scaffold/$file"
-    echo "installed: skills/meta-scaffold/$file"
-  done
+reject_project_skill_vendor() {
+  cat >&2 <<'EOF'
+META-SCAFFOLD no longer vendors skills/meta-scaffold into consumer repos.
+
+Install the skill at user scope instead:
+  ./scripts/install-agent-skill.sh all
+  # or: pi install git:github.com/zji996/META-SCAFFOLD
+
+Project scaffolding (AGENTS/CLAUDE/Cursor rule/docs templates) uses:
+  ./scripts/install.sh [target-dir] [agents|claude|cursor|templates|all]
+EOF
+  exit 2
 }
 
 install_agents() {
@@ -65,7 +63,7 @@ install_agents() {
 <!-- META-SCAFFOLD:START -->
 ## META-SCAFFOLD
 
-当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，先读取并遵守 `skills/meta-scaffold/SKILL.md`。
+本仓库的 AI 契约入口是本文件与 `docs/current.md`。治理约定（验证、授权、记忆寿命、交接）由用户级 `meta-scaffold` skill 提供；**不要**在业务仓 vendor `skills/meta-scaffold/`。
 
 小任务直接修改并验证；复杂任务才显式说明事实、假设、成功标准和计划。输出与交接必须自包含，只有暂停或换会话时才生成 handoff prompt。
 <!-- META-SCAFFOLD:END -->
@@ -81,9 +79,9 @@ install_claude() {
 <!-- META-SCAFFOLD:START -->
 ## META-SCAFFOLD
 
-当任务涉及仓库结构、项目治理、AI 交接、文档布局、monorepo 边界、上下文压缩或验证流程时，先读取并遵守 `skills/meta-scaffold/SKILL.md`。
+项目契约见 `AGENTS.md`，当前状态见 `docs/current.md`。仓库治理细节由用户级 `meta-scaffold` skill 提供；不要在本仓复制 `skills/meta-scaffold/`。
 
-小任务直接修改并验证；复杂任务才显式说明事实、假设、成功标准和计划。输出与交接必须自包含，只有暂停或换会话时才生成 handoff prompt。
+小改直接改并验证；复杂任务才先对齐事实、假设、成功标准和计划。
 <!-- META-SCAFFOLD:END -->
 EOF
 )
@@ -116,14 +114,12 @@ install_templates() {
 
 case "$MODE" in
   skill)
-    install_skill
+    reject_project_skill_vendor
     ;;
   agents)
-    install_skill
     install_agents
     ;;
   claude)
-    install_skill
     install_claude
     ;;
   cursor)
@@ -133,14 +129,14 @@ case "$MODE" in
     install_templates
     ;;
   all)
-    install_skill
     install_agents
     install_claude
     install_cursor
     install_templates
     ;;
   *)
-    echo "Usage: $0 [target-dir] [skill|agents|claude|cursor|templates|all]" >&2
+    echo "Usage: $0 [target-dir] [agents|claude|cursor|templates|all]" >&2
+    echo "Skill installs are user-level only: ./scripts/install-agent-skill.sh all" >&2
     exit 2
     ;;
 esac

@@ -2,7 +2,7 @@
 
 ## META-SCAFFOLD v6.13
 
-仓库治理、结构调整、项目记忆或跨会话交接优先用 `meta-scaffold` skill。不支持 skills 时遵循：
+仓库治理、结构调整、项目记忆或跨会话交接优先用用户级 `meta-scaffold` skill。项目契约见 `AGENTS.md`；不要在业务仓 vendor `skills/meta-scaffold/`。不支持 skills 时遵循：
 
 - 按需读项目规则与相关文件；需要当前状态再读 `docs/current.md`。
 - 小改直接改并验证；结构调整或长目标才先对齐目标、事实、假设、成功标准和非目标。
@@ -16,5 +16,3 @@
 - 优先已有验证；失败或未跑如实说明。
 - 记忆按寿命放入 current / ADR / reference / roadmap；local plan 只留未完成账本。
 - 结果自包含；仅暂停或换会话时生成 handoff。
-
-运行时：`skills/meta-scaffold/SKILL.md`。
