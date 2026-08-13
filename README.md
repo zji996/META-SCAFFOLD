@@ -133,7 +133,7 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 ## v6.14 策略
 
 - HTTP 入口按浏览器位置选拓扑，不拆两套 skill。同机（WSL/本机）继续系统 Caddy + `*.localhost` + Vite HMR。
-- 远程 GPU / Cursor Remote + 公网 Caddy/FRP：公网默认静态 edge（与 Vite 同端口置换、同源 `/v1`）；不要 FRP Vite、API、worker、进度口、数据库；`local_ip` 用局域网 IP。
+- 远程 GPU / Cursor Remote + 公网 Caddy/FRP：公网默认静态 edge（与 Vite 同端口置换、同源 `/v1`）；不要 FRP Vite、API、worker、进度口、数据库；`local_ip` 用局域网 IP。edge 改前端须 `manage.sh`/`make` rebuild。
 - 远程机不要再套一套 `*.localhost` 当日常入口；消费仓写明公网暴露哪些 UI（如 web+admin）。前端热改走 Cursor 转发或内网 Vite。
 
 ## v6.13 策略
@@ -191,7 +191,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.14.0` / `Stable Draft`
+当前版本：`v6.14.1` / `Stable Draft`
 
 ## License
 

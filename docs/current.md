@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.14.0 keeps one skill and two HTTP topologies: same-machine Caddy `*.localhost` + Vite, versus remote GPU / FRP public Caddy with static edge on the UI ports. Project installers still do not vendor `skills/meta-scaffold/`. Capture-clean design sandboxes, verified-local-commit, and user-level skill installs remain.
+v6.14.1 keeps one skill and two HTTP topologies. `dev-up` and `edge-up` share UI ports (Vite vs static nginx) and are mutually exclusive; edge frontend changes require `manage.sh` / `make` rebuild. Project installers still do not vendor `skills/meta-scaffold/`.
 
 ## Next
 

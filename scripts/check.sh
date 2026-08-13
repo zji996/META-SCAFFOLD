@@ -66,6 +66,7 @@ grep -q 'published: 0' skills/meta-scaffold/references/repository-patterns.md ||
 grep -q '系统级反向代理' skills/meta-scaffold/references/repository-patterns.md || { echo "repository patterns missing shared ingress mode" >&2; exit 1; }
 grep -q '远程开发与 FRP' skills/meta-scaffold/references/repository-patterns.md || { echo "repository patterns missing remote FRP ingress" >&2; exit 1; }
 grep -q 'FRP tcp' skills/meta-scaffold/SKILL.md || { echo "skill missing remote FRP tcp ingress" >&2; exit 1; }
+grep -q '同端口' skills/meta-scaffold/SKILL.md || { echo "skill missing same-port dev/edge swap" >&2; exit 1; }
 grep -q 'cd "$workdir"' skills/meta-scaffold/scripts/pi-json-stream.sh || { echo "Pi wrapper does not bind workdir" >&2; exit 1; }
 for f in \
   skills/meta-scaffold/SKILL.md \

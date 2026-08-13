@@ -83,7 +83,7 @@
 - 公网只打需要给人打开的 UI 口（常见：用户端 + 运营后台各一口）。每口同源反代 `/v1`（及 healthz）；不要再为公网单独开 CORS。
 - 不要 FRP：API 直端口、worker、推理进度口（如 `PORT+10`）、postgres、redis、Vite。
 - FRP `local_ip` 用进程机局域网 IP，不要 `127.0.0.1`（对端连不上 loopback）。
-- **公网默认静态 edge**：停 Vite，nginx 占用与 FRP 相同的端口，隧道配置不用改。改前端再 `edge-rebuild`。回到热改：停 edge，重启 Vite，用 Cursor 端口转发或内网 IP。
+- **公网默认静态 edge**：与 `dev-up` **同端口、不同形态**（停 Vite，nginx 占同一套 UI 口），隧道配置不用改。二者互斥。改前端必须经项目命令入口重建并 reload（`manage.sh edge rebuild` / `make edge-rebuild`）；保存源码不会出现在公网包里。回到热改：停 edge，重启 Vite，用 Cursor 端口转发或内网 IP。
 - **不要把 Vite 挂上公网 FRP**（HMR、`/src`、sourcemap、`allowedHosts`）。agent 排障「样式没变」时，先问浏览器走的是公网静态包还是转发中的 Vite。
 - 远程机不要再装一套系统 Caddy 当日常入口；可生成 site 片段给**公网** Caddy 用（host、body size、SSE flush），不要擅自写 `/etc/caddy`，也不要把公网 TLS 终止放到 GPU 箱。
 - `urls` 列公网域名；`ports` 诊断进程机监听。停干净后勿把公网表展示成已可访问。

@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.14.1
+
+- 明确 `dev-up` / `edge-up` 同端口、不同形态（Vite HMR vs 静态 nginx），互斥置换，不要给 edge 另开一套口。
+- edge 模式下改前端必须经仓库入口刷新（`manage.sh edge rebuild` / `make edge-rebuild`）；保存源码不会进入公网静态包。消费仓 `AGENTS.md` 应简短写明。
+
 ## 6.14.0
 
 - 按浏览器位置区分 HTTP 入口，仍是同一套 skill：同机（WSL/本机）继续系统 Caddy + `*.localhost` + Vite；远程 GPU / Cursor Remote + 公网 Caddy/FRP 默认静态 edge，与 Vite 同端口置换。

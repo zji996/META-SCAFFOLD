@@ -78,7 +78,7 @@ The installer does **not** copy `skills/meta-scaffold/` into consumer repos. It 
 ## v6.14 policy
 
 - Choose HTTP ingress by where the browser is; do not split the skill. On the same machine (WSL/local Linux), keep system Caddy + `*.localhost` + Vite HMR.
-- On a remote GPU / Cursor SSH host with public Caddy and FRP: public preview defaults to static edge on the same ports Vite uses, with same-origin `/v1`. Do not FRP Vite, the API, workers, progress ports, or databases; FRP `local_ip` is the LAN address, not `127.0.0.1`.
+- On a remote GPU / Cursor SSH host with public Caddy and FRP: public preview defaults to static edge on the same ports Vite uses, with same-origin `/v1`. Do not FRP Vite, the API, workers, progress ports, or databases; FRP `local_ip` is the LAN address, not `127.0.0.1`. Frontend changes under edge must go through `manage.sh` / `make` rebuild.
 - Do not treat remote-box `*.localhost` as the daily entry. Consumer `AGENTS.md` should name the topology and which UIs are public (e.g. web + admin). Frontend hot reload stays on forwarded/LAN Vite.
 
 ## v6.13 policy
@@ -129,7 +129,7 @@ The installer does **not** copy `skills/meta-scaffold/` into consumer repos. It 
 make refresh-global
 ```
 
-Version: `v6.14.0` / `Stable Draft`
+Version: `v6.14.1` / `Stable Draft`
 
 ## License
 
