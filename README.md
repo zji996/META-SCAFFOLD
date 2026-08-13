@@ -2,7 +2,7 @@
 
 > 面向 coding agent 的仓库治理 skill：理解真实仓库，做最小必要改变，维护可恢复的项目记忆，并用真实验证结束工作。
 
-META-SCAFFOLD v6.13 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
+META-SCAFFOLD v6.14 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
 
 它不是目录模板，也不替模型重复讲通用编码常识。核心只保留会改变工程结果的内容：
 
@@ -130,6 +130,12 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 可选模式：`agents`、`claude`、`cursor`、`templates`、`all`。`skill` 模式会拒绝并提示改用 `install-agent-skill.sh`。
 
+## v6.14 策略
+
+- HTTP 入口按浏览器位置选拓扑，不拆两套 skill。同机（WSL/本机）继续系统 Caddy + `*.localhost` + Vite HMR。
+- 远程 GPU / Cursor Remote + 公网 Caddy/FRP：公网默认静态 edge（与 Vite 同端口置换、同源 `/v1`）；不要 FRP Vite、API、worker、进度口、数据库；`local_ip` 用局域网 IP。
+- 远程机不要再套一套 `*.localhost` 当日常入口；消费仓写明公网暴露哪些 UI（如 web+admin）。前端热改走 Cursor 转发或内网 Vite。
+
 ## v6.13 策略
 
 - 同机多项目默认用系统级 Caddy + 独立 site + `*.localhost` 防冲；日常入口是域名，不是端口号。不要把全仓统一端口偏移当治理主轴。
@@ -185,7 +191,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.13.1` / `Stable Draft`
+当前版本：`v6.14.0` / `Stable Draft`
 
 ## License
 

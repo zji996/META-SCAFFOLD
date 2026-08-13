@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.14.0
+
+- 按浏览器位置区分 HTTP 入口，仍是同一套 skill：同机（WSL/本机）继续系统 Caddy + `*.localhost` + Vite；远程 GPU / Cursor Remote + 公网 Caddy/FRP 默认静态 edge，与 Vite 同端口置换。
+- 明确远程拓扑：公网只打 UI 口（常见 web+admin），每口同源 `/v1`；不要 FRP Vite、API、worker、进度口、数据库；FRP `local_ip` 用局域网 IP 而非 `127.0.0.1`。
+- 远程机不做第二套系统 Caddy 当日常入口；表内端口防冲保留，整组 `PORT_INSTANCE` 偏移仍不是治理主轴。消费仓 `AGENTS.md` 写明拓扑与公网暴露哪些 UI。
+
 ## 6.13.1
 
 - 明确业务仓不 vendor `skills/meta-scaffold/`：`scripts/install.sh` 只做 AGENTS/CLAUDE/Cursor rule/docs 脚手架；旧 `skill` 模式拒绝并引导 `install-agent-skill.sh`。

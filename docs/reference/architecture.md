@@ -46,3 +46,5 @@ Pi may use `pi install git:github.com/zji996/META-SCAFFOLD` for skill-only consu
 ## Verification
 
 `./scripts/check.sh` validates required files, metadata, JSON manifests, project installation, identical global/Codex/Kilo/Cursor installs, and safe replacement behavior.
+
+HTTP ingress policy lives in the runtime skill: same-machine Caddy domains versus remote FRP + static edge. Details are in `skills/meta-scaffold/references/repository-patterns.md`.

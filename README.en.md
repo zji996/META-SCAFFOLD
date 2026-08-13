@@ -2,7 +2,7 @@
 
 > A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6.13 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
+META-SCAFFOLD v6.14 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
 
 It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
@@ -75,6 +75,12 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 The installer does **not** copy `skills/meta-scaffold/` into consumer repos. It appends thin AGENTS/CLAUDE references, installs a compact Cursor rule, and creates missing governance templates only when absent. Mode `skill` is rejected in favor of `install-agent-skill.sh`.
 
+## v6.14 policy
+
+- Choose HTTP ingress by where the browser is; do not split the skill. On the same machine (WSL/local Linux), keep system Caddy + `*.localhost` + Vite HMR.
+- On a remote GPU / Cursor SSH host with public Caddy and FRP: public preview defaults to static edge on the same ports Vite uses, with same-origin `/v1`. Do not FRP Vite, the API, workers, progress ports, or databases; FRP `local_ip` is the LAN address, not `127.0.0.1`.
+- Do not treat remote-box `*.localhost` as the daily entry. Consumer `AGENTS.md` should name the topology and which UIs are public (e.g. web + admin). Frontend hot reload stays on forwarded/LAN Vite.
+
 ## v6.13 policy
 
 - For multiple projects on one machine, default to a system Caddy (or equivalent) plus per-project site fragments and stable `*.localhost` names. Humans and agents remember domains, not port numbers; do not treat a whole-repo port-offset scheme as the primary governance story.
@@ -123,7 +129,7 @@ The installer does **not** copy `skills/meta-scaffold/` into consumer repos. It 
 make refresh-global
 ```
 
-Version: `v6.13.1` / `Stable Draft`
+Version: `v6.14.0` / `Stable Draft`
 
 ## License
 

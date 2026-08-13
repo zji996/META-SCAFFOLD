@@ -4,7 +4,7 @@ description: 治理软件仓库的结构、AI 协作上下文、决策记录、�
 license: MIT
 metadata:
   author: zji996
-  version: "6.13.1"
+  version: "6.14.0"
 ---
 
 # META-SCAFFOLD
@@ -43,9 +43,12 @@ metadata:
 - **生产 / 镜像 / 发布**：`build` 产出静态资源，由后端或 CDN 托管；生产进程不常驻 Node/Vite。
 - **运维脚本**（如 `manage.sh dev up`）应启动 Vite 并写对代理，而不是把 `pnpm build` 当开发热路径；`pnpm build` / `check` 仍用于门禁与发布。
 - **排障**：用户反馈「样式没变」时，先确认浏览器入口是开发代理还是静态 `dist`，再查 HMR/缓存，而不是先怀疑 CSS 选择器写错。
+- 远程公网预览（见「HTTP 入口：本机域名 vs 远程 FRP」）默认看静态 `dist`；前端热改仍走 Vite，但不要把 Vite 打进公网。先确认浏览器走的是哪条入口，再决定要不要 `edge-rebuild`。
 - 将上述约定写入项目 `AGENTS.md`（或等价入口），避免下一轮 agent 缺少上下文又绕回 `build`+静态托管。
 
 ## 本机多项目入口：Caddy 域名优先
+
+这节只覆盖**浏览器与进程同机**（WSL / 本机 Linux）。远程 GPU 箱 + 公网 Caddy/FRP 见下一节，不要把 `*.localhost` 硬套过去。
 
 同机并行多个仓库时，**人类与 agent 的默认入口是稳定本地域名，不是端口号**。
 
@@ -54,6 +57,14 @@ metadata:
 - upstream / 基础设施端口 **只要本机不冲突即可**；可用固定默认或 env 覆盖。编排脚本提供 `ports`/`status`/`urls`：`urls` 列域名入口，`ports` 仅诊断。文档与 `AGENTS.md` 优先写域名；端口表标注「upstream / 诊断，非日常入口」。
 - 仅当 SSH 隧道、外部回调、防火墙或人工连接必须在启动前可预测时，才引入实例前缀/偏移（见 [references/repository-patterns.md](references/repository-patterns.md)「多实例端口」）；有 Caddy 域名的 HTTP UI/API **默认不要**上偏移方案。
 - Android 模拟器/真机等无法使用宿主 `*.localhost` 的客户端，仍可直连 gateway 宿主端口；那是设备侧例外，不改变浏览器开发默认走域名。
+
+## HTTP 入口：本机域名 vs 远程 FRP
+
+按**浏览器在哪**选拓扑；不要拆两套 skill。消费仓 `AGENTS.md` 写明本项目属于哪一种，以及公网暴露哪些 UI。
+
+- **同机浏览器**（WSL / 本机）：上一节。系统 Caddy + `*.localhost`；开发走 Vite HMR；upstream 端口防冲即可。静态 `edge-up` 不是日常热路径。
+- **远程进程机 + 公网**（SSH / Cursor Remote、GPU 箱、习惯 FRP）：笔记本解析不到远程机的 `*.localhost`。入口是**公网 Caddy**（TLS、真域名）→ FRP tcp → 进程机 UI 口。公网默认静态 edge：与 Vite **同端口置换**，每口同源反代 `/v1`。不要 FRP Vite、API、worker、进度口、数据库。FRP `local_ip` 用进程机局域网 IP，不要 `127.0.0.1`。前端热改用 Cursor 端口转发或内网打 Vite，不走公网。
+- 远程机仍做表内端口防冲；不要把整组 `PORT_INSTANCE` 偏移当远程治理主轴——FRP 只映射少数固定 UI 口。细节见 [references/repository-patterns.md](references/repository-patterns.md)「远程开发与 FRP」。
 
 ## 设计沙盒与生产路径
 

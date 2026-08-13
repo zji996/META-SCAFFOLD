@@ -2,7 +2,7 @@
 
 ## Current focus
 
-v6.13.1 keeps Caddy `*.localhost` as the default multi-project isolation story, and stops project installers from vendoring `skills/meta-scaffold/` into consumer repos. Skill installs are user-level only; consumer contract entry is each project's `AGENTS.md`. Capture-clean design sandboxes, Vite/HMR ingress, dynamic ports, and verified-local-commit policies remain.
+v6.14.0 keeps one skill and two HTTP topologies: same-machine Caddy `*.localhost` + Vite, versus remote GPU / FRP public Caddy with static edge on the UI ports. Project installers still do not vendor `skills/meta-scaffold/`. Capture-clean design sandboxes, verified-local-commit, and user-level skill installs remain.
 
 ## Next
 
@@ -25,7 +25,7 @@ v6.13.1 keeps Caddy `*.localhost` as the default multi-project isolation story, 
 - Pi output-channel completion is not treated as process completion; the primary agent confirms the Pi and timeout processes exited before writing.
 - Pi delegation uses foreground `--no-session --mode json -p`; the primary agent consumes lifecycle and tool events, summarizes material progress, and does not treat `--verbose` as a progress channel.
 - The Pi wrapper binds an explicit workdir, resolves prompt/event paths against it, and keeps the legacy current-directory form only for compatibility.
-- Local multi-project isolation prefers system Caddy + per-project `*.localhost` sites; humans/agents use domains daily. Upstream ports only need to avoid collisions. Bind-time allocation plus `ports` introspection remains for disposable services; deterministic instance-prefix ports stay a constrained fallback for tunnels, callbacks, or firewall rules.
+- Local multi-project isolation prefers system Caddy + per-project `*.localhost` sites when the browser is on the same machine. Remote GPU / Cursor SSH hosts with public Caddy+FRP use static edge on the UI ports (same-origin `/v1`); do not FRP Vite, APIs, workers, progress ports, or databases. Upstream ports only need to avoid collisions. Bind-time allocation plus `ports` introspection remains for disposable services; deterministic instance-prefix ports stay a constrained fallback for tunnels, FRP, callbacks, or firewall rules.
 - Design exploration may use an independent development-only app with multiple mock canvases; it does not call production APIs, create bidirectional app dependencies, or enter production navigation/images/static hosting/release builds. Independent ingress, page metadata, and snapshot notes identify mock evidence without polluting capture canvases; runnable sandbox evidence remains distinct from implemented product evidence.
 
 ## Boundaries

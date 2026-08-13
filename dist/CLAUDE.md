@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-## META-SCAFFOLD v6.13
+## META-SCAFFOLD v6.14
 
 仓库治理、结构调整、项目记忆或跨会话交接优先用用户级 `meta-scaffold` skill。项目契约见 `AGENTS.md`；不要在业务仓 vendor `skills/meta-scaffold/`。不支持 skills 时遵循：
 
@@ -9,6 +9,7 @@
 - 尊重现有形态；仅有明确收益时才新增边界或建议 monorepo。
 - `apps/` → 共享包允许，反向禁止；跨 app 走契约或服务接口。
 - 快速 UI 探索使用独立 mock sandbox；不接生产 API、不反向依赖生产业务模块、不进入发布构建，截图不冒充功能完成。
+- 同机开发用 Caddy 域名 + Vite；远程 GPU + FRP 公网用静态 edge，不要 FRP Vite/API。
 - 高影响操作按项目规则授权；已批准计划内明确步骤不重复阻塞。
 - 仓库未禁止时，完整且验证通过的边界清晰改动默认创建不混入既有改动的原子本地 commit；push / PR / 发布仍按本仓库授权。
 - 除非用户明确要求，不新增、恢复或扩展托管 CI；优先使用本地验证入口。

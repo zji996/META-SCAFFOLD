@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-本项目使用 META-SCAFFOLD v6.13 约定。项目契约见 `AGENTS.md`，当前状态见 `docs/current.md`。
+本项目使用 META-SCAFFOLD v6.14 约定。项目契约见 `AGENTS.md`，当前状态见 `docs/current.md`。
 
 仓库治理细节由用户级 `meta-scaffold` skill 提供；不要在本仓复制 `skills/meta-scaffold/`。
 
