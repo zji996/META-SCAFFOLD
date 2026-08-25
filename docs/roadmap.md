@@ -2,7 +2,7 @@
 
 ## 近期
 
-- 以 v6.14.0 作为 Pi/Codex/Kilo/Cursor 共用的目的驱动单 runtime 基线：同机多项目默认 Caddy 域名入口；远程 GPU + 公网 Caddy/FRP 默认静态 edge；Pi 委派使用前台 JSON 流，本地门禁优先于新增托管 CI，验证后的边界清晰改动默认创建原子本地 commit；快速 UI 探索与生产交付使用隔离且不污染截图画布的证据路径。
+- 以 v6.15.0 作为 Pi/Codex/Kilo/Cursor 共用的目的驱动单 runtime 基线：同机浏览器使用 Caddy 域名入口，远程进程机通过公网 Caddy + FRP 发布静态 edge；界面先简化结构、再用熟悉图标、最后才补必要短文案；其余继续保持前台 Pi JSON 流、本地门禁、原子本地 commit 与设计/生产证据隔离。
 - 用真实治理任务继续验证四维状态、goal 生命周期、benchmark 证据归档与 Pi 进程退出检查。
 - 推进消费仓从 project-vendored skill 迁移到用户级 Pi package 或 vendor-neutral global install；仅需固定版本时保留项目级安装。
 - 用误触发率、跨会话恢复率、常驻 token 成本评估，而不是规则行数。

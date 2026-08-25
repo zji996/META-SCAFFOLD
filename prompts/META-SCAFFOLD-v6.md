@@ -1,4 +1,4 @@
-# META-SCAFFOLD Contract v6.14
+# META-SCAFFOLD Contract v6.15
 
 > 人工审阅版。运行时唯一内容源：`skills/meta-scaffold/`（`SKILL.md` + 按需 `references/`）。
 
@@ -32,6 +32,7 @@
 - `apps/` → `packages/` 允许；反向禁止；跨 app 走契约或服务接口。
 - 需要快速试 UI 时，独立开发态 sandbox 只放 mock 场景，不接生产 API、不反向依赖生产业务模块、不进入发布构建；截图加场景说明是视觉基线，不是功能完成证据。
 - 同机开发用系统 Caddy 域名 + Vite；远程 GPU + 公网 Caddy/FRP 默认静态 edge（与 Vite 同端口置换、同源 `/v1`）；edge 改前端须 manage.sh/make rebuild，不要 FRP Vite/API/worker/数据库。
+- 产品界面先简化结构与领域名词，再使用熟悉图标，只有仍有歧义时才补短文案；图标按钮保留 tooltip 和可访问名称。
 - 信息按寿命放入 current / ADR / reference / roadmap / `.local/plan`；current 不做工作日志，完成的 local plan 迁移稳定事实后删除。
 
 ## 验证与交接

@@ -2,7 +2,7 @@
 
 > 面向 coding agent 的仓库治理 skill：理解真实仓库，做最小必要改变，维护可恢复的项目记忆，并用真实验证结束工作。
 
-META-SCAFFOLD v6.14 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
+META-SCAFFOLD v6.15 遵循 [Agent Skills](https://agentskills.io/) 目录格式，同一份 skill 可用于 Pi、Codex、Kilo Code、Cursor 和其他兼容实现。
 
 它不是目录模板，也不替模型重复讲通用编码常识。核心只保留会改变工程结果的内容：
 
@@ -130,6 +130,11 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 可选模式：`agents`、`claude`、`cursor`、`templates`、`all`。`skill` 模式会拒绝并提示改用 `install-agent-skill.sh`。
 
+## v6.15 策略
+
+- 产品界面先简化结构与领域名词，再使用用户熟悉图标，只有仍有歧义时才补短文案；图标按钮保留 tooltip 与可访问名称。
+- 可见文字必须承担对象、状态、动作、后果、错误或必要指引之一；紧凑面板与空态避免多层重复说明。
+
 ## v6.14 策略
 
 - HTTP 入口按浏览器位置选拓扑，不拆两套 skill。同机（WSL/本机）继续系统 Caddy + `*.localhost` + Vite HMR。
@@ -191,7 +196,7 @@ make refresh-global  # 从当前 clone 刷新 global/Codex/Kilo/Cursor 用户级
 ./scripts/smoke-remote.sh
 ```
 
-当前版本：`v6.14.1` / `Stable Draft`
+当前版本：`v6.15.0` / `Stable Draft`
 
 ## License
 

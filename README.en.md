@@ -2,7 +2,7 @@
 
 > A repository-governance skill for coding agents: understand the real system, make the smallest necessary change, preserve recoverable project memory, and finish with honest verification.
 
-META-SCAFFOLD v6.14 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
+META-SCAFFOLD v6.15 uses the [Agent Skills](https://agentskills.io/) format. The same runtime works with Pi, Codex, Kilo Code, Cursor, and other compatible agents.
 
 It does not impose a directory template or restate generic coding ability. Its core covers only decisions that materially affect engineering outcomes: authorization boundaries, dependency ownership, durable project memory, self-contained handoffs, and verification integrity.
 
@@ -75,6 +75,11 @@ curl -fsSL https://raw.githubusercontent.com/zji996/META-SCAFFOLD/refs/heads/mai
 
 The installer does **not** copy `skills/meta-scaffold/` into consumer repos. It appends thin AGENTS/CLAUDE references, installs a compact Cursor rule, and creates missing governance templates only when absent. Mode `skill` is rejected in favor of `install-agent-skill.sh`.
 
+## v6.15 policy
+
+- Product UI prioritizes simplified structure and precise domain nouns, then familiar icons, adding concise copy only when ambiguity remains, while keeping tooltips and accessible names.
+- Visible text must convey identity, status, action, consequence, error, or necessary guidance; avoid layered redundant explanations across compact panels and empty states.
+
 ## v6.14 policy
 
 - Choose HTTP ingress by where the browser is; do not split the skill. On the same machine (WSL/local Linux), keep system Caddy + `*.localhost` + Vite HMR.
@@ -129,7 +134,7 @@ The installer does **not** copy `skills/meta-scaffold/` into consumer repos. It 
 make refresh-global
 ```
 
-Version: `v6.14.1` / `Stable Draft`
+Version: `v6.15.0` / `Stable Draft`
 
 ## License
 
