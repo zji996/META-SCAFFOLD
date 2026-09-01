@@ -10,6 +10,7 @@ USE_LINK="${META_SCAFFOLD_LINK:-${META_SCAFFOLD_SYMLINK:-0}}"
 CODEX_SKILLS_ROOT="${META_SCAFFOLD_CODEX_SKILLS_ROOT:-${CODEX_HOME:-$HOME/.codex}/skills}"
 KILO_SKILLS_ROOT="${META_SCAFFOLD_KILO_SKILLS_ROOT:-${KILO_HOME:-$HOME/.kilo}/skills}"
 CURSOR_SKILLS_ROOT="${META_SCAFFOLD_CURSOR_SKILLS_ROOT:-${CURSOR_HOME:-$HOME/.cursor}/skills}"
+GEMINI_SKILLS_ROOT="${META_SCAFFOLD_GEMINI_SKILLS_ROOT:-${GEMINI_HOME:-$HOME/.gemini}/skills}"
 GLOBAL_SKILLS_ROOT="${META_SCAFFOLD_GLOBAL_SKILLS_ROOT:-$HOME/.agents/skills}"
 
 # Parse flags and target argument
@@ -29,7 +30,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     -h|--help)
       cat <<'EOF'
-Usage: install-agent-skill.sh [options] [global|pi|codex|kilo|cursor|all]
+Usage: install-agent-skill.sh [options] [global|pi|codex|kilo|cursor|gemini|all]
 
 Options:
   --link, --symlink, -s   Create symlinks pointing to local repo source (auto-updates on git pull)
@@ -43,13 +44,13 @@ Environment variables:
 EOF
       exit 0
       ;;
-    global|pi|codex|kilo|cursor|all)
+    global|pi|codex|kilo|cursor|gemini|all)
       TARGET="$1"
       shift
       ;;
     *)
       echo "Unknown option or target: $1" >&2
-      echo "Usage: $0 [--link|--copy] [--force] [global|pi|codex|kilo|cursor|all]" >&2
+      echo "Usage: $0 [--link|--copy] [--force] [global|pi|codex|kilo|cursor|gemini|all]" >&2
       exit 2
       ;;
   esac
@@ -99,6 +100,9 @@ case "$TARGET" in
   cursor)
     install_to cursor "$CURSOR_SKILLS_ROOT"
     ;;
+  gemini)
+    install_to gemini "$GEMINI_SKILLS_ROOT"
+    ;;
   pi|global)
     install_to global "$GLOBAL_SKILLS_ROOT"
     ;;
@@ -107,6 +111,7 @@ case "$TARGET" in
     install_to codex "$CODEX_SKILLS_ROOT"
     install_to kilo "$KILO_SKILLS_ROOT"
     install_to cursor "$CURSOR_SKILLS_ROOT"
+    install_to gemini "$GEMINI_SKILLS_ROOT"
     ;;
 esac
 

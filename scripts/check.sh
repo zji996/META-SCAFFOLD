@@ -137,30 +137,35 @@ grep -q 'META-SCAFFOLD' "$remote_target/AGENTS.md" || { echo "remote-style insta
 codex_home="$tmp/codex-home"
 kilo_home="$tmp/kilo-home"
 cursor_home="$tmp/cursor-home"
+gemini_home="$tmp/gemini-home"
 global_home="$tmp/global-home"
-META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$global_home/skills" CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" ./scripts/install-agent-skill.sh all >/dev/null
+META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$global_home/skills" CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" GEMINI_HOME="$gemini_home" ./scripts/install-agent-skill.sh all >/dev/null
 [[ -f "$codex_home/skills/meta-scaffold/SKILL.md" ]] || { echo "codex skill installer failed" >&2; exit 1; }
 [[ -f "$kilo_home/skills/meta-scaffold/SKILL.md" ]] || { echo "kilo skill installer failed" >&2; exit 1; }
 [[ -f "$cursor_home/skills/meta-scaffold/SKILL.md" ]] || { echo "cursor skill installer failed" >&2; exit 1; }
+[[ -f "$gemini_home/skills/meta-scaffold/SKILL.md" ]] || { echo "gemini skill installer failed" >&2; exit 1; }
 [[ -f "$global_home/skills/meta-scaffold/SKILL.md" ]] || { echo "global skill installer failed" >&2; exit 1; }
 [[ -f "$global_home/skills/meta-scaffold/scripts/pi-json-stream.sh" ]] || { echo "global skill Pi wrapper missing" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$kilo_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "agent skill installs drifted" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$cursor_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "Cursor skill install drifted" >&2; exit 1; }
+cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$gemini_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "Gemini skill install drifted" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$global_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "global skill install drifted" >&2; exit 1; }
 
 printf '\n# stale local copy\n' >> "$codex_home/skills/meta-scaffold/SKILL.md"
-META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$global_home/skills" CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all >/dev/null
+META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$global_home/skills" CODEX_HOME="$codex_home" KILO_HOME="$kilo_home" CURSOR_HOME="$cursor_home" GEMINI_HOME="$gemini_home" META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all >/dev/null
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$kilo_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced agent skill refresh drifted" >&2; exit 1; }
 cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$cursor_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced Cursor skill refresh drifted" >&2; exit 1; }
+cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$gemini_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced Gemini skill refresh drifted" >&2; exit 1; }
 cmp skills/meta-scaffold/SKILL.md "$codex_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced agent skill refresh is stale" >&2; exit 1; }
 cmp skills/meta-scaffold/SKILL.md "$global_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced global skill refresh is stale" >&2; exit 1; }
 
 # Test symlink mode
 link_test_home="$tmp/link-home"
-META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$link_test_home/skills" CODEX_HOME="$link_test_home/codex" KILO_HOME="$link_test_home/kilo" CURSOR_HOME="$link_test_home/cursor" ./scripts/install-agent-skill.sh --link all >/dev/null
+META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$link_test_home/skills" CODEX_HOME="$link_test_home/codex" KILO_HOME="$link_test_home/kilo" CURSOR_HOME="$link_test_home/cursor" GEMINI_HOME="$link_test_home/gemini" ./scripts/install-agent-skill.sh --link all >/dev/null
 [[ -L "$link_test_home/skills/meta-scaffold" ]] || { echo "symlink installer failed global" >&2; exit 1; }
 [[ -L "$link_test_home/codex/skills/meta-scaffold" ]] || { echo "symlink installer failed codex" >&2; exit 1; }
 [[ -L "$link_test_home/cursor/skills/meta-scaffold" ]] || { echo "symlink installer failed cursor" >&2; exit 1; }
+[[ -L "$link_test_home/gemini/skills/meta-scaffold" ]] || { echo "symlink installer failed gemini" >&2; exit 1; }
 
 
 mock_bin="$tmp/mock-bin"

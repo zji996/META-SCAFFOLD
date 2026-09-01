@@ -45,7 +45,7 @@ pi install /absolute/path/to/META-SCAFFOLD
 ./scripts/install-agent-skill.sh all
 ```
 
-可指定目标平台：`global`（Pi/通用）、`codex`、`kilo`、`cursor` 或 `all`。
+可指定目标平台：`global`（Pi/通用）、`codex`、`kilo`、`cursor`、`gemini` 或 `all`。
 
 默认只安装到空位置。若需强制刷新已存在的目录或链接：
 
@@ -60,6 +60,7 @@ pi install /absolute/path/to/META-SCAFFOLD
 - Codex：`${CODEX_HOME:-~/.codex}/skills/meta-scaffold`
 - Kilo Code：`${KILO_HOME:-~/.kilo}/skills/meta-scaffold`
 - Cursor：`${CURSOR_HOME:-~/.cursor}/skills/meta-scaffold`
+- Gemini / Antigravity：`${GEMINI_HOME:-~/.gemini}/skills/meta-scaffold`
 
 安装后开启新会话；Kilo Code 也可使用 `/reload` 重新扫描。不要写入 `~/.cursor/skills-cursor/`，该目录由 Cursor 管理内置 skills。
 
