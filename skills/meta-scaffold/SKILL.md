@@ -23,16 +23,11 @@ metadata:
 - 优先复用仓库已有的本地编译、测试、lint 或统一检查入口，并把真实命令写入 agent 入口或项目文档；本地验证结果不得冒充远程 CI 结果。
 - 已存在的 CI 属于项目现状，不因本策略擅自删除；若任务必须修改它，先确认用户请求或仓库规则已明确授权。
 
-## Rust 开发构建策略
+## 语言与技术栈构建
 
-当仓库包含 Rust 时，开发构建优先优化反馈延迟，生产构建再优化运行性能；不要把 `cargo run --release` 当作日常开发入口。
+当仓库包含特定语言或技术栈时，按需读取对应参考并遵循反馈延迟优先原则：
 
-- 快速反馈优先使用 `cargo check`、增量编译和仓库已有的局部测试入口；Linux 大型工程可优先评估 `mold` 或 `lld`，但不得假设所有环境已安装。
-- `profile.dev` 保持业务代码低优化；依赖若在 `opt-level = 0` 下严重拖慢调试，可先统一设为 `opt-level = 1`，仅对已确认热点依赖单独提高优化级别。
-- 可增加 `dev-fast` 等中间 profile，用于需要接近真实运行速度的调试；正式 release 默认从 `opt-level = 3` 与 ThinLTO 开始，FatLTO、`codegen-units = 1`、`panic = "abort"`、`target-cpu` 等只在真实 benchmark 和部署约束支持时启用。
-- LLVM 是 CI、基准测试和发布的真值后端；Cranelift 可作为本地 `run` / `test` 的可选快速路径，但不能替代 Stable LLVM 验证，也不得因项目含 `unsafe` 或 FFI 就直接判定不可用，应验证具体 intrinsic、SIMD、ABI 与平台支持。
-- GPU、CUDA、C/C++、链接脚本或其他原生依赖项目优先保持 `*-unknown-linux-gnu` 等成熟生产目标；musl、UPX 和完全静态分发属于交付选择，不作为高性能服务默认方案。
-- 优化前先测量：区分类型检查、宏展开、单态化、codegen、链接、build script 与原生编译耗时，避免用 Cranelift 或 profile 参数掩盖真正瓶颈。
+- **Rust 开发构建**：优先优化反馈延迟（`cargo check`、增量编译、`[profile.dev.package."*"] opt-level = 1`），生产构建再优化运行性能（ThinLTO、`opt-level = 3`）。不要把 `cargo run --release` 当作日常开发入口。LLVM 为真值后端。细节见 [references/rust.md](references/rust.md)。
 
 ## Web / SPA 开发入口策略
 
@@ -88,6 +83,7 @@ metadata:
 1. 用户请求与生效的 `AGENTS.md` / `CLAUDE.md` / 平台规则
 2. 涉及当前状态或多轮工作时：`docs/current.md`
 3. 与当前决策直接相关的 architecture、ADR、plan、命令入口、任务文件
+4. 专项细节按需读 `references/`（架构与端口 `repository-patterns.md`、Rust 构建 `rust.md`、交接 `handoff.md`、平台 `platforms.md`）
 
 代码与真实配置优先于文档；发现漂移就指出。小改直接改并验证；结构调整或长目标才先对齐目标、事实、假设、成功标准和非目标。
 
@@ -95,14 +91,13 @@ metadata:
 
 - 分开记录 implementation/foundation、production enablement、default policy 与 validation evidence；不用单一 `Implemented` 覆盖四个维度。
 - 区分 active plan、proposed next goal 与 historical completed goal；用户只确认方向时，不自动写成 active goal。
-- 性能数字优先归档到专门 benchmark 文档；current/roadmap/ADR 保留定性结论与链接。证据等级按表格或章节标注，每组数字可追溯到 artifact、schema、环境与日期。
 
 ## 能改什么
 
 - 可逆且在请求范围内：按仓库惯例推进。
 - 删除/覆盖、大迁移、生产数据、force push、部署、认证、公开契约：按项目规则授权；缺授权先问。
 - 已批准计划中明确列出的高影响步骤：该计划范围内视为已授权；越界或与 ADR 冲突则再确认。
-- 仓库未另行规定且用户未禁止时，完整且通过相称验证的边界清晰改动默认创建原子本地 commit，作为可审阅 checkpoint；不得混入既有或无关改动，任务未完成或验证失败不为清理工作区而提交。
+- 仓库未另行规定且用户未禁止时，完整且通过相称验证的边界清晰改动默认创建原子本地 commit，作为可审阅 checkpoint；不得混入既有或无关改动，任务未完成或验证失败不为清理工作区而提交。多轮探索性重构或高破坏性试验优先在临时分支推进，避免在主干留下碎屑 checkpoint。
 - 分支切换、push、建远程、PR 与发布服从当前仓库和用户授权，不由本 skill 自动扩张。
 - 用当前 agent 提供的等价工具即可；平台能力不是业务规则。
 
@@ -110,7 +105,7 @@ metadata:
 
 需要把子任务交给其他 agent CLI 时，默认使用 Pi：
 
-- 只委派目标清晰、可验收的任务；Pi 默认使用本机完整工具、extensions 与 skills，自主读取上下文和完成范围内工作。
+- 只委派目标清晰、可验收的任务；Pi 默认使用本机完整工具、extensions 与 skills，自主读取上下文和完成范围内工作。若环境未安装 `pi`，直接由主控 Agent 在当前会话内串行执行，不阻塞任务推进。
 - 将任务契约写入临时 prompt 文件，使用 `scripts/pi-json-stream.sh <timeout> <workdir> <prompt-file> <events-log>` 前台一次性执行；显式 workdir 固定 Pi 的项目上下文，三参数旧调用仍继承当前目录。
 - 脚本只输出高信号过滤事件；主控持续消费生命周期、截断命令、写入路径、工具错误与阶段文本，原始 JSON 默认不落盘。
 - 每 30–60 秒轮询增量；没有实质变化不重复汇报。需要追因时先查过滤日志，再查 artifact/diff 或定向重跑。
@@ -120,7 +115,6 @@ metadata:
 命令、提示词模板与进程生命周期见 [references/platforms.md](references/platforms.md)。
 
 ## 结构怎么定
-
 - 尊重现有形态；仅当部署、所有权、复用或验证成本有明确收益时才新增边界或建议 monorepo。
 - 采用 `apps/` / `packages/` 时：app → 共享包允许，反向禁止；跨 app 走契约 / RPC / HTTP / 事件 / 队列。
 - 不为完整感建空目录或抽象层。细节见 [references/repository-patterns.md](references/repository-patterns.md)。

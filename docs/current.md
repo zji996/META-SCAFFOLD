@@ -1,9 +1,6 @@
 # META-SCAFFOLD Current Context
 
-## Current focus
-
-v6.15.0 keeps Caddy `*.localhost` for same-machine browsers, distinguishes remote process hosts that publish static edge builds through public Caddy + FRP (`dev-up` and `edge-up` share UI ports and edge changes require rebuild), and adds a product UI information hierarchy: simplify structure and domain terms first, then familiar icons, then only necessary short copy. Project installers still do not vendor `skills/meta-scaffold/`; skill installs are user-level with symlink/Gemini support, and each project's `AGENTS.md` remains the consumer contract entry.
-
+v6.15.0 keeps Caddy `*.localhost` for same-machine browsers, distinguishes remote process hosts that publish static edge builds through public Caddy + FRP (`dev-up` and `edge-up` share UI ports and edge changes require rebuild), downscales specific language stacks to progressive references (`references/rust.md`), adds exploratory scratch branch guidance, and formalizes no-Pi fallback. Project installers still do not vendor `skills/meta-scaffold/`; skill installs are user-level with symlink/Gemini support, and each project's `AGENTS.md` remains the consumer contract entry.
 ## Next
 
 1. Measure false-trigger rate, cross-session recovery, and persistent context cost in real Pi/Codex/Kilo/Cursor work.
@@ -27,12 +24,11 @@ v6.15.0 keeps Caddy `*.localhost` for same-machine browsers, distinguishes remot
 - The Pi wrapper binds an explicit workdir, resolves prompt/event paths against it, and keeps the legacy current-directory form only for compatibility.
 - Local multi-project isolation prefers system Caddy + per-project `*.localhost` sites when the browser is on the same machine. Remote GPU / Cursor SSH hosts with public Caddy+FRP use static edge on the UI ports (same-origin `/v1`); do not FRP Vite, APIs, workers, progress ports, or databases. Upstream ports only need to avoid collisions. Bind-time allocation plus `ports` introspection remains for disposable services; deterministic instance-prefix ports stay a constrained fallback for tunnels, FRP, callbacks, or firewall rules.
 - Design exploration may use an independent development-only app with multiple mock canvases; it does not call production APIs, create bidirectional app dependencies, or enter production navigation/images/static hosting/release builds. Independent ingress, page metadata, and snapshot notes identify mock evidence without polluting capture canvases; runnable sandbox evidence remains distinct from implemented product evidence.
-- Remote process hosts use public Caddy + FRP only for the small set of human-facing static edge UI ports; Vite, API-only ports, workers, databases, caches, and progress channels remain private.
 - Product UI copy must identify an object, state, action, consequence, error, or necessary instruction. Familiar icons precede extra visible explanation, while tooltips and accessible names remain mandatory.
+- Language-specific build optimization (e.g. Rust dev latency vs release ThinLTO) is progressive in `references/rust.md`; exploratory scratch branches prevent fragmented checkpoints in the trunk; missing Pi CLI falls back directly to the primary agent without blocking.
 
 ## Boundaries
 
-- Keep the Agent Skills runtime small and platform-neutral.
 - Installers overwrite only an existing `meta-scaffold` destination and only with explicit force.
 - Do not turn line count into the goal; retain rules that materially prevent authorization, verification, dependency, or handoff failures.
 
