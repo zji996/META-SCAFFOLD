@@ -1,7 +1,10 @@
-.PHONY: check package link-pi-local sync-global refresh-global
+.PHONY: check sync package link-pi-local sync-global link-global refresh-global
 
 check:
 	./scripts/check.sh
+
+sync:
+	./scripts/sync-dist.sh
 
 link-pi-local:
 	pi install "$(CURDIR)"
