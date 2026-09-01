@@ -3,12 +3,57 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE="$ROOT/skills/meta-scaffold"
-TARGET="${1:-all}"
+TARGET="all"
 FORCE="${META_SCAFFOLD_FORCE_INSTALL:-0}"
+USE_LINK="${META_SCAFFOLD_LINK:-${META_SCAFFOLD_SYMLINK:-0}}"
+
 CODEX_SKILLS_ROOT="${META_SCAFFOLD_CODEX_SKILLS_ROOT:-${CODEX_HOME:-$HOME/.codex}/skills}"
 KILO_SKILLS_ROOT="${META_SCAFFOLD_KILO_SKILLS_ROOT:-${KILO_HOME:-$HOME/.kilo}/skills}"
 CURSOR_SKILLS_ROOT="${META_SCAFFOLD_CURSOR_SKILLS_ROOT:-${CURSOR_HOME:-$HOME/.cursor}/skills}"
 GLOBAL_SKILLS_ROOT="${META_SCAFFOLD_GLOBAL_SKILLS_ROOT:-$HOME/.agents/skills}"
+
+# Parse flags and target argument
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --link|--symlink|-s)
+      USE_LINK=1
+      shift
+      ;;
+    --copy|-c)
+      USE_LINK=0
+      shift
+      ;;
+    --force|-f)
+      FORCE=1
+      shift
+      ;;
+    -h|--help)
+      cat <<'EOF'
+Usage: install-agent-skill.sh [options] [global|pi|codex|kilo|cursor|all]
+
+Options:
+  --link, --symlink, -s   Create symlinks pointing to local repo source (auto-updates on git pull)
+  --copy, -c              Copy files statically into target skill directory (default)
+  --force, -f             Overwrite existing meta-scaffold installation
+  -h, --help              Show this help message
+
+Environment variables:
+  META_SCAFFOLD_LINK=1           Enable symlink mode
+  META_SCAFFOLD_FORCE_INSTALL=1  Enable force overwrite
+EOF
+      exit 0
+      ;;
+    global|pi|codex|kilo|cursor|all)
+      TARGET="$1"
+      shift
+      ;;
+    *)
+      echo "Unknown option or target: $1" >&2
+      echo "Usage: $0 [--link|--copy] [--force] [global|pi|codex|kilo|cursor|all]" >&2
+      exit 2
+      ;;
+  esac
+done
 
 [[ -f "$SOURCE/SKILL.md" ]] || { echo "missing: $SOURCE/SKILL.md" >&2; exit 1; }
 
@@ -18,21 +63,30 @@ install_to() {
   local dest="$dest_root/meta-scaffold"
 
   mkdir -p "$dest_root"
-  if [[ -e "$dest" ]]; then
+  if [[ -e "$dest" || -L "$dest" ]]; then
     if [[ ! -f "$dest/SKILL.md" ]] || ! grep -q '^name: meta-scaffold$' "$dest/SKILL.md"; then
       echo "refuse to replace non-meta-scaffold path: $dest" >&2
       return 1
     fi
     if [[ "$FORCE" != "1" ]]; then
+      if [[ "$USE_LINK" == "1" && -L "$dest" ]] && [[ "$(readlink -f "$dest" 2>/dev/null || true)" == "$(readlink -f "$SOURCE" 2>/dev/null || true)" ]]; then
+        echo "ok (already linked): $dest"
+        return 0
+      fi
       echo "skip: $dest already exists"
-      echo "Set META_SCAFFOLD_FORCE_INSTALL=1 to refresh it."
+      echo "Set META_SCAFFOLD_FORCE_INSTALL=1 or use --force to refresh it."
       return 0
     fi
     rm -rf "$dest"
   fi
 
-  cp -R "$SOURCE" "$dest"
-  echo "installed ($platform): $dest"
+  if [[ "$USE_LINK" == "1" ]]; then
+    ln -sfn "$SOURCE" "$dest"
+    echo "linked ($platform): $dest -> $SOURCE"
+  else
+    cp -R "$SOURCE" "$dest"
+    echo "installed ($platform): $dest"
+  fi
 }
 
 case "$TARGET" in
@@ -53,10 +107,6 @@ case "$TARGET" in
     install_to codex "$CODEX_SKILLS_ROOT"
     install_to kilo "$KILO_SKILLS_ROOT"
     install_to cursor "$CURSOR_SKILLS_ROOT"
-    ;;
-  *)
-    echo "Usage: $0 [global|pi|codex|kilo|cursor|all]" >&2
-    exit 2
     ;;
 esac
 

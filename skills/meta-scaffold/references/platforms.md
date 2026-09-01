@@ -38,20 +38,23 @@ pi install /absolute/path/to/META-SCAFFOLD
 ## 本地 clone 同步
 
 ```bash
-./scripts/install-agent-skill.sh global
-./scripts/install-agent-skill.sh codex
-./scripts/install-agent-skill.sh kilo
-./scripts/install-agent-skill.sh cursor
+# 方式一：软链接模式（推荐本地开发，git pull 自动全端生效）
+./scripts/install-agent-skill.sh --link all
+
+# 方式二：静态拷贝模式
 ./scripts/install-agent-skill.sh all
 ```
 
-默认只安装到空位置。刷新已存在的 META-SCAFFOLD：
+可指定目标平台：`global`（Pi/通用）、`codex`、`kilo`、`cursor` 或 `all`。
+
+默认只安装到空位置。若需强制刷新已存在的目录或链接：
 
 ```bash
-META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all
+./scripts/install-agent-skill.sh --link --force all
+# 或使用环境变量：META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all
 ```
 
-`all` 会同步 vendor-neutral global 目录及三个平台目录。默认位置：
+`all` 会同步 vendor-neutral global 目录及各平台目录。默认位置：
 
 - Pi / Agent Skills：`${META_SCAFFOLD_GLOBAL_SKILLS_ROOT:-~/.agents/skills}/meta-scaffold`
 - Codex：`${CODEX_HOME:-~/.codex}/skills/meta-scaffold`

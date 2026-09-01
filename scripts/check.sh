@@ -155,6 +155,14 @@ cmp "$codex_home/skills/meta-scaffold/SKILL.md" "$cursor_home/skills/meta-scaffo
 cmp skills/meta-scaffold/SKILL.md "$codex_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced agent skill refresh is stale" >&2; exit 1; }
 cmp skills/meta-scaffold/SKILL.md "$global_home/skills/meta-scaffold/SKILL.md" >/dev/null || { echo "forced global skill refresh is stale" >&2; exit 1; }
 
+# Test symlink mode
+link_test_home="$tmp/link-home"
+META_SCAFFOLD_GLOBAL_SKILLS_ROOT="$link_test_home/skills" CODEX_HOME="$link_test_home/codex" KILO_HOME="$link_test_home/kilo" CURSOR_HOME="$link_test_home/cursor" ./scripts/install-agent-skill.sh --link all >/dev/null
+[[ -L "$link_test_home/skills/meta-scaffold" ]] || { echo "symlink installer failed global" >&2; exit 1; }
+[[ -L "$link_test_home/codex/skills/meta-scaffold" ]] || { echo "symlink installer failed codex" >&2; exit 1; }
+[[ -L "$link_test_home/cursor/skills/meta-scaffold" ]] || { echo "symlink installer failed cursor" >&2; exit 1; }
+
+
 mock_bin="$tmp/mock-bin"
 mock_workdir="$tmp/pi-workdir"
 mkdir -p "$mock_bin" "$mock_workdir/.local/run"

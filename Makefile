@@ -9,8 +9,11 @@ link-pi-local:
 sync-global:
 	./scripts/install-agent-skill.sh all
 
+link-global:
+	./scripts/install-agent-skill.sh --link --force all
+
 refresh-global:
-	META_SCAFFOLD_FORCE_INSTALL=1 ./scripts/install-agent-skill.sh all
+	./scripts/install-agent-skill.sh --copy --force all
 
 package:
 	cd .. && zip -r META-SCAFFOLD.zip META-SCAFFOLD -x 'META-SCAFFOLD/.git/*'
