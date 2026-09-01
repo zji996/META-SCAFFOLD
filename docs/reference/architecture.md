@@ -8,8 +8,7 @@ This repository packages META-SCAFFOLD as one Agent Skills-compatible runtime fo
 
 - `skills/meta-scaffold/`: runtime source of truth.
 - `skills/meta-scaffold/SKILL.md`: concise core workflow and governance rules.
-- `skills/meta-scaffold/references/`: handoff, repository-pattern, and platform details loaded only when relevant.
-- `skills/meta-scaffold/agents/openai.yaml`: Codex/OpenAI skill UI metadata.
+- `skills/meta-scaffold/references/`: handoff, repository-pattern, rust development, and platform details loaded only when relevant.
 - `skills/index.json`: Kilo Code remote skill manifest.
 - `prompts/META-SCAFFOLD-v6.md`: human-review contract derived from the runtime skill.
 - `prompts/META-SCAFFOLD-v6.short.md`: shortest embeddable version.
